@@ -1,0 +1,17 @@
+.infoRespuesta{
+    height: 80%;
+    width: 50%;
+}
+
+.iconIncorrecta{
+    margin-left: 15%;
+    margin-bottom: 5%;
+}
+
+.infoIncorrecta{
+    width: 50%;
+    height: 55%;
+    text-align: center;
+    color: rgb(187, 113, 113);
+    border: 5px solid rgb(190, 86, 86);
+}

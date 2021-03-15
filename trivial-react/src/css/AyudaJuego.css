@@ -1,0 +1,29 @@
+
+.AyudaJuego .Header{
+    height: 15%;
+}
+
+.AyudaJuego .Header h1{
+    height: 100%;
+    width: 30%;
+    float: left;
+    font-weight: bold;
+    font-size: calc(10px + 4vmin);
+    text-transform: uppercase;
+    margin: 1% 25%;
+}
+
+.ReglasJuego{
+    height: 85%;
+    width: 90%;
+    text-align: left;
+    margin-left: 10%;
+}
+
+.ReglasJuego h1{
+    font-size: calc(5px + 3vmin);
+}
+
+.ReglasJuego p{
+
+}

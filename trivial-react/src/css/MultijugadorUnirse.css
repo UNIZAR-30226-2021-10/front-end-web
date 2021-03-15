@@ -1,0 +1,106 @@
+
+.MultijugadorUnirse .Header {
+    display: flex;
+    flex-direction: row;
+}
+
+.MultijugadorUnirse .Header div{
+    width: 40%;
+    height: 100%;
+}
+
+.MultijugadorUnirse .Header div .iconAtras{
+    width: 20%;
+}
+
+.MultijugadorUnirse .Header div .ronda{
+    display:flex;
+    flex-direction: row;
+    width: 65%;
+}
+
+.MultijugadorUnirse .Header .infoCode{
+    width: 20%;
+}
+
+.Jugadores{
+    height: 30%;
+    width: 100%;
+}
+
+.filaAvatarDado{
+    width: 86%;
+    float: left;
+    margin: 1% auto 1% 14%;
+}
+
+.colDesconocido {
+    height: 20vh;
+    width: 10vw;
+    float: left;
+    margin: auto 3% 2%;
+    border: 5px solid rgb(103, 131, 207);
+    text-transform: uppercase;
+}
+
+.Pregunta{
+    height: 35%;
+    width: 100%;
+}
+
+.Pregunta p{
+    font-size: calc(10px + 2vmin);
+    margin: 2% 10%;
+}
+
+.respuesta tr{
+    display:flex;
+    flex-direction: row;
+    width: 80%;
+    float: left;
+    margin: 1% 5% 1% 15%;
+}
+
+.respuesta tr div{
+    margin-left: 13%;
+}
+
+.respuesta button {
+    height: 5vh;
+    width: 20vw;
+    color: black;
+}
+
+.Chat{
+    height: 5%;
+    width: 100%;
+}
+
+.imgChat{
+    float: right;
+    margin: auto 2% 2% auto;
+}
+
+.tuTurno{
+    font-family: Arial; 
+    font-size: 30px; 
+    color: #27ad39; 
+    text-shadow: 0px 0px 9px #5ab168;
+    text-transform: uppercase;
+}
+
+.esperaTurno{
+    font-family: Arial; 
+    font-size: 30px; 
+    color: rgba(35, 45, 59, 0.514);
+    text-shadow: 0px 0px 9px #2c5d8d;
+    text-transform: uppercase;
+}
+
+.esperaJugadores{
+    font-family: Arial; 
+    font-size: 30px; 
+    color: rgba(43, 98, 177, 0.514);
+    text-shadow: 0px 0px 9px #508AD3;
+    text-transform: uppercase;
+}

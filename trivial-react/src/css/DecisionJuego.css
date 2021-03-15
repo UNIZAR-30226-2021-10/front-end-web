@@ -1,0 +1,55 @@
+
+.Decision{
+    height: 60vh;
+    width: 100vw;
+}
+
+.DecisionJuego .imgLogo{
+    height: 40%;
+}
+
+.DecisionJuego h1{
+    font-size: calc(10px + 4vmin);
+    margin: 3% 20%;
+}
+
+.respuestaBotones{
+    height: 20vh;
+    width: 100vw;
+}
+
+.DecisionJuego button {
+    height: 8vh;
+    width: 20vw;
+}
+
+.btnModoMultijugador{
+    background-color: rgb(129, 33, 153);
+    color: white;
+    float: left;
+}
+
+.btnModoIndividual{
+    background-color: rgb(255, 231, 13);
+    color: black;
+    float: right;
+}
+
+.Footer{
+    height: 20vh;
+    width: 100vw;
+}
+
+.iconCompras{
+    height: 9vh;
+    width: 5vw;
+    float: left;
+    margin: auto 10% auto 28%;
+}
+
+.iconUsuario{
+    height: 9vh;
+    width: 5vw;
+    float: right;
+    margin: auto 28% auto 10%;
+}

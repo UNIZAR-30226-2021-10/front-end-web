@@ -1,0 +1,17 @@
+
+.Item{
+    height: 12vw;
+    width: 12vw;
+    float: left;
+    margin: auto 3% 2%;
+}
+
+.infoItem {
+    font-size: calc(1px + 2vmin);
+    text-transform: uppercase;
+}
+
+.iconItem{
+    height: 7vw;
+    margin: 5% 10%;
+}

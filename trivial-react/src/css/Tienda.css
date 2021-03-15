@@ -1,0 +1,22 @@
+
+.InfoTienda{
+    height: 80%;
+    width: 100%;
+}
+
+.infoMonedas{
+    width: 100%;
+    height: 5%;
+    margin: 0%;
+}
+
+.infoMonedas tr{
+    float: right;
+    margin: 0% 10%;
+}
+
+.itemsNoComprados{
+    width: 80%;
+    float: left;
+    margin: 1% auto 1% 5%;
+}

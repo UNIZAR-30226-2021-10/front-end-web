@@ -1,0 +1,16 @@
+.Usuario{
+    height: 80%;
+    float: left;
+    margin: auto 3% 2%;
+}
+
+.infoUsuario{
+    font-size: calc(1px + 2vmin);
+    text-transform: uppercase;
+}
+
+.Usuario .imgAvatar{
+    height: 7vw;
+    width: auto;
+    margin: 5% 10%;
+}

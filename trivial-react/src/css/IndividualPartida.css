@@ -1,0 +1,27 @@
+
+.Juego{
+    height: 30%;
+    width: 100%;
+}
+
+.infoJuego{
+    float:left;
+    width: 30%;
+    margin: 1% 0% 1% 10%;
+    font-size: calc(5px + 2vmin);
+    text-transform: uppercase;
+}
+
+.infoJuego div{
+    display: flex;
+    flex-direction: row;
+}
+
+.infoJuego p{
+    margin-right: 5%;
+}
+
+.IndividualPartida .Pregunta{
+    height: 50%;
+    width: 100%;
+}

@@ -1,0 +1,40 @@
+
+.FormInicio{
+    height: 60vh;
+    width: 100vw;
+}
+
+.MenuInicio .imgLogo{
+    height: 40%;
+    margin-bottom: 5vh;
+}
+
+.MenuInicio form div label{
+    height: 6vh;
+    width: 25vw;
+}
+
+.MenuInicio form div input{
+    width: 40vw;
+}
+
+.MenuInicio button {
+    height: 5vh;
+    background-color: white;
+    color: black;
+}
+
+.FooterInicio{
+    height: 20vh;
+    width: 100vw;
+}
+
+.btnContraseñaOlvidada{
+    float: left;
+    margin: 5% 5%;
+}
+
+.btnRegistrarse{
+    float: right;
+    margin: 5% 5%;
+}

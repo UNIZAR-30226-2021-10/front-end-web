@@ -1,0 +1,30 @@
+
+.cuadrado{
+    width: 35%;
+    height: 45%;
+    border: 4px solid black;
+}
+
+.titulo{
+    height: 20%;
+}
+
+.AbandonarPartida h1{
+    font-size: calc(3px + 4vmin);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.filaBtn{
+    height: 30%;
+}
+
+.btnPosponer{
+    float: left;
+    margin-left: 20%;
+}
+
+.btnAbandonar{
+    float: right;
+    margin-right: 20%;
+}

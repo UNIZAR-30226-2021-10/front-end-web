@@ -1,0 +1,104 @@
+.App {
+  text-align: center;
+}
+
+.CambiarContrasena, .DecisionJuego, .MenuInicio, 
+.PerfilUsuario, .Registrarse, .Ajustes, .Tienda, 
+.ItemTienda, .ModoMultijugador, .MultijugadorUnirse,
+.MultijugadorCrear,.RespuestaCorrecta, .RespuestaIncorrecta,
+.FinalMultijugador, .AbandonarPartida, .ModoIndividual,
+.IndividualPartida, .FinalIndividual, .AyudaJuego{
+  background-color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Header{
+  height: 20vh;
+  width: 100vw;
+}
+
+.iconAtras{
+  height: 25%;
+  float: left;
+  font-weight: bold;
+  font-size: calc(5px + 2vmin);
+  text-transform: uppercase;
+}
+
+.iconHelp{
+  height: 25%;
+  float: right;
+}
+
+.iconSettings{
+  font-size: 2em;
+  height: 50%;
+  width: 5%;
+  float: right;
+}
+
+.imgAvatar{
+  display: block;
+  width: 30vw;
+  float: right;
+}
+
+.CambiarContrasena h1, .PerfilUsuario h1,
+.Ajustes h1, .MultijugadorCrear h1, .ModoIndividual h1{
+  height: 100%;
+  width: 30%;
+  float: left;
+  font-weight: bold;
+  font-size: calc(10px + 4vmin);
+  text-transform: uppercase;
+  margin: 1% 25%;
+}
+
+button{
+  text-transform: uppercase;
+  font-size: calc(5px + 2vmin);
+  -webkit-box-shadow: 2px 2px 2px black;
+}
+
+form div {
+  display: block;
+  height: 5vh;
+  margin: calc(5px + 2vmin) 10vw;
+}
+
+form div label{
+  float: left;
+  font-weight: bold;
+  font-size: calc(5px + 2vmin);
+  text-transform: uppercase;  
+  text-align: center;
+}
+
+form div input{
+  height: 4vh;
+  float: left;
+  border-width: 2px;
+}
+
+tbody {
+  display:block;
+  height: 50%;
+  float: left;
+  margin: 1% 0% 1% 15%;
+  text-align: left;
+  font-size: calc(5px + 2vmin);
+  text-transform: uppercase;
+}
+
+tbody th {
+  height: 4vh;
+  padding: 2% 10% 2% 0%;
+  width: fit-content;
+}
+
+
+

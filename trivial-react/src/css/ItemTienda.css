@@ -1,0 +1,33 @@
+
+.ComprarItem{
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 100%;
+}
+
+.mostrarItem{
+    height: 40%;
+    width: 100%;
+    padding: 5% 5% 0% 5%;
+}
+
+.mostrarItem .Item{
+    transform: scale(2.5);
+    margin-left: 35%;
+    margin-bottom: 0%;
+}
+
+.infoPrecio{
+    width: 100%;
+    height: 5%;
+    margin: 2% 0% 2% 43%;
+}
+
+.ComprarItem button{
+    height: 8vh;
+    width: 20vw;
+    margin-right: 5%;
+}
+
+

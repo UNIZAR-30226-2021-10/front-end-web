@@ -1,0 +1,17 @@
+
+.PerfilUsuario .Header{
+    height: 20%;
+    width: 100%;
+}
+
+.InfoPerfilUsuario{
+    height: 80%;
+    width: 100%;
+}
+
+.itemsComprados{
+    width: 80%;
+    float: left;
+    margin: 1% auto 1% 15%;
+}
+

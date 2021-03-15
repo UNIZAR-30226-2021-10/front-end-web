@@ -1,0 +1,29 @@
+
+.tituloAjustes{
+    width: 50%;
+    margin: 2% 35%;
+}
+
+.imgAjustes{
+    height:50%;
+    float: left;
+    margin-right: 0px;
+}
+
+.Ajustes h1{
+    margin-left:0px;
+}
+
+.FormAjustes{
+    height: 80vh;
+    width: 100vw;
+}
+
+.Ajustes form div label{
+    height: 6vh;
+    width: 40%;
+}
+
+.Ajustes form div input{
+    width: 40%;
+}

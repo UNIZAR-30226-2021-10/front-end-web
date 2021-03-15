@@ -1,0 +1,31 @@
+.UnirseAPartida{
+    height: 30vh;
+    width: 100vw;
+}
+
+.UnirseAPartida p{
+    text-transform: uppercase;
+    font-size: calc(5px + 2vmin);
+    margin: 2% 20%;
+}
+
+.introducirCode{
+    display: flex;
+    flex-direction: row;
+    margin-left: 38%;
+}
+
+.introducirCode button{
+    margin-left: 5%;
+}
+
+.CrearPartida{
+    height: 60vh;
+    width: 100vw;
+}
+
+.ModoMultijugador h1{
+    text-transform: uppercase;
+    font-size: calc(10px + 4vmin);
+    margin: 2% 20%;
+}

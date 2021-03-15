@@ -1,0 +1,21 @@
+.Dado{
+    height: 12vw;
+    width: 12vw;
+    float: left;
+    margin: auto 3% 2%;
+}
+
+.infoDado {
+    font-size: calc(1px + 2vmin);
+    text-transform: uppercase;
+}
+
+.imgDado{
+    height: 7vw;
+    margin: 5% 10%;
+}
+
+.categoria{
+    font-family: 'Lobster', cursive;
+    font-size: 1.5em;
+}

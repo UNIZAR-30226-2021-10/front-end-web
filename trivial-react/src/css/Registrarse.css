@@ -1,0 +1,20 @@
+
+.FormRegistro{
+    height: 80vh;
+    width: 100vw;
+}
+
+.Registrarse form div label{
+    height: 6vh;
+    width: 25%;
+}
+
+.Registrarse form div input{
+    width: 40%;
+}
+
+.Registrarse button {
+    height: 5vh;
+    background-color: rgb(125, 154, 218);
+    color: black;
+}
