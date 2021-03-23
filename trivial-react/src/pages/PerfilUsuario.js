@@ -47,6 +47,7 @@ class InfoPerfilUsuario extends React.Component{
             <div className="InfoPerfilUsuario">
                 <div className="imgAvatar">
                     <img src={usuarios.avatar} alt="Avatar"></img>
+                    <button className="btnLogOut" onClick={() => history.push("/MenuInicio")}>Log out</button>
                 </div>
                 <tbody>
                     <tr>

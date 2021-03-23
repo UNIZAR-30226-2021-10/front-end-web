@@ -7,7 +7,8 @@
 .ItemTienda, .ModoMultijugador, .MultijugadorUnirse,
 .MultijugadorCrear,.RespuestaCorrecta, .RespuestaIncorrecta,
 .FinalMultijugador, .AbandonarPartida, .ModoIndividual,
-.IndividualPartida, .FinalIndividual, .AyudaJuego{
+.IndividualPartida, .FinalIndividual, .AyudaJuego, .Chat,
+.Ranking{
   background-color: white;
   height: 100vh;
   display: flex;
@@ -48,7 +49,8 @@
 }
 
 .CambiarContrasena h1, .PerfilUsuario h1,
-.Ajustes h1, .MultijugadorCrear h1, .ModoIndividual h1{
+.Ajustes h1, .MultijugadorCrear h1, .ModoIndividual h1,
+.Ranking h1{
   height: 100%;
   width: 30%;
   float: left;

@@ -97,11 +97,11 @@ class FormAjustes extends React.Component{
                     </div>
                     <div>
                         <label for="password">Contraseña</label>
-                        <input type="text" name="password" placeholder="Enter your password." onChange={this.handleChange}/>
+                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange}/>
                     </div>
                     <div>
                         <label for="repPassword">Repetir Contraseña</label>
-                        <input type="text" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange}/>
+                        <input type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange}/>
                     </div>
                     <div>
                         <button type="submit">Guardar Cambios</button>

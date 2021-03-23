@@ -47,6 +47,13 @@
     margin: auto 10% auto 28%;
 }
 
+.iconRanking{
+    height: 8vh;
+    width: 5vw;
+    float: left;
+    margin: auto auto auto 4.5%;
+}
+
 .iconUsuario{
     height: 9vh;
     width: 5vw;

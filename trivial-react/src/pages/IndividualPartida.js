@@ -104,7 +104,7 @@ class IndividualPartida extends React.Component{
         this.state = {
             ronda: '1',
             jugador: '',
-            dado: {img:'/images/dado/dado.jpg', category:"Tira el dado", color:'black'},
+            dado: {img:'/images/dado/marron.jpeg', category:"Tira el dado", color:'black'},
             hasTiradoDado: false,
             pregunta: '',
             colorBtnA: 'white',
@@ -200,7 +200,7 @@ class IndividualPartida extends React.Component{
                         colorBtnB: 'white',
                         colorBtnC: 'white',
                         colorBtnD: 'white',
-                        dado: {img:'/images/dado/dado.jpg', category:"Tira el dado", color:'black'}
+                        dado: {img: this.state.dado.img, category:"Tira el dado", color:'black'}
         });
     }
 

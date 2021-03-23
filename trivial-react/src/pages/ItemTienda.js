@@ -30,15 +30,15 @@ class ComprarItem extends React.Component{
     handleCompra(e){
         const history = this.props.history;
         const item = this.props.item;
-        const partidas = this.props.partidas;
+        const monedas = this.props.monedas;
         //Compra del objeto
-        if (partidas.monedas >= item.precio){  //Si tienes monedas suficientes
+        if (Number(monedas) >= Number(item.precio)){  //Si tienes monedas suficientes
             //Insertar elemento comprado en tabla de compras
             //Actualizar las monedas -> monedas = monedas-precio;
             alert("Comprado: "+ item.nombre);
             history.goBack();
         } else{ //Si no tienes monedas suficientes
-            alert("Tienes "+ partidas.monedas +" monedas y el item "+ 
+            alert("Tienes "+ monedas +" monedas y el item "+ 
             item.nombre+" cuesta "+item.precio+" monedas.");
         }
         e.preventDefault();
@@ -46,13 +46,13 @@ class ComprarItem extends React.Component{
 
     render(){
         const item = this.props.item;
-        const partidas = this.props.partidas;
+        const monedas = this.props.monedas;
         return(
             <div className="ComprarItem">
                 <tbody className="infoMonedas">
                     <tr>
                         <th>Monedas:</th>
-                        <td>{partidas.monedas}</td>
+                        <td>{monedas}</td>
                     </tr>
                 </tbody>
                 <div className="mostrarItem">
@@ -76,11 +76,11 @@ class ItemTienda extends React.Component {
   render() {
     const history = this.props.history;
     const item = this.props.location.state.item;
-    const partidas = this.props.location.state.partidas;
+    const monedas = this.props.location.state.monedas;
     return (
         <div className="ItemTienda">
             <Header history={history}/>
-            <ComprarItem history={history} item={item} partidas={partidas}/>
+            <ComprarItem history={history} item={item} monedas={monedas}/>
         </div>
     )
   }  

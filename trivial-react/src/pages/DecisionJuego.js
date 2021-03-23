@@ -45,10 +45,12 @@ class Footer extends React.Component{
         const history = this.props.history;
         const username = this.props.usuario;
         const compras = '/images/compras.png';
+        const ranking = '/images/trofeo.png';
         const usuario = '/images/usuario.png';
         return(
             <div className="Footer">
                 <img className="iconCompras" src={compras} alt="Shop Icon" onClick={() => history.push("/Tienda", {usuario: username})}></img>
+                <img className="iconRanking" src={ranking} alt="Ranking Icon" onClick={() => history.push("/Ranking", {usuario: username})}></img>
                 <img className="iconUsuario" src={usuario} alt="User Icon" onClick={() => history.push("/PerfilUsuario", {usuario: username})}></img>
             </div>
         );
@@ -61,7 +63,7 @@ class DecisionJuego extends React.Component{
         const usuario = this.props.location.state.usuario;
         return(
             <div className="DecisionJuego">
-                <Header history={history}/>
+                <Header history={history} />
                 <Decision history={history} usuario={usuario}/>
                 <Footer history={history} usuario={usuario}/>
             </div>

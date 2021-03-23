@@ -150,13 +150,15 @@ class Pregunta extends React.Component{
     }
 }
 
-class Chat extends React.Component{
+class FooterChat extends React.Component{
     render(){
         const history = this.props.history;
+        const usuario = this.props.usuario;
+        const jugadores = this.props.jugadores;
         const chat = '/images/chat.png';
         return(
-            <div className="Chat">
-                <img className="imgChat" src={chat} alt="Chat Image" onClick={() => history.push("/Chat")}></img>
+            <div className="FooterChat">
+                <img className="imgChat" src={chat} alt="Chat Image" onClick={() => history.push("/Chat", {usuario: usuario, jugadores: jugadores})}></img>
             </div>
         );
     }
@@ -169,7 +171,7 @@ class MultijugadorUnirse extends React.Component{
             ronda: '1',
             turno: '0',
             jugadores: this.props.location.state.jugadores,
-            dado: {img:'/images/dado/dado.jpg', category:"Tira el dado", color:'black'},
+            dado: {img:'/images/dado/marron.jpeg', category:"Tira el dado", color:'black'},
             hasTiradoDado: false,
             pregunta: '',
             colorBtnA: 'white',
@@ -228,7 +230,9 @@ class MultijugadorUnirse extends React.Component{
                             handleClick={this.handleClick}
                             handleTurno={this.handleTurno}
                 />
-                <Chat       history={history} 
+                <FooterChat history={history} 
+                            jugadores={jugadores}
+                            usuario={usuario}
                 />
             </div>
         );
@@ -268,7 +272,7 @@ class MultijugadorUnirse extends React.Component{
         for (i = 1; (i <= length) && flag; i++){
             flag = 0;
             for (j = 0; j < (length - 1); j++){
-                if (values[j + 1].puntos > values[j].puntos){
+                if (Number(values[j + 1].puntos) > Number(values[j].puntos)){
                     temp = values[j];
                     values[j] = values[j + 1];
                     values[j + 1] = temp;
@@ -304,7 +308,7 @@ class MultijugadorUnirse extends React.Component{
                         colorBtnB: 'white',
                         colorBtnC: 'white',
                         colorBtnD: 'white',
-                        dado: {img:'/images/dado/dado.jpg', category:"Tira el dado", color:'black'}
+                        dado: {img:this.state.dado.img, category:"Tira el dado", color:'black'}
         });
     }
 

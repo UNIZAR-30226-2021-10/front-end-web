@@ -1,0 +1,99 @@
+
+.Header .tituloRanking{
+    height: 100%;
+    width: 40%;
+    margin: 2% 0% 2% 35%;
+    float: left;
+}
+
+.Header .tituloRanking .imgRanking{
+    height: 50%;
+    float: left;
+    margin-right: 0px;
+}
+
+.Header .tituloRanking h1{
+    margin-left: 4%;
+}
+
+.MostrarRanking{
+    height: 80%;
+    width: 100%;
+    overflow: auto;
+}
+
+.MostrarRanking .ranking{
+    height: 95%;
+    width: 45%;
+    margin-left: 25%;
+}
+
+.MostrarRanking .filaRanking{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: 15%;
+}
+
+.MostrarRanking .filaRanking .usuarioClasif{
+    width: 10%;
+    margin-top: 4%;
+}
+
+.MostrarRanking .filaRanking .imgPuesto{
+    height: 94%;
+    width: auto;
+}
+
+.MostrarRanking .filaRanking .fila{
+    display:flex;
+    flex-direction: row;
+    width: 90%;
+    height: 75%;
+    margin: auto auto 0.5% 0%;
+    border: 1vh double black;
+}
+
+.MostrarRanking .fila .imgPuesto{
+    height: 6vh;
+    width: auto;
+    margin: 2% 8% 2% 7%;
+}
+
+.MostrarRanking .fila .posicion{
+    margin-right: 0%;
+    font-weight: bold;
+    font-size: calc(5px + 2vmin);
+}
+
+.MostrarRanking .fila .imgAvatar{
+    margin-left: 0%;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.MostrarRanking::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.MostrarRanking::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.MostrarRanking::-webkit-scrollbar-button:increment,.MostrarRanking::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.MostrarRanking::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.MostrarRanking::-webkit-scrollbar-thumb {
+    background-color: #797979;
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.MostrarRanking::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}

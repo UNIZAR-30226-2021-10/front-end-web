@@ -90,11 +90,11 @@ class FormCambiarContrasena extends React.Component{
                     </div>
                     <div>
                         <label for="password">Introduzca la nueva contraseña</label>
-                        <input type="text" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
+                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="repPassword">Repetir la nueva contraseña</label>
-                        <input type="text" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
+                        <input type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <button type="submit">Confirmar</button>
