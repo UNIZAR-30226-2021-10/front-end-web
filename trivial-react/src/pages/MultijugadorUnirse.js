@@ -1,19 +1,27 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
+import queryString from 'query-string';
+import {iniciarSocket,disconnectSocket, actualizarMensajes, enviarMensaje} from './Socket';
 import '../css/MultijugadorUnirse.css'
 import {LeftOutlined, LoadingOutlined} from '@ant-design/icons';
 import Dado from '../components/Dado';
 import Usuario from '../components/Usuario';
+import Chat from '../components/Chat';
+import AbandonarPartida from '../components/AbandonarPartida';
 
 class Header extends React.Component{
+    abrirAbandonar = () => {
+        this.props.setParentsState([{clickAtras: true}]);
+    }
+
     render(){
         const {history,usuario,code,ronda,turno,jugadores} = this.props;
         return(
             <div className="Header">
                 <div>
                     <div className="iconAtras">
-                    <LeftOutlined onClick={() => history.push('/AbandonarPartida', {usuario: jugadores[usuario].username})}/> 
-                    Atrás
+                        <LeftOutlined onClick={this.abrirAbandonar}/> 
+                        Atrás
                     </div>
                     <tbody>
                         <tr className="ronda">
@@ -24,7 +32,7 @@ class Header extends React.Component{
                 </div>
                 <div className="infoCode">
                     <tbody>
-                        <tr>{code}</tr>
+                        <tr className="code">{code}</tr>
                         <tr>
                             <th>Turno:</th>
                             <td>{jugadores[turno].username}</td>
@@ -151,18 +159,24 @@ class Pregunta extends React.Component{
 }
 
 class FooterChat extends React.Component{
+    
+    abrirChat = () => {
+        this.props.setParentsState([{clickChat: true}]);
+    }
+
     render(){
-        const history = this.props.history;
-        const usuario = this.props.usuario;
-        const jugadores = this.props.jugadores;
         const chat = '/images/chat.png';
         return(
             <div className="FooterChat">
-                <img className="imgChat" src={chat} alt="Chat Image" onClick={() => history.push("/Chat", {usuario: usuario, jugadores: jugadores})}></img>
+                <img className="imgChat" src={chat} alt="Chat Image" 
+                    onClick={this.abrirChat}>
+                </img>
             </div>
         );
     }
 }
+
+const MESSAGES_DATA = [];
 
 class MultijugadorUnirse extends React.Component{
     constructor(props) {
@@ -178,64 +192,111 @@ class MultijugadorUnirse extends React.Component{
             colorBtnB: 'white',
             colorBtnC: 'white',
             colorBtnD: 'white',
-            hasRespondido: false
+            hasRespondido: false,
+            clickAtras: false,
+            clickChat: false,
+            messages: MESSAGES_DATA
         };
+        this.sendMessage = this.sendMessage.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleTurno = this.handleTurno.bind(this);
         this.tirarDado = this.tirarDado.bind(this);
     }
 
-    actualizarJugadores(){
-        const jugador = this.props.location.state.jugador;
-        let jugadores = this.state.jugadores;
-        jugadores.push(jugador);
-        this.setState({jugadores: jugadores});
+    setStates = states => {
+        return states.forEach(state => {
+          this.setState({ ...state });
+        });
+    };
+
+    componentDidMount(){ //Unión de un usuario a la sala de chat
+        const history = this.props.history;
+        const firstJoin = this.props.location.state.firstJoin;
+        const {messages, jugadores} = this.state;
+        const {username, code} = queryString.parse(history.location.search);
+
+        //Inicializar socket y unión del usuario "username" al chat con codigo "code"
+        console.log(firstJoin);
+        iniciarSocket(username, code, firstJoin, history);
+
+        //Actualizar array de mensajes con los que te llegan
+        actualizarMensajes(messages, jugadores, this.setStates);
     }
 
-    componentWillMount() {
-        this.actualizarJugadores();
-    }
+    componentWillUnmount() {
+        disconnectSocket();
+	}
 
     render(){
         const history = this.props.history;
         const {usuario, code, maxJugadores} = this.props.location.state;
         const { ronda, turno, jugadores, dado, hasTiradoDado, pregunta,
-                colorBtnA, colorBtnB, colorBtnC, colorBtnD, hasRespondido} = this.state;
+                colorBtnA, colorBtnB, colorBtnC, colorBtnD, hasRespondido,
+                clickAtras, clickChat, messages} = this.state;
+        console.log(this.state);
         return(
-            <div className="MultijugadorUnirse">
-                <Header history={history} 
-                        usuario={usuario}
-                        code={code}
-                        ronda={ronda}
-                        turno={turno}
-                        jugadores={jugadores}
-                />
-                <Jugadores  history={history} 
-                            jugadores={jugadores} 
-                            maxJugadores={maxJugadores}
-                            dado={dado}
-                            tirarDado={this.tirarDado}
-                />
-                <Pregunta   pregunta={pregunta}
+            <div>
+                { clickAtras === true? (
+                    <AbandonarPartida   history={history}
+                                        usuario= {jugadores[usuario].username}
+                                        setParentsState={this.setStates}
+                    />
+                ):(
+                    clickChat === true ? (
+                        <Chat   jugadores={jugadores}
+                                usuario={usuario}
+                                messages={messages}
+                                sendMessage={this.sendMessage}
+                                setParentsState={this.setStates}
+                        />
+                    ):(
+                        <div className="MultijugadorUnirse">
+                        <Header history={history} 
+                            usuario={usuario}
+                            code={code}
+                            ronda={ronda}
                             turno={turno}
                             jugadores={jugadores}
-                            maxJugadores={maxJugadores}
-                            usuario={usuario}
-                            colorBtnA={colorBtnA}
-                            colorBtnB={colorBtnB}
-                            colorBtnC={colorBtnC}
-                            colorBtnD={colorBtnD}
-                            hasRespondido={hasRespondido}
-                            hasTiradoDado={hasTiradoDado}
-                            handleClick={this.handleClick}
-                            handleTurno={this.handleTurno}
-                />
-                <FooterChat history={history} 
-                            jugadores={jugadores}
-                            usuario={usuario}
-                />
+                            setParentsState={this.setStates}
+                        />
+                        <Jugadores  history={history} 
+                                jugadores={jugadores} 
+                                maxJugadores={maxJugadores}
+                                dado={dado}
+                                tirarDado={this.tirarDado}
+                        />
+                        <Pregunta   pregunta={pregunta}
+                                turno={turno}
+                                jugadores={jugadores}
+                                maxJugadores={maxJugadores}
+                                usuario={usuario}
+                                colorBtnA={colorBtnA}
+                                colorBtnB={colorBtnB}
+                                colorBtnC={colorBtnC}
+                                colorBtnD={colorBtnD}
+                                hasRespondido={hasRespondido}
+                                hasTiradoDado={hasTiradoDado}
+                                handleClick={this.handleClick}
+                                handleTurno={this.handleTurno}
+                        />
+                        <FooterChat setParentsState={this.setStates}
+                        />
+                        </div>
+                    )
+                )}
             </div>
         );
+    }
+
+    sendMessage(messageInput) {
+        const {usuario} = this.props.location.state;
+        const {jugadores} = this.state;
+        if (messageInput){   //Envio del mensaje a todos los usuarios
+            var d = new Date();
+            const min = d.getMinutes();
+            const message = {sender: usuario, avatar: jugadores[usuario].avatar, text: messageInput, date: min };
+            enviarMensaje(message);
+        }
     }
 
     handleClick(e) {
@@ -338,6 +399,8 @@ class MultijugadorUnirse extends React.Component{
             this.setState({dado: dado, hasTiradoDado: true, pregunta: preguntas[valor]});
         }
     }
+
+
 }
 
 export default withRouter(MultijugadorUnirse);

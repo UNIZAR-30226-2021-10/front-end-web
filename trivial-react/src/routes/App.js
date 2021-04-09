@@ -17,10 +17,8 @@ import MultijugadorCrear from '../pages/MultijugadorCrear';
 import RespuestaCorrecta from '../pages/RespuestaCorrecta';
 import RespuestaIncorrecta from '../pages/RespuestaIncorrecta';
 import FinalMultijugador from '../pages/FinalMultijugador';
-import AbandonarPartida from '../pages/AbandonarPartida';
 import IndividualPartida from '../pages/IndividualPartida';
 import FinalIndividual from '../pages/FinalIndividual';
-import Chat from '../pages/Chat';
 import Ranking from '../pages/Ranking';
 
 class App extends React.Component{
