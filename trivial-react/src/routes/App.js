@@ -45,10 +45,8 @@ class App extends React.Component{
             <Route exact path="/RespuestaIncorrecta" component={RespuestaIncorrecta}/>
             <Route exact path="/AyudaJuego" component={AyudaJuego}/>
             <Route exact path="/FinalMultijugador" component={FinalMultijugador}/>
-            <Route exact path="/AbandonarPartida" component={AbandonarPartida}/>
             <Route exact path="/IndividualPartida" component={IndividualPartida}/>
             <Route exact path="/FinalIndividual" component={FinalIndividual}/>
-            <Route exact path="/Chat" component={Chat}/>
             <Route exact path="/Ranking" component={Ranking}/>
             <Route render={() => <h1>Not found!</h1>} />
           </Switch>
