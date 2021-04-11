@@ -53,10 +53,31 @@ class FormRegistro extends React.Component{
         }
     }
 
-    guardarRegistro = async() => {
+    guardarRegistro = () => {
         
-        await axios.post("http://localhost:3050/Registrarse", {username:this.state.username,email:this.state.email,password:this.state.password
-                        ,}).then(response => {console.log('Se ha hecho bien')}).catch(error => {console.log(error)});
+ 
+        axios.post("http://localhost:3050/Registrarse", {nickname:this.state.username,email:this.state.email,password:this.state.password,})
+                        
+                        .then(response => {console.log(response.data);
+                            return response.status})
+
+                        .catch(error => {
+                            console.log(error);
+                            
+                            //Insertar usuario en la bd
+                            if (error.response.status === 400){  //Si el usuario ya está siendo usado o es inválido
+                                alert("Nombre de usuario no disponible.");
+                                //Borrar nombre de usuario del input
+                                this.resetCampos(['username']);
+                            } else if (error.response.status === 410){  //Si el email esta repetido
+                                alert("Email ya existente.");
+                                //Borrar email del input
+                                this.resetCampos(['email']);
+                            }  else{     //Fallo de registro por otros motivos
+                                alert('Ha habido un fallo, vuelva a intentarlo.');
+                            }
+                                
+                        });
     }
 
     handleSubmit(e) {
@@ -68,27 +89,23 @@ class FormRegistro extends React.Component{
         const repPassword = this.state.repPassword;
 
 
-        
-        //Insertar usuario en la bd
-        if (false){  //Si el usuario ya está siendo usado o es inválido
-            alert("Nombre de usuario no disponible.");
-            //Borrar nombre de usuario del input
-            this.resetCampos(['username']);
-        } else if (false){  //Si el email es inválido
-            alert("Email inválido.");
-            //Borrar email del input
-            this.resetCampos(['email']);
-        } else if (password !== repPassword){ //Si no coinciden las contraseñas
+        if (password !== repPassword){ //Si no coinciden las contraseñas
             alert("No coinciden las contraseñas.");
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
-        } else if (true){  //Inserción correcta
-            this.guardarRegistro();
+            return;
+        }
+
+        let status = this.guardarRegistro();
+        
+        
+        //Insertar usuario en la bd
+        if (status === 200){  //Inserción correcta
             alert("Usuario registrado correctamente: "+ username);
             history.push('/MenuInicio');
-        } else{     //Fallo de registro por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
         }
+        
+
         e.preventDefault();
     }
 
