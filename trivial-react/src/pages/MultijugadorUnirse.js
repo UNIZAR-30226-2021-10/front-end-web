@@ -8,6 +8,9 @@ import Dado from '../components/Dado';
 import Usuario from '../components/Usuario';
 import Chat from '../components/Chat';
 import AbandonarPartida from '../components/AbandonarPartida';
+import axios from 'axios';
+
+const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     abrirAbandonar = () => {
@@ -378,25 +381,53 @@ class MultijugadorUnirse extends React.Component{
         return rand;
     }
 
-    tirarDado(){
+    async tirarDado(){
         const {hasTiradoDado,jugadores} = this.state;
         const maxJugadores = this.props.location.state.maxJugadores;
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
         const imagenes = [  '/images/dado/marron.jpeg', '/images/dado/azul.jpeg', '/images/dado/amarillo.jpeg',
                             '/images/dado/rosa.jpeg', '/images/dado/verde.jpeg', '/images/dado/naranja.jpeg'];
-        const categorias = ["Arte y Literatura", "Geografía", "Historia", "Cine", "Ciencias y Naturaleza", "Deportes"];
-        const preguntas = [
-            {category: "Arte y Literatura", ask: "¿A qué estilo pertenece la obra de Jean-Honoré Fragonard?", opcionA:'Renacentista', opcionB:'A ninguno', opcionC:'Rococó', opcionD:'Gótico', answer:'opcionC', puntos:'15'},
-            {category: "Geografía", ask: "¿En qué año establece Javier de Burgos la provincialización de España?", opcionA:'1345', opcionB:'1560', opcionC:'1833', opcionD:'1975', answer:'opcionC', puntos:'15'},
-            {category: "Historia", ask: "¿A qué país fué enviada la División Azul? ", opcionA:'URSS', opcionB:'EEUU', opcionC:'Inglaterra', opcionD:'Francia', answer:'opcionA', puntos:'15'},
-            {category: "Cine", ask: "¿En qué calle londinense grabaron más discos los Beatles?", opcionA:'Abbey Road', opcionB:'Oxford Street', opcionC:'Bond Street', opcionD:'Kennington Road', answer:'opcionA', puntos:'15'},
-            {category: "Ciencias y Naturaleza", ask: "Contando desde el Sol, ¿qué posición ocupa el planeta de Marte? ", opcionA:'5', opcionB:'4', opcionC:'2', opcionD:'6', answer:'opcionB', puntos:'15'},
-            {category: "Deportes", ask: "¿A qué distancia está situado el punto de penalti de la portería? ", opcionA:'6 metros', opcionB:'20 metros', opcionC:'30 metros', opcionD:'11 metros', answer:'opcionD', puntos:'15'},
-        ];
+        const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
         if (!hasTiradoDado && jugadores.length==maxJugadores && true){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);
             const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
-            this.setState({dado: dado, hasTiradoDado: true, pregunta: preguntas[valor]});
+            await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
+                .then(response=>{
+                    const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
+                    const opcionCorrecta = this.rand(1,4);
+                    let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
+                    switch (opcionCorrecta){
+                        case 1: //Opción correcta: opcionA
+                            pregunta.opcionA=correcta;
+                            pregunta.opcionB=incorrecta1;
+                            pregunta.opcionC=incorrecta2;
+                            pregunta.opcionD=incorrecta3;
+                            pregunta.answer='opcionA';
+                            break;
+                        case 2: //Opción correcta: opcionB
+                            pregunta.opcionA=incorrecta1;
+                            pregunta.opcionB=correcta;
+                            pregunta.opcionC=incorrecta2;
+                            pregunta.opcionD=incorrecta3;
+                            pregunta.answer='opcionB';
+                            break;
+                        case 3: //Opción correcta: opcionC
+                            pregunta.opcionA=incorrecta1;
+                            pregunta.opcionB=incorrecta2;
+                            pregunta.opcionC=correcta;
+                            pregunta.opcionD=incorrecta3;
+                            pregunta.answer='opcionC';
+                            break;
+                        case 4: //Opción correcta: opcionD
+                            pregunta.opcionA=incorrecta1;
+                            pregunta.opcionB=incorrecta2;
+                            pregunta.opcionC=incorrecta3;
+                            pregunta.opcionD=correcta;
+                            pregunta.answer='opcionD';
+                            break;
+                    }
+                    this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});
+            })
         }
     }
 
