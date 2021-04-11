@@ -1,7 +1,8 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Registrarse.css';
-import {LeftOutlined} from '@ant-design/icons';
+import {ConsoleSqlOutlined, LeftOutlined} from '@ant-design/icons';
+import axios from 'axios';
 
 class Header extends React.Component{
     render(){
@@ -52,6 +53,12 @@ class FormRegistro extends React.Component{
         }
     }
 
+    guardarRegistro = async() => {
+        
+        await axios.post("http://localhost:3050/Registrarse", {username:this.state.username,email:this.state.email,password:this.state.password
+                        ,}).then(response => {console.log('Se ha hecho bien')}).catch(error => {console.log(error)});
+    }
+
     handleSubmit(e) {
         const history = this.props.history;
         //Cogemos los datos introducidos por el usuario
@@ -59,7 +66,9 @@ class FormRegistro extends React.Component{
         const email = this.state.email;
         const password = this.state.password;
         const repPassword = this.state.repPassword;
-        const avatar = this.state.avatar;
+
+
+        
         //Insertar usuario en la bd
         if (false){  //Si el usuario ya está siendo usado o es inválido
             alert("Nombre de usuario no disponible.");
@@ -74,6 +83,7 @@ class FormRegistro extends React.Component{
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
         } else if (true){  //Inserción correcta
+            this.guardarRegistro();
             alert("Usuario registrado correctamente: "+ username);
             history.push('/MenuInicio');
         } else{     //Fallo de registro por otros motivos
@@ -97,7 +107,7 @@ class FormRegistro extends React.Component{
                     </div>
                     <div>
                         <label for="email">Email </label>
-                        <input type="text" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
+                        <input type="email" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="password">Contraseña</label>
