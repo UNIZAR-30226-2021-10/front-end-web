@@ -1,0 +1,118 @@
+
+.Header .tituloHistorial{
+    height: 100%;
+    width: 40%;
+    margin: 2% 0% 2% 35%;
+    float: left;
+}
+
+.Header .tituloHistorial .imgHistorial{
+    height: 50%;
+    float: left;
+    margin-right: 0px;
+}
+
+.Header .tituloHistorial h1{
+    margin-left: 4%;
+}
+
+.MostrarHistorial{
+    height: 80%;
+    width: 100%;
+}
+
+.MostrarHistorial .filtros{
+    height: 10%;
+    width: 45%;
+    margin-left: 25%;
+    float: left;
+}
+
+.MostrarHistorial button{
+    margin-left: 3%;
+}
+
+.MostrarHistorial .historial{
+    height: 90%;
+    width: 45%;
+    margin-left: 25%;
+    overflow: auto;
+}
+
+.MostrarHistorial .historial .fila{
+    display:flex;
+    flex-direction: column;
+    width: 95%;
+    height: 20%;
+    border: 1vh double black;
+    margin-bottom: 2%;
+    background-color: rgb(190, 222, 231);
+}
+
+.MostrarHistorial .historial .fila h1{
+    font-size: calc(5px + 1vmin);
+    margin: 1% 2% 1% 2%;
+    width: fit-content;
+}
+
+.MostrarHistorial .historial .fila .header{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: 30%;
+    border-bottom: 1vh double black;
+    background-color: rgb(190, 222, 231);
+}
+
+.MostrarHistorial .historial .fila .jugadores{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: 70%;
+    background-color: rgb(183, 193, 196);
+}
+
+.MostrarHistorial .fila .jugadores .tarjetaJugador{
+    display: flex;
+    flex-direction: row;
+    float: left;
+    height: 100%;
+    width: 25%;
+}
+.MostrarHistorial .tarjetaJugador .imgAvatar{
+    margin: 6% 5%;
+}
+
+.MostrarHistorial .tarjetaJugador .infoUsuario{
+    display: flex;
+    flex-direction: column;
+    margin: 3%;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.historial::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.historial::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.historial::-webkit-scrollbar-button:increment,.historial::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.historial::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.historial::-webkit-scrollbar-thumb {
+    background-color: #797979;
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.historial::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}

@@ -20,6 +20,7 @@ import FinalMultijugador from '../pages/FinalMultijugador';
 import IndividualPartida from '../pages/IndividualPartida';
 import FinalIndividual from '../pages/FinalIndividual';
 import Ranking from '../pages/Ranking';
+import Historial from '../pages/Historial';
 
 class App extends React.Component{
   render(){
@@ -48,6 +49,7 @@ class App extends React.Component{
             <Route exact path="/IndividualPartida" component={IndividualPartida}/>
             <Route exact path="/FinalIndividual" component={FinalIndividual}/>
             <Route exact path="/Ranking" component={Ranking}/>
+            <Route exact path="/Historial" component={Historial}/>
             <Route render={() => <h1>Not found!</h1>} />
           </Switch>
         </BrowserRouter>
