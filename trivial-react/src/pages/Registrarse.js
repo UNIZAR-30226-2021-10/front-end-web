@@ -53,31 +53,35 @@ class FormRegistro extends React.Component{
         }
     }
 
-    guardarRegistro = () => {
-        
+    guardarRegistro = (username, history) => { 
  
         axios.post("http://localhost:3050/Registrarse", {nickname:this.state.username,email:this.state.email,password:this.state.password,})
                         
-                        .then(response => {console.log(response.data);
-                            return response.status})
+            .then(response => {console.log(response.data);
+                
+                if (response.status === 200){               //Inserción correcta
+                    alert("Usuario registrado correctamente: "+ username);
+                    history.push('/MenuInicio');
+                }
+            })
 
-                        .catch(error => {
-                            console.log(error);
-                            
-                            //Insertar usuario en la bd
-                            if (error.response.status === 400){  //Si el usuario ya está siendo usado o es inválido
-                                alert("Nombre de usuario no disponible.");
-                                //Borrar nombre de usuario del input
-                                this.resetCampos(['username']);
-                            } else if (error.response.status === 410){  //Si el email esta repetido
-                                alert("Email ya existente.");
-                                //Borrar email del input
-                                this.resetCampos(['email']);
-                            }  else{     //Fallo de registro por otros motivos
-                                alert('Ha habido un fallo, vuelva a intentarlo.');
-                            }
-                                
-                        });
+            .catch(error => {
+                console.log(error);
+                
+                //Insertar usuario en la bd
+                if (error.response.status === 400){         //Si el usuario ya está siendo usado o es inválido
+                    alert("Nombre de usuario no disponible.");
+                    //Borrar nombre de usuario del input
+                    this.resetCampos(['username']);
+                } else if (error.response.status === 410){  //Si el email esta repetido
+                    alert("Email ya existente.");
+                    //Borrar email del input
+                    this.resetCampos(['email']);
+                }  else{                                    //Fallo de registro por otros motivos
+                    alert('Ha habido un fallo, vuelva a intentarlo.');
+                }
+                    
+            });
     }
 
     handleSubmit(e) {
@@ -95,17 +99,10 @@ class FormRegistro extends React.Component{
             this.resetCampos(['password','repPassword']);
             return;
         }
-
-        let status = this.guardarRegistro();
-        
         
         //Insertar usuario en la bd
-        if (status === 200){  //Inserción correcta
-            alert("Usuario registrado correctamente: "+ username);
-            history.push('/MenuInicio');
-        }
+        this.guardarRegistro(username, history);
         
-
         e.preventDefault();
     }
 
