@@ -192,8 +192,26 @@ class IndividualPartida extends React.Component{
         const email = jugador.username + "@gmail.com";
 
         //Guarda los resultados en las tablas partida y juega.
-        axios.post(baseUrl+'/FinalIndividual', 
+        /*axios.post(baseUrl+'/FinalIndividual', 
             { fecha: fecha, numJugadores: 1, rondas: maxRondas, ganador: jugador.username, email: email, puntos: jugador.puntos})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });*/
+
+        //Guarda los resultados en la tabla partida.
+        axios.post(baseUrl+'/FinalIndividual_Partida', 
+            { fecha: fecha, numJugadores: 1, rondas: maxRondas, ganador: jugador.username})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+
+        //Guarda los resultados en la tabla juega.
+        axios.post(baseUrl+'/FinalIndividual_Juega', 
+            { fecha: fecha, email: email, puntos: jugador.puntos})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
         }).catch(e => { //Error
