@@ -330,7 +330,7 @@ class MultijugadorUnirse extends React.Component{
         }
     }
 
-    BubbleSortDesc(values, length){
+    BubbleSortDesc(values, length, user){
         var i, j, flag = 1;
         var temp;
         for (i = 1; (i <= length) && flag; i++){
@@ -341,10 +341,51 @@ class MultijugadorUnirse extends React.Component{
                     values[j] = values[j + 1];
                     values[j + 1] = temp;
                     flag = 1;
+                    if (user == j){
+                        user = j+1;
+                    } else if (user == j+1){
+                        user = j;
+                    }
                 }
             }
         }
     }
+
+    //Petición post a la db: guarda los resultados en las tablas partida, juega y usuario
+    //jugadores: ordenados de mayor a menor puntuación.
+    //usuario: índice en el vector "jugadores" del usuario que hizo login.
+    /*postPartida(jugadores, usuario){
+        const {maxRondas,maxJugadores}=this.props.location.state;
+        const jugador = jugadores[usuario];
+
+        //Construcción del formato de fecha
+        var d = new Date();
+        const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        const fecha = d.getFullYear() + "--" + meses[d.getMonth()] + "--" + d.getDate() + 
+                    "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
+        //Construcción de monedas y correo
+        const monedas = jugador.puntos*0.4;
+        const email = jugador.username + "@gmail.com";
+
+        //El ganador guarda los resultados en las tabla partida.
+        //Guarda los resultados en la tabla juega.
+        axios.post(baseUrl+'/FinalIndividual', 
+            { fecha: fecha, numJugadores: maxJugadores, rondas: maxRondas, ganador: jugadores[0].username, email: email, puntos: jugador.puntos})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+
+        //Guarda los resultados en la tabla usuario.
+        axios.post(baseUrl+'/FinalIndividual_Usuario', 
+            { email: email, monedas: monedas, puntos: jugador.puntos })
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);         
+        });
+    }*/
 
     handleTurno() {
         const history = this.props.history;
@@ -352,13 +393,15 @@ class MultijugadorUnirse extends React.Component{
         const {ronda,turno,jugadores}=this.state;
         //Pasar al siguiente turno
         if (ronda==maxRondas && turno==(maxJugadores-1)){ //Ya se han jugado todas las rondas
-            //Finalizar partida
             //Ordenamiento descendente bubble sort
             let jugadoresDesc = jugadores;
-            console.log(jugadoresDesc);
-            this.BubbleSortDesc(jugadoresDesc,jugadoresDesc.length);
-            console.log(jugadoresDesc);
-            history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: usuario});
+            let user = usuario;
+            console.log(jugadoresDesc, user);
+            this.BubbleSortDesc(jugadoresDesc,jugadoresDesc.length, user);
+            console.log(jugadoresDesc, user);
+            //Finalizar partida
+            //this.postPartida(jugadoresDesc, user);
+            history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: user});
         } else {  //Se sigue jugando
             if (turno==(maxJugadores-1)){   //Cuando es el último turno, se actualiza la ronda
                 this.setState({ronda: (Number(ronda)+1)%(Number(maxRondas)+1)});
@@ -381,7 +424,49 @@ class MultijugadorUnirse extends React.Component{
         return rand;
     }
 
-    async tirarDado(){
+    // Petición get a la db: coge una pregunta de categoria "categoria"
+    // y construcción de la pregunta.
+    async getPregunta(dado){
+        await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
+            .then(response=>{
+                const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
+                const opcionCorrecta = this.rand(1,4);
+                let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
+                switch (opcionCorrecta){
+                    case 1: //Opción correcta: opcionA
+                        pregunta.opcionA=correcta;
+                        pregunta.opcionB=incorrecta1;
+                        pregunta.opcionC=incorrecta2;
+                        pregunta.opcionD=incorrecta3;
+                        pregunta.answer='opcionA';
+                        break;
+                    case 2: //Opción correcta: opcionB
+                        pregunta.opcionA=incorrecta1;
+                        pregunta.opcionB=correcta;
+                        pregunta.opcionC=incorrecta2;
+                        pregunta.opcionD=incorrecta3;
+                        pregunta.answer='opcionB';
+                        break;
+                    case 3: //Opción correcta: opcionC
+                        pregunta.opcionA=incorrecta1;
+                        pregunta.opcionB=incorrecta2;
+                        pregunta.opcionC=correcta;
+                        pregunta.opcionD=incorrecta3;
+                        pregunta.answer='opcionC';
+                        break;
+                    case 4: //Opción correcta: opcionD
+                        pregunta.opcionA=incorrecta1;
+                        pregunta.opcionB=incorrecta2;
+                        pregunta.opcionC=incorrecta3;
+                        pregunta.opcionD=correcta;
+                        pregunta.answer='opcionD';
+                        break;
+                }
+                this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});
+            })
+    }
+
+    tirarDado(){
         const {hasTiradoDado,jugadores} = this.state;
         const maxJugadores = this.props.location.state.maxJugadores;
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
@@ -391,43 +476,7 @@ class MultijugadorUnirse extends React.Component{
         if (!hasTiradoDado && jugadores.length==maxJugadores && true){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);
             const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
-            await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
-                .then(response=>{
-                    const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
-                    const opcionCorrecta = this.rand(1,4);
-                    let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
-                    switch (opcionCorrecta){
-                        case 1: //Opción correcta: opcionA
-                            pregunta.opcionA=correcta;
-                            pregunta.opcionB=incorrecta1;
-                            pregunta.opcionC=incorrecta2;
-                            pregunta.opcionD=incorrecta3;
-                            pregunta.answer='opcionA';
-                            break;
-                        case 2: //Opción correcta: opcionB
-                            pregunta.opcionA=incorrecta1;
-                            pregunta.opcionB=correcta;
-                            pregunta.opcionC=incorrecta2;
-                            pregunta.opcionD=incorrecta3;
-                            pregunta.answer='opcionB';
-                            break;
-                        case 3: //Opción correcta: opcionC
-                            pregunta.opcionA=incorrecta1;
-                            pregunta.opcionB=incorrecta2;
-                            pregunta.opcionC=correcta;
-                            pregunta.opcionD=incorrecta3;
-                            pregunta.answer='opcionC';
-                            break;
-                        case 4: //Opción correcta: opcionD
-                            pregunta.opcionA=incorrecta1;
-                            pregunta.opcionB=incorrecta2;
-                            pregunta.opcionC=incorrecta3;
-                            pregunta.opcionD=correcta;
-                            pregunta.answer='opcionD';
-                            break;
-                    }
-                    this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});
-            })
+            this.getPregunta(dado);
         }
     }
 

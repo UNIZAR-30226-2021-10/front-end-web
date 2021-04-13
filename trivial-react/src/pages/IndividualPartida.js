@@ -106,7 +106,7 @@ class IndividualPartida extends React.Component{
         super(props);
         this.state = {
             ronda: '1',
-            jugador: '',
+            jugador: this.props.location.state.jugador,
             dado: {img:'/images/dado/marron.jpeg', category:"Tira el dado", color:'black'},
             hasTiradoDado: false,
             pregunta: '',
@@ -119,15 +119,6 @@ class IndividualPartida extends React.Component{
         this.handleClick = this.handleClick.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.tirarDado = this.tirarDado.bind(this);
-    }
-
-    actualizarJugadores(){
-        const jugador = this.props.location.state.jugador;
-        this.setState({jugador: jugador});
-    }
-
-    componentWillMount() {
-        this.actualizarJugadores();
     }
 
     render(){
@@ -186,6 +177,39 @@ class IndividualPartida extends React.Component{
         }
     }
 
+    //Petición post a la db: guarda los resultados en las tablas partida, juega y usuario
+    postPartida(){
+        const {maxRondas}=this.props.location.state;
+        const {jugador}=this.state;
+
+        //Construcción del formato de fecha
+        var d = new Date();
+        const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        const fecha = d.getFullYear() + "--" + meses[d.getMonth()] + "--" + d.getDate() + 
+                    "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
+        //Construcción de monedas y correo
+        const monedas = jugador.puntos*0.4;
+        const email = jugador.username + "@gmail.com";
+
+        //Guarda los resultados en las tablas partida y juega.
+        axios.post(baseUrl+'/FinalIndividual', 
+            { fecha: fecha, numJugadores: 1, rondas: maxRondas, ganador: jugador.username, email: email, puntos: jugador.puntos})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+
+        //Guarda los resultados en la tabla usuario.
+        axios.post(baseUrl+'/FinalIndividual_Usuario', 
+            { email: email, monedas: monedas, puntos: jugador.puntos })
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);         
+        });
+    }
+
     handleNext() {
         const history = this.props.history;
         const {maxRondas}=this.props.location.state;
@@ -193,6 +217,7 @@ class IndividualPartida extends React.Component{
         //Pasar al siguiente turno
         if (ronda==maxRondas){ //Ya se han jugado todas las rondas
             //Finalizar partida
+            this.postPartida();
             history.push('/FinalIndividual', {jugador: jugador});
         } else {  //Se sigue jugando
             this.setState({ronda: (Number(ronda)+1)%(Number(maxRondas)+1)});
@@ -212,7 +237,49 @@ class IndividualPartida extends React.Component{
         return rand;
     }
 
-    async tirarDado(){
+    // Petición get a la db: coge una pregunta de categoria "categoria"
+    // y construcción de la pregunta.
+    async getPregunta(dado){
+        await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
+            .then(response=>{
+                const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
+                const opcionCorrecta = this.rand(1,4);
+                let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
+                switch (opcionCorrecta){
+                    case 1: //Opción correcta: opcionA
+                        pregunta.opcionA=correcta;
+                        pregunta.opcionB=incorrecta1;
+                        pregunta.opcionC=incorrecta2;
+                        pregunta.opcionD=incorrecta3;
+                        pregunta.answer='opcionA';
+                        break;
+                    case 2: //Opción correcta: opcionB
+                        pregunta.opcionA=incorrecta1;
+                        pregunta.opcionB=correcta;
+                        pregunta.opcionC=incorrecta2;
+                        pregunta.opcionD=incorrecta3;
+                        pregunta.answer='opcionB';
+                        break;
+                    case 3: //Opción correcta: opcionC
+                        pregunta.opcionA=incorrecta1;
+                        pregunta.opcionB=incorrecta2;
+                        pregunta.opcionC=correcta;
+                        pregunta.opcionD=incorrecta3;
+                        pregunta.answer='opcionC';
+                        break;
+                    case 4: //Opción correcta: opcionD
+                        pregunta.opcionA=incorrecta1;
+                        pregunta.opcionB=incorrecta2;
+                        pregunta.opcionC=incorrecta3;
+                        pregunta.opcionD=correcta;
+                        pregunta.answer='opcionD';
+                        break;
+                }
+                this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});
+            })
+    }
+
+    tirarDado(){
         const {hasTiradoDado} = this.state;
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
         const imagenes = [  '/images/dado/marron.jpeg', '/images/dado/azul.jpeg', '/images/dado/amarillo.jpeg',
@@ -221,43 +288,7 @@ class IndividualPartida extends React.Component{
         if (!hasTiradoDado){
             const valor = this.rand(0,5);
             const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
-            await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
-                .then(response=>{
-                    const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
-                    const opcionCorrecta = this.rand(1,4);
-                    let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
-                    switch (opcionCorrecta){
-                        case 1: //Opción correcta: opcionA
-                            pregunta.opcionA=correcta;
-                            pregunta.opcionB=incorrecta1;
-                            pregunta.opcionC=incorrecta2;
-                            pregunta.opcionD=incorrecta3;
-                            pregunta.answer='opcionA';
-                            break;
-                        case 2: //Opción correcta: opcionB
-                            pregunta.opcionA=incorrecta1;
-                            pregunta.opcionB=correcta;
-                            pregunta.opcionC=incorrecta2;
-                            pregunta.opcionD=incorrecta3;
-                            pregunta.answer='opcionB';
-                            break;
-                        case 3: //Opción correcta: opcionC
-                            pregunta.opcionA=incorrecta1;
-                            pregunta.opcionB=incorrecta2;
-                            pregunta.opcionC=correcta;
-                            pregunta.opcionD=incorrecta3;
-                            pregunta.answer='opcionC';
-                            break;
-                        case 4: //Opción correcta: opcionD
-                            pregunta.opcionA=incorrecta1;
-                            pregunta.opcionB=incorrecta2;
-                            pregunta.opcionC=incorrecta3;
-                            pregunta.opcionD=correcta;
-                            pregunta.answer='opcionD';
-                            break;
-                    }
-                    this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});
-            })
+            this.getPregunta(dado);
         }
     }
 }
