@@ -44,24 +44,24 @@ class FormInicio extends React.Component{
         }
     }
     guardarLogin = () => {
-        
- 
-        axios.post("http://localhost:3050/MenuInicio", {nickname:this.state.username,password:this.state.password,})
-                        
-                        .then(response => {console.log(response.data);
-                            return response.status})
+        const history = this.props.history;
+        const {username,password} = this.state; //Datos introducidos por el usuario
+        axios.post("http://localhost:3050/MenuInicio", {nickname: username,password: password})         
+                        .then(response => { //Está registrado
+                            console.log(response.data);
+                            //Hacer cookie con lo que te devuelve en response
 
+                            if (response.data === 200){
+                                alert("Usuario logeado correctamente: "+ username);
+                                history.push('/DecisionJuego', {usuario: username}); 
+                            }
+                        })
                         .catch(error => {
                             console.log(error);
                             
                             //Insertar usuario en la bd
-                            if (error.response.status === 401){  //Si el usuario ya está siendo usado o es inválido
+                            if (error.response.status === 400){  //Si el usuario ya está siendo usado o es inválido
                                 alert("Nombre de usuario o contrasena incorrectos");
-                                //Borrar nombre de usuario del input
-                                this.resetCampos(['username']);
-                                this.resetCampos(['password']);
-                            } else if (error.response.status === 404){
-                                alert("Error al conectar con el servidor");
                                 //Borrar nombre de usuario del input
                                 this.resetCampos(['username']);
                                 this.resetCampos(['password']);
@@ -80,15 +80,8 @@ class FormInicio extends React.Component{
         const username = this.state.username;
         const password = this.state.password;
         //Comprobar si el usuario esta en la bd y coincide la password
-        let status = this.guardarLogin();
-        
-        
-
-        if (status === 200){  //Inserción correcta
-            alert("Usuario logeado correctamente: "+ username);
-            history.push('/MenuInicio');
-        }
-        
+        //Comprobar si hay un usuario registrado con esos datos en la db
+        this.guardarLogin();
 
         e.preventDefault();
     }
