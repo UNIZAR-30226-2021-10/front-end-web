@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/MenuInicio.css';
-
+import axios from 'axios';
 class Header extends React.Component{
     render(){
         const history = this.props.history;
@@ -43,6 +43,36 @@ class FormInicio extends React.Component{
             }
         }
     }
+    guardarLogin = () => {
+        
+ 
+        axios.post("http://localhost:3050/MenuInicio", {nickname:this.state.username,password:this.state.password,})
+                        
+                        .then(response => {console.log(response.data);
+                            return response.status})
+
+                        .catch(error => {
+                            console.log(error);
+                            
+                            //Insertar usuario en la bd
+                            if (error.response.status === 401){  //Si el usuario ya está siendo usado o es inválido
+                                alert("Nombre de usuario o contrasena incorrectos");
+                                //Borrar nombre de usuario del input
+                                this.resetCampos(['username']);
+                                this.resetCampos(['password']);
+                            } else if (error.response.status === 404){
+                                alert("Error al conectar con el servidor");
+                                //Borrar nombre de usuario del input
+                                this.resetCampos(['username']);
+                                this.resetCampos(['password']);
+                            }else{     //Fallo de registro por otros motivos
+                                alert('Ha habido un fallo, vuelva a intentarlo.');
+                                this.resetCampos(['username']);
+                                this.resetCampos(['password']);
+                            }
+                                
+                        });
+    }
 
     handleSubmit(e) {
         const history = this.props.history;
@@ -50,20 +80,16 @@ class FormInicio extends React.Component{
         const username = this.state.username;
         const password = this.state.password;
         //Comprobar si el usuario esta en la bd y coincide la password
-        if (false){  //No está registrado el usuario en la bd
-            alert('No hay ningún usuario registrado con nombre: '+ username);
-            //Borrar nombre de usuario del input
-            this.resetCampos(['username']);
-        } else if(false){   //No coincide el password con ese usuario
-            alert('El usuario o la contraseña no son correctos');
-            //Borrar todos los campos
-            this.resetCampos(['username','password']);
-        } else if(true){  //Está registrado
-            alert("Bienvenido: "+ username);
-            history.push('/DecisionJuego', {usuario: username});
-        } else{     //Fallo de login por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
-        } 
+        let status = this.guardarLogin();
+        
+        
+
+        if (status === 200){  //Inserción correcta
+            alert("Usuario logeado correctamente: "+ username);
+            history.push('/MenuInicio');
+        }
+        
+
         e.preventDefault();
     }
 
