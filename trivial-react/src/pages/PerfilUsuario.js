@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/PerfilUsuario.css';
 import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
+import Cookies from 'universal-cookie';
 
 class Header extends React.Component{
     render(){
@@ -23,7 +24,18 @@ class Header extends React.Component{
     }
 }
 
+
+
 class InfoPerfilUsuario extends React.Component{
+    borrarCookies = () =>{
+        const history = this.props.history;
+        const cookies = new Cookies();
+        cookies.remove('user');
+        cookies.remove('email');
+        cookies.remove('puntos');
+        cookies.remove('monedas');
+        history.push("/MenuInicio");
+    }
     render(){
         const history = this.props.history;
         const usuarios=this.props.usuarios[0];
@@ -47,7 +59,7 @@ class InfoPerfilUsuario extends React.Component{
             <div className="InfoPerfilUsuario">
                 <div className="imgAvatar">
                     <img src={usuarios.avatar} alt="Avatar"></img>
-                    <button className="btnLogOut" onClick={() => history.push("/MenuInicio")}>Log out</button>
+                    <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
                 </div>
                 <tbody>
                     <tr>
