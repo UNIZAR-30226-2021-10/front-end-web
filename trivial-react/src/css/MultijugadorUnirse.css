@@ -23,6 +23,10 @@
     width: 20%;
 }
 
+.MultijugadorUnirse .Header .infoCode .code{
+    text-transform: lowercase;
+}
+
 .Jugadores{
     height: 30%;
     width: 100%;

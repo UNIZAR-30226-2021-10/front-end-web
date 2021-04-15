@@ -1,15 +1,17 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
 import '../css/Chat.css';
 import {LeftOutlined} from '@ant-design/icons';
 
 class Header extends React.Component{
+    cerrarChat = () => {
+        this.props.setParentsState([{clickChat: false}]);
+    }
+
     render(){
-        const history = this.props.history;
         return(
             <div className="Header">
                 <div className="iconAtras">
-                    <LeftOutlined onClick={() => history.goBack()}/> 
+                    <LeftOutlined onClick={this.cerrarChat}/> 
                     Atrás
                 </div>
                 <h1>Chat de juego</h1>
@@ -20,15 +22,19 @@ class Header extends React.Component{
 
 class Messages extends React.Component {
     comentario(minEnvioMens) {
-        var d = new Date();
-        const minActuales = d.getMinutes();
-        const diferencia = Number(minActuales)-Number(minEnvioMens);
-        if (diferencia==0){
-            return "Enviado ahora.";
-        } else if (diferencia>0){
-            return "Enviado hace "+diferencia+" minutos.";
-        } else{
-            return "Enviado hace mucho.";
+        if (minEnvioMens==="admin"){
+            return "";
+        }else{
+            var d = new Date();
+            const minActuales = d.getMinutes();
+            const diferencia = Number(minActuales)-Number(minEnvioMens);
+            if (diferencia==0){
+                return "Enviado ahora.";
+            } else if (diferencia>0){
+                return "Enviado hace "+diferencia+" minutos.";
+            } else{
+                return "Enviado hace mucho.";
+            }
         }
     }
 
@@ -41,8 +47,14 @@ class Messages extends React.Component {
             <div className="Messages">
                 <ul>                 
                     {messages.map(message => {
-                        const nombre = jugadores[message.sender].username;
-                        const color = colores[message.sender];
+                        let nombre, color;
+                        if (message.sender === "admin"){
+                            nombre = "admin";
+                            color = "#dcb4e9";
+                        } else{
+                            nombre = jugadores[message.sender].username;
+                            color = colores[message.sender];
+                        }
                         return (
                             <div>
                                 { message.sender!=usuario ? (
@@ -94,10 +106,8 @@ class FormMessage extends React.Component {
     }
 
     handleSubmit(e){
-        this.props.sendMessage(this.state.message);
-        this.setState({
-            message: ''
-        })
+        this.props.sendMessage(this.state.message); // Envío del mensaje
+        this.setState({message: ''}); //Borrar input
         e.preventDefault();
     }
 
@@ -113,50 +123,18 @@ class FormMessage extends React.Component {
     }
 }
 
-const MESSAGES_DATA = [
-    {sender: "0", avatar: '/images/usuario.png', text: "¡Hola!", date: "0"},
-    {sender: "1", avatar: '/images/usuario.png', text: "¡Hola!,¿que tal?", date: "10"},
-    {sender: "3", avatar: '/images/usuario.png', text: "Bien, ¿tu?", date: "20"},
-    {sender: "2", avatar: '/images/usuario.png', text: "Bien. Mucha suerte!", date: "30"},
-    {sender: "3", avatar: '/images/usuario.png', text: "¡Suerte a todos!", date: "40"},
-    {sender: "1", avatar: '/images/usuario.png', text: "¿Como vais?", date: "50"}
-]
-
 class Chat extends React.Component {  
-    constructor() {
-        super()
-        this.state = {
-           messages: MESSAGES_DATA
-        }
-        this.sendMessage = this.sendMessage.bind(this);
-    } 
-
-    componentDidMount() {
-    }
-
-    sendMessage(message) {
-        const usuario = this.props.location.state.usuario;
-        const jugadores = this.props.location.state.jugadores;
-        var d = new Date();
-        const min = d.getMinutes();
-        var mensajesActuales = this.state.messages;
-        mensajesActuales.push({sender: usuario, avatar: jugadores[usuario].avatar, text: message, date: min });
-        this.setState({messages: mensajesActuales});
-    }
 
     render() {
-        const history = this.props.history;
-        const usuario = this.props.location.state.usuario;
-        const jugadores = this.props.location.state.jugadores;
-        const messages = this.state.messages;
+        const {usuario,jugadores,messages,sendMessage,setParentsState} = this.props;
         return (
             <div className="Chat">
-                <Header history={history}/>
+                <Header setParentsState={setParentsState}/>
                 <Messages messages={messages} usuario={usuario} jugadores={jugadores}/>
-                <FormMessage sendMessage={this.sendMessage}/>
+                <FormMessage sendMessage={sendMessage}/>
             </div>
         )
     }
 }
 
-export default withRouter(Chat);
+export default Chat;

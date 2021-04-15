@@ -2,6 +2,9 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/ModoMultijugador.css'
 import {LeftOutlined} from '@ant-design/icons';
+import axios from 'axios';
+
+const baseUrl='http://localhost:3001/partidas';
 
 class Header extends React.Component{
     render(){
@@ -23,10 +26,21 @@ class UnirseAPartida extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            code: ''
+            code: '',
+            partidas: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount(){
+        const peticionGet = async()=>{
+            await axios.get(baseUrl)
+            .then(response=>{
+               this.setState({partidas: response.data});
+            })
+        }
+        peticionGet();
     }
 
     handleChange(e) {
@@ -51,43 +65,52 @@ class UnirseAPartida extends React.Component{
     handleSubmit(e) {
         const history = this.props.history;
         const usuario = this.props.usuario;
-        //Cogemos el codigo introducido por el usuario
-        const code = this.state.code;
-        //Unirse a partida
-        //Buscar en bd la informacion de la partida con codigo "code"
-        const partida = {   
-            code: "code", 
-            jugadoresEnPartida: [
-                {username:"usuario1", avatar:'/images/usuario.png', puntos:'25'},
-                {username:"usuario2", avatar:'/images/usuario.png', puntos:'17'},
-                {username:"usuario3", avatar:'/images/usuario.png', puntos:'15'}
-            ],
-            maxJugadores: "4",
-            maxRondas: "5"
-        }
-        if(partida.code != code){   //El código no coincide con ninguna partida existente
+        //Cogemos el codigo introducido por el usuario y la información de las partidas de la db
+        const {code,partidas} = this.state;
+        //Buscar informacion de la partida con codigo "code"
+        const busqPartidas =  partidas.filter((partida,index) => partida.code===code);
+        if(busqPartidas.length==0){   //El código no coincide con ninguna partida existente
             alert("El código no coincide con ninguna partida existente.");
             //Borrar el campo del código
             this.resetCampos(['code']);
-        } else if(partida.jugadoresEnPartida.length == partida.maxJugadores){   //Si la partida está llena
-            alert("La partida está completa.");
-            //Borrar el campo del código
-            this.resetCampos(['code']);
-        } else if(true){    //El código coincide y hay hueco en la partida
-            alert("Bienvenido a la partida "+ usuario);
-            //Buscamos avatar del usuario en bd y creamos el jugador nuevo
-            const avatar = '/images/usuario.png';
-            const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
-            history.push('/MultijugadorUnirse/'+partida.code, 
-                {   usuario: partida.jugadoresEnPartida.length, 
-                    maxRondas: partida.maxRondas,
-                    code: partida.code, 
-                    jugadores: partida.jugadoresEnPartida,
-                    jugador: jugadorNuevo,
-                    maxJugadores: partida.maxJugadores
-                });
-        } else{     //Fallo de unirse en una partida por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
+        } else{     //Existe la partida
+            const partida = busqPartidas[0];
+            let user = "-1";
+            let firstJoin = true;
+            partida.jugadoresEnPartida.forEach((jugador, index) => {
+                if (jugador.username===usuario){
+                    user = index; 
+                    firstJoin = false;
+                }
+            });
+            if(partida.jugadoresEnPartida.length==partida.maxJugadores && user=="-1"){   //Si la partida está llena y no estas entre los jugadores
+                alert("La partida está completa.");
+                //Borrar el campo del código
+                this.resetCampos(['code']);
+            } else if(true){    //Si hay hueco en la partida o estás entre los jugadores
+                alert("Bienvenido a la partida "+ usuario);
+                if(user!="-1"){ //Si estas entre los jugadores -> unirse
+                    console.log(user);
+                }else{ //Si la partida no está llena y no estas entre los jugadores -> nuevo
+                    //Buscamos avatar del usuario en bd y creamos el jugador nuevo
+                    const avatar = '/images/usuario.png';
+                    const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
+                    partida.jugadoresEnPartida.push(jugadorNuevo);
+                    user = partida.jugadoresEnPartida.length-1;
+                    //Actualizar partidas en db
+                    const res = axios.put(baseUrl+"/"+partida.id, partida);
+                }
+                history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
+                    {   usuario: user, 
+                        maxRondas: partida.maxRondas,
+                        code: partida.code, 
+                        jugadores: partida.jugadoresEnPartida,
+                        maxJugadores: partida.maxJugadores,
+                        firstJoin: firstJoin
+                    });
+            } else{     //Fallo de unirse en una partida por otros motivos
+                alert('Ha habido un fallo, vuelva a intentarlo.');
+            }
         }
         e.preventDefault();
     }

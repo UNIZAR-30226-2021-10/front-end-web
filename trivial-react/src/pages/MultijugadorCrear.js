@@ -2,6 +2,9 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/MultijugadorCrear.css';
 import {LeftOutlined} from '@ant-design/icons';
+import axios from 'axios';
+
+const baseUrl='http://localhost:3001/partidas';
 
 class Header extends React.Component{
     render(){
@@ -25,10 +28,21 @@ class FormCrearMultijugador extends React.Component{
         super(props);
         this.state = {
             selectJugadores: '',
-            selectRondas: ''
+            selectRondas: '',
+            partidas:''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount(){
+        const peticionGet = async()=>{
+            await axios.get(baseUrl)
+            .then(response=>{
+               this.setState({partidas: response.data});
+            })
+        }
+        peticionGet();
     }
     
     handleChange(e) {
@@ -38,6 +52,24 @@ class FormCrearMultijugador extends React.Component{
         });
         console.log(this.state);
     }
+
+    rand(min, max){
+        const rand = Math.floor(min + Math.random()*(max-min+1));
+        return rand;
+    }
+    
+    generarCodigo(longitud){
+        let code = '';
+        const pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
+        const min = 0;
+        const max = pattern.length-1;
+        let randpattern;
+        for(var i=0; i<longitud; i++){
+            randpattern = this.rand(min,max);
+            code = code + pattern[randpattern];
+        }
+        return code;
+    } 
 
     handleSubmit(e) {
         const history = this.props.history;
@@ -51,39 +83,34 @@ class FormCrearMultijugador extends React.Component{
         //Crear partida
         if(true){  //Se puede crear partida
             const longitud = 6;
-            const code = "code";
-            if (false){ //Si el código está ya en la bd
+            let code = this.generarCodigo(longitud);
+            console.log(code);
+            const partidas = this.state.partidas;
+            partidas.filter((partida,index) => partida.code === code);
+            if (partidas.length != 0){ //Si el código está ya en la bd
                 code = this.generarCodigo(longitud);
             }
             // Introducir en bd (code, jugadoresEnPartida, maxJugadores, maxRondas)
+            const partidaNueva = {   
+                code: code, 
+                jugadoresEnPartida: [jugador],
+                maxJugadores: selectJugadores,
+                maxRondas: selectRondas
+            }
+            const res = axios.post(baseUrl, partidaNueva);
             alert("Has creado una partida nueva. Código: "+ code);
-            history.push('/MultijugadorUnirse/'+code, 
+            history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
                 {   usuario: '0',
                     maxRondas: selectRondas,
                     code: code,
-                    jugadores: [],
-                    jugador: jugador,
-                    maxJugadores: selectJugadores
+                    jugadores: [jugador],
+                    maxJugadores: selectJugadores,
+                    firstJoin: true
                 });
         } else{     //Fallo de creación de partida por otros motivos
             alert('Ha habido un fallo, vuelva a intentarlo.');
         } 
         e.preventDefault();
-    }
-    
-    generarCodigo(longitud){
-        const code = '';
-        const pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
-        const min = 0;
-        const max = pattern.length-1;
-        for(const i=0; i<longitud; i++) 
-            code.push(pattern[this.rand(min,max)]);
-        return code;
-    } 
-
-    rand(min, max){
-        const rand = Math.floor(min + Math.random()*(max-min+1));
-        return rand;
     }
 
     render(){
