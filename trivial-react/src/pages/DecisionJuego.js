@@ -2,6 +2,8 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/DecisionJuego.css'
 import {LeftOutlined} from '@ant-design/icons';
+import Cookies from 'universal-cookie';
+
 
 class Header extends React.Component{
     render(){
@@ -59,6 +61,8 @@ class Footer extends React.Component{
 
 class DecisionJuego extends React.Component{
     render(){
+        const cookies = new Cookies();
+        console.log(cookies.get('user'));
         const history = this.props.history;
         const usuario = this.props.location.state.usuario;
         return(

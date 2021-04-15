@@ -60,8 +60,6 @@ class FormRegistro extends React.Component{
             .then(response => {console.log(response.data);
                 
                 if (response.status === 200){               //Inserción correcta
-                    //seteamos las cookies
-                    
                     alert("Usuario registrado correctamente: "+ username);
                     history.push('/MenuInicio');
                 }

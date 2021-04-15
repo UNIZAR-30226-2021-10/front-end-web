@@ -52,6 +52,11 @@ class FormInicio extends React.Component{
                             console.log(response.data);
                             //Hacer cookie con lo que te devuelve en response
                             const cookies = new Cookies();
+                            cookies.set('user', response.data.email.nickname, {path: '/'});
+                            cookies.set('email', response.data.email.email, {path: '/'});
+                            cookies.set('puntos', response.data.email.puntos, {path: '/'});
+                            cookies.set('monedas', response.data.email.monedas, {path: '/'});
+
                             alert("Usuario logeado correctamente: "+ username);
                             history.push('/DecisionJuego', {usuario: username}); 
                             
