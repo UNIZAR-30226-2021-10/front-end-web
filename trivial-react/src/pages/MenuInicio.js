@@ -7,6 +7,8 @@ class Header extends React.Component{
     render(){
         const history = this.props.history;
         const help = '/images/help.png';
+        const cookies = new Cookies();
+        console.log(cookies.get('user'));
         return(
             <div className="Header">
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
