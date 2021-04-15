@@ -4,6 +4,12 @@
     width: 100vw;
 }
 
+.DecisionJuego .iconHistorial{
+    height: 25%;
+    float: left;
+    margin: auto 0.5%;
+}
+
 .DecisionJuego .imgLogo{
     height: 40%;
 }
