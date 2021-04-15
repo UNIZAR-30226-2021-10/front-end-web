@@ -1,119 +1,139 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import '../css/MenuInicio.css';
+import '../css/PerfilUsuario.css';
+import {LeftOutlined, SettingFilled} from '@ant-design/icons';
+import Item from '../components/Item'
+import Cookies from 'universal-cookie';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
+        const usuario = this.props.usuario;
+        const cookies = new Cookies();
         return(
             <div className="Header">
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <div className="iconAtras">
+                    <LeftOutlined onClick={() => history.push("/DecisionJuego", {usuario: usuario})}/> 
+                    Atrás
+                </div>
+                <h1>Perfil de {cookies.get('user')}</h1>
+                <div className="iconSettings">
+                    <SettingFilled onClick={() => history.push("/Ajustes", {usuario: usuario})}/>
+                </div>
             </div>
         );
     }
 }
 
-class FormInicio extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: ''
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+
+
+class InfoPerfilUsuario extends React.Component{
+    borrarCookies = () =>{
+        const history = this.props.history;
+        const cookies = new Cookies();
+        cookies.remove('user');
+        cookies.remove('email');
+        cookies.remove('puntos');
+        cookies.remove('monedas');
+        history.push("/MenuInicio");
     }
-    
-    handleChange(e) {
-        const {name, value}=e.target;
-        this.setState({
-          [name]: value
+    render(){
+        const history = this.props.history;
+        const usuarios=this.props.usuarios[0];
+        const partidas=this.props.partidas[0];
+        const compras=this.props.compras;
+        const setItems=this.props.setItems;
+        const arrayComprados = [];
+        compras.forEach((compra,index) =>{
+            arrayComprados.push(compra.item);
         });
-        console.log(this.state);
-    }
 
-    resetCampos(campos){
-        var inputs = document.getElementsByTagName('input');
-        for (var h=0;h<inputs.length;h++){
-            for (var i=0; i<campos.length;i++){
-                if(inputs[h].name==campos[i]){
-                    inputs[h].value="";
-                }
+        const cols=[];
+        setItems.forEach((itemCatalogo) => {
+            if (arrayComprados.indexOf(itemCatalogo.nombre) > -1){
+                cols.push(<Item item={itemCatalogo}/>);
             }
-        }
-    }
+        });
 
-    handleSubmit(e) {
-        const history = this.props.history;
-        //Cogemos los datos introducidos por el usuario
-        const username = this.state.username;
-        const password = this.state.password;
-        //Comprobar si el usuario esta en la bd y coincide la password
-        if (false){  //No está registrado el usuario en la bd
-            alert('No hay ningún usuario registrado con nombre: '+ username);
-            //Borrar nombre de usuario del input
-            this.resetCampos(['username']);
-        } else if(false){   //No coincide el password con ese usuario
-            alert('El usuario o la contraseña no son correctos');
-            //Borrar todos los campos
-            this.resetCampos(['username','password']);
-        } else if(true){  //Está registrado
-            alert("Bienvenido: "+ username);
-            history.push('/DecisionJuego', {usuario: username});
-        } else{     //Fallo de login por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
-        } 
-        e.preventDefault();
-    }
+        const cookies = new Cookies();
 
-    render(){
-        const logo = '/images/logo.png';
         return(
-            <div className="FormInicio">
-                <img className="imgLogo" src={logo} alt="Wondergames Logo"></img>
-                <form onSubmit={this.handleSubmit}>
-                    <div>
-                        <label for="username">Usuario </label>
-                        <input type="text" name="username" placeholder="Enter your username." onChange={this.handleChange} required/>
-                    </div>
-                    <div>
-                        <label for="password">Contraseña</label>
-                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
-                    </div>
-                    <button type="submit">Acceder</button>
-                </form>
+            <div className="InfoPerfilUsuario">
+                <div className="imgAvatar">
+                    {/*<img src={usuarios.avatar} alt="Avatar"></img>*/}
+                    <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
+                </div>
+                <tbody>
+                    <tr>
+                        <th>Nombre:</th>
+                        <td>{cookies.get('user')}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{cookies.get('email')}</td>
+                    </tr>
+                    <tr>
+                        <th>Puntos Acumulados:</th>
+                        <td>{cookies.get('puntos')}</td>
+                    </tr>
+                    <tr>
+                        <th>Monedas Conseguidas:</th>
+                        <td>{cookies.get('monedas')}</td>
+                    </tr>
+                    <tr>
+                        <th>Items: </th>
+                    </tr>
+                </tbody>
+                <div className="itemsComprados">{cols}</div>
             </div>
         );
     }
 }
 
-class FooterInicio extends React.Component{
+class PerfilUsuario extends React.Component{
     render(){
+        const usuarios = [
+            {usuario: "usuario1", email: "usuario1@gmail.com", avatar:'/images/avatar.png'},
+            {usuario: "usuario2", email: "usuario2@gmail.com", avatar:'/images/avatar.png'}
+        ];
+        const partidas = [
+            {usuario: "usuario1", puntos: "1324", monedas: "563"},
+            {usuario: "usuario2", puntos: "324", monedas: "100"}
+        ];
+        const compras = [
+            {usuario: "usuario1", item: "traje1"},
+            {usuario: "usuario1", item: "sombrero1"},
+            {usuario: "usuario2", item: "traje2"},
+            {usuario: "usuario2", item: "sombrero2"}
+        ];
+        const setItems = [
+            {nombre:"traje1", category: "trajes", icono: '/images/items/traje1.png'},
+            {nombre:"traje2", category: "trajes", icono: '/images/items/traje2.png'},
+            {nombre:"traje3", category: "trajes", icono: '/images/items/traje3.png'},
+            {nombre:"sombrero1", category: "sombreros", icono: '/images/items/sombrero1.png'},
+            {nombre:"sombrero2", category: "sombreros", icono: '/images/items/sombrero2.png'},
+            {nombre:"sombrero3", category: "sombreros", icono: '/images/items/sombrero3.png'}
+        ];
+
         const history = this.props.history;
+        const usuarioLoggedIn = this.props.location.state.usuario;
+        const tablaUsuarios = usuarios.filter((usuario,index) => usuario.usuario===usuarioLoggedIn);
+        const tablaPartidas = partidas.filter((partida,index) => partida.usuario===usuarioLoggedIn);
+        const tablaCompras = compras.filter((compra,index) => compra.usuario===usuarioLoggedIn);
+
         return(
-            <div className="FooterInicio">
-                <>
-                    <button className="btnContraseñaOlvidada" onClick={() => history.push("/CambiarContrasena")}>Contraseña Olvidada</button>
-                {"  "}
-                    <button className="btnRegistrarse" onClick={() => history.push("/Registrarse")}>Registrarse</button>
-                </>
+            <div className="PerfilUsuario">
+                <Header history={history} usuario={usuarioLoggedIn}/>
+                <InfoPerfilUsuario 
+                    history={history}
+                    usuarios={tablaUsuarios}
+                    partidas={tablaPartidas}
+                    compras={tablaCompras}
+                    setItems={setItems}
+                />
             </div>
         );
     }
 }
 
-class MenuInicio extends React.Component{
-    render(){
-        const history = this.props.history;
-        return(
-            <div className="MenuInicio">
-                <Header history={history}/>
-                <FormInicio history={history}/>
-                <FooterInicio history={history}/>
-            </div>
-        );
-    }
-}
-
-export default withRouter(MenuInicio);
+export default withRouter(PerfilUsuario);
