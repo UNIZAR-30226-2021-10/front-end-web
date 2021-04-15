@@ -1,0 +1,362 @@
+{
+  "partidas": [
+    {
+      "id": 1,
+      "code": "code",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": 25
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": 17
+        },
+        {
+          "username": "usuario3",
+          "avatar": "/images/usuario.png",
+          "puntos": 15
+        },
+        {
+          "username": "774335",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": 4,
+      "maxRondas": 5
+    },
+    {
+      "id": 2,
+      "code": "new",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": 25
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": 2,
+      "maxRondas": 5
+    },
+    {
+      "code": "qxt4iu",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "774335",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario3",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "3",
+      "maxRondas": "10",
+      "id": 3
+    },
+    {
+      "code": "6ak919",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "5",
+      "id": 4
+    },
+    {
+      "code": "98v486",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario3",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "774335",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "4",
+      "maxRondas": "15",
+      "id": 5
+    },
+    {
+      "code": "pqufvh",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "3",
+      "maxRondas": "5",
+      "id": 6
+    },
+    {
+      "code": "beppw7",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "4",
+      "maxRondas": "5",
+      "id": 7
+    },
+    {
+      "code": "dibdpj",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "4",
+      "maxRondas": "10",
+      "id": 8
+    },
+    {
+      "code": "eryh5v",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "5",
+      "id": 9
+    },
+    {
+      "code": "fsnuwa",
+      "jugadoresEnPartida": [
+        {
+          "username": "774335",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "5",
+      "id": 10
+    },
+    {
+      "code": "sucrqo",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "4",
+      "maxRondas": "5",
+      "id": 11
+    },
+    {
+      "code": "r6nnfc",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "10",
+      "id": 12
+    },
+    {
+      "code": "lfqwm1",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario3",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "4",
+      "maxRondas": "5",
+      "id": 13
+    },
+    {
+      "code": "vhaq2v",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "4",
+      "maxRondas": "10",
+      "id": 14
+    },
+    {
+      "code": "i6a9g2",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "10",
+      "id": 15
+    },
+    {
+      "code": "u8r5he",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "10",
+      "id": 16
+    },
+    {
+      "code": "k1lrzu",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "3",
+      "maxRondas": "5",
+      "id": 17
+    },
+    {
+      "code": "4rp2x1",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "3",
+      "maxRondas": "5",
+      "id": 18
+    },
+    {
+      "code": "3c64jh",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "3",
+      "maxRondas": "10",
+      "id": 19
+    },
+    {
+      "code": "0nod0r",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "usuario2",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "10",
+      "id": 20
+    },
+    {
+      "code": "ll0kql",
+      "jugadoresEnPartida": [
+        {
+          "username": "usuario1",
+          "avatar": "/images/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "4",
+      "maxRondas": "15",
+      "id": 21
+    }
+  ]
+}

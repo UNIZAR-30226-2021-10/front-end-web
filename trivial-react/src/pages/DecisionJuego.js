@@ -1,20 +1,18 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import '../css/DecisionJuego.css'
+import '../css/DecisionJuego.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Cookies from 'universal-cookie';
-
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
+        const username = this.props.usuario;
         const help = '/images/help.png';
+        const historial = '/images/historialicon.png';
         return(
             <div className="Header">
-                <div className="iconAtras">
-                    <LeftOutlined onClick={() => history.goBack()}/> 
-                    Atrás
-                </div>
+                <img className="iconHistorial" src={historial} alt="Historial Icon" onClick={() => history.push("/Historial", {usuario: username})}></img>
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
             </div>
         );
@@ -25,7 +23,7 @@ class Decision extends React.Component{
     render(){
         const history = this.props.history;
         const username = this.props.usuario;
-        const logo = '/images/logo.png';
+        const logo = '/images/logo.png'; 
         return(
             <div className="Decision">
                 <img className="imgLogo" src={logo} alt="Wondergames Logo"></img>
@@ -67,7 +65,7 @@ class DecisionJuego extends React.Component{
         const usuario = this.props.location.state.usuario;
         return(
             <div className="DecisionJuego">
-                <Header history={history} />
+                <Header history={history} usuario={usuario}/>
                 <Decision history={history} usuario={usuario}/>
                 <Footer history={history} usuario={usuario}/>
             </div>
