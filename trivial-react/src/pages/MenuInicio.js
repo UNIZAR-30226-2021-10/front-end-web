@@ -2,6 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/MenuInicio.css';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 class Header extends React.Component{
     render(){
         const history = this.props.history;
@@ -50,11 +51,10 @@ class FormInicio extends React.Component{
                         .then(response => { //Está registrado
                             console.log(response.data);
                             //Hacer cookie con lo que te devuelve en response
-
-                            if (response.data === 200){
-                                alert("Usuario logeado correctamente: "+ username);
-                                history.push('/DecisionJuego', {usuario: username}); 
-                            }
+                            const cookies = new Cookies();
+                            alert("Usuario logeado correctamente: "+ username);
+                            history.push('/DecisionJuego', {usuario: username}); 
+                            
                         })
                         .catch(error => {
                             console.log(error);
@@ -75,10 +75,6 @@ class FormInicio extends React.Component{
     }
 
     handleSubmit(e) {
-        const history = this.props.history;
-        //Cogemos los datos introducidos por el usuario
-        const username = this.state.username;
-        const password = this.state.password;
         //Comprobar si el usuario esta en la bd y coincide la password
         //Comprobar si hay un usuario registrado con esos datos en la db
         this.guardarLogin();
