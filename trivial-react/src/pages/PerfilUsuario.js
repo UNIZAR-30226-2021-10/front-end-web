@@ -9,13 +9,14 @@ class Header extends React.Component{
     render(){
         const history = this.props.history;
         const usuario = this.props.usuario;
+        const cookies = new Cookies();
         return(
             <div className="Header">
                 <div className="iconAtras">
                     <LeftOutlined onClick={() => history.push("/DecisionJuego", {usuario: usuario})}/> 
                     Atrás
                 </div>
-                <h1>Perfil de {usuario}</h1>
+                <h1>Perfil de {cookies.get('user')}</h1>
                 <div className="iconSettings">
                     <SettingFilled onClick={() => history.push("/Ajustes", {usuario: usuario})}/>
                 </div>
@@ -42,7 +43,6 @@ class InfoPerfilUsuario extends React.Component{
         const partidas=this.props.partidas[0];
         const compras=this.props.compras;
         const setItems=this.props.setItems;
-        
         const arrayComprados = [];
         compras.forEach((compra,index) =>{
             arrayComprados.push(compra.item);
@@ -55,28 +55,30 @@ class InfoPerfilUsuario extends React.Component{
             }
         });
 
+        const cookies = new Cookies();
+
         return(
             <div className="InfoPerfilUsuario">
                 <div className="imgAvatar">
-                    <img src={usuarios.avatar} alt="Avatar"></img>
+                    {/*<img src={usuarios.avatar} alt="Avatar"></img>*/}
                     <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
                 </div>
                 <tbody>
                     <tr>
                         <th>Nombre:</th>
-                        <td>{usuarios.usuario}</td>
+                        <td>{cookies.get('user')}</td>
                     </tr>
                     <tr>
                         <th>Email:</th>
-                        <td>{usuarios.email}</td>
+                        <td>{cookies.get('email')}</td>
                     </tr>
                     <tr>
                         <th>Puntos Acumulados:</th>
-                        <td>{partidas.puntos}</td>
+                        <td>{cookies.get('puntos')}</td>
                     </tr>
                     <tr>
                         <th>Monedas Conseguidas:</th>
-                        <td>{partidas.monedas}</td>
+                        <td>{cookies.get('monedas')}</td>
                     </tr>
                     <tr>
                         <th>Items: </th>
