@@ -1,0 +1,161 @@
+.FooterMenu{
+    height: 80vh;
+    width: 100vw;
+}
+
+.FooterMenu .menu{
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+    width: 80%;
+    margin: auto;
+    text-transform: uppercase;
+}
+
+.FooterMenu .menu .optionMenu{
+    width: 15%;
+    margin: auto 0.5%;
+}
+
+.FooterMenu .menu .optionLogOut{
+    float: right;
+    width: 15%;
+    margin: auto auto;
+}
+
+.FooterMenu .UploadSection, .HistorialSection, .DownloadSection{
+    height: 90%;
+    width: 100%;
+    margin: auto;
+    overflow: auto;
+}
+
+.FooterMenu .categoriaArchivo{
+    height: 30%;
+    width: 100%;
+}
+
+.FooterMenu .FormGeneral, .FormTienda{
+    height: 70%;
+    width: 100%;
+}
+
+.FooterMenu .UploadSection div{
+    width: 80%;
+    float: left;
+}
+
+.FooterMenu .UploadSection p, .UploadSection select, .UploadSection button, .UploadSection .imageUpload{
+    float: left;
+}
+
+.FooterMenu label{
+    margin-right: 13%;
+}
+
+.FooterMenu .UploadSection .imageUpload{
+    height: 30%;
+    margin-left: 10%;
+}
+
+.FooterMenu input{
+    margin-left: 5%;
+}
+
+.FooterMenu button{
+    margin-left: 13%;
+}
+
+.FooterMenu .HistorialSection p, .DownloadSection p, .HomeSection p{
+    float: left;
+    margin: 1% 12%;
+}
+
+.FooterMenu .HistorialSection table, .DownloadSection table, .HomeSection table{
+    width: 100%;
+    float: left;
+    margin-left: 2%;
+}
+
+.FooterMenu th, .FooterMenu td {
+    width: max-content;
+    text-align: center;
+    border: 2px solid black;
+}
+
+.HomeSection th, .HomeSection td {
+    width: min-content;
+    text-align: left;
+    border: transparent;
+}
+
+.FooterMenu .HistorialSection th, .DownloadSection th{
+    background-color:rgb(176, 210, 233);
+}
+
+.FooterMenu .HistorialSection td, .DownloadSection td{
+    background-color: rgb(156, 156, 156);
+}
+
+.FooterMenu .DownloadSection img{
+    height: 10vh;
+}
+
+.FooterMenu .DownloadSection .linkDownload{
+    display: flex;
+    flex-direction: row;
+}
+
+.FooterMenu .DownloadSection .downloadIcon{
+    height: 7vh;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.UploadSection::-webkit-scrollbar, 
+.HistorialSection::-webkit-scrollbar, 
+.DownloadSection::-webkit-scrollbar,
+.HomeSection::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.UploadSection::-webkit-scrollbar:vertical, 
+.HistorialSection::-webkit-scrollbar:vertical, 
+.DownloadSection::-webkit-scrollbar:vertical,
+.HomeSection::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.UploadSection::-webkit-scrollbar-button:increment, 
+.HistorialSection::-webkit-scrollbar-button:increment, 
+.DownloadSection::-webkit-scrollbar-button:increment,
+.HomeSection::-webkit-scrollbar-button:increment,
+.UploadSection::-webkit-scrollbar-button, 
+.HistorialSection::-webkit-scrollbar-button, 
+.DownloadSection::-webkit-scrollbar-button,
+.HomeSection::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.UploadSection::-webkit-scrollbar:horizontal, 
+.HistorialSection::-webkit-scrollbar:horizontal, 
+.DownloadSection::-webkit-scrollbar:horizontal,
+.HomeSection::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.UploadSection::-webkit-scrollbar-thumb, 
+.HistorialSection::-webkit-scrollbar-thumb, 
+.DownloadSection::-webkit-scrollbar-thumb,
+.HomeSection::-webkit-scrollbar-thumb {
+    background-color: #797979;
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.UploadSection::-webkit-scrollbar-track, 
+.HistorialSection::-webkit-scrollbar-track, 
+.DownloadSection::-webkit-scrollbar-track,
+.HomeSection::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}
