@@ -1,7 +1,8 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Registrarse.css';
-import {LeftOutlined} from '@ant-design/icons';
+import {ConsoleSqlOutlined, LeftOutlined} from '@ant-design/icons';
+import axios from 'axios';
 
 class Header extends React.Component{
     render(){
@@ -52,6 +53,37 @@ class FormRegistro extends React.Component{
         }
     }
 
+    guardarRegistro = (username, history) => { 
+ 
+        axios.post("http://localhost:3050/Registrarse", {nickname:this.state.username,email:this.state.email,password:this.state.password,})
+                        
+            .then(response => {console.log(response.data);
+                
+                if (response.status === 200){               //Inserción correcta
+                    alert("Usuario registrado correctamente: "+ username);
+                    history.push('/MenuInicio');
+                }
+            })
+
+            .catch(error => {
+                console.log(error);
+                
+                //Insertar usuario en la bd
+                if (error.response.status === 400){         //Si el usuario ya está siendo usado o es inválido
+                    alert("Nombre de usuario no disponible.");
+                    //Borrar nombre de usuario del input
+                    this.resetCampos(['username']);
+                } else if (error.response.status === 410){  //Si el email esta repetido
+                    alert("Email ya existente.");
+                    //Borrar email del input
+                    this.resetCampos(['email']);
+                }  else{                                    //Fallo de registro por otros motivos
+                    alert('Ha habido un fallo, vuelva a intentarlo.');
+                }
+                    
+            });
+    }
+
     handleSubmit(e) {
         const history = this.props.history;
         //Cogemos los datos introducidos por el usuario
@@ -59,26 +91,18 @@ class FormRegistro extends React.Component{
         const email = this.state.email;
         const password = this.state.password;
         const repPassword = this.state.repPassword;
-        const avatar = this.state.avatar;
-        //Insertar usuario en la bd
-        if (false){  //Si el usuario ya está siendo usado o es inválido
-            alert("Nombre de usuario no disponible.");
-            //Borrar nombre de usuario del input
-            this.resetCampos(['username']);
-        } else if (false){  //Si el email es inválido
-            alert("Email inválido.");
-            //Borrar email del input
-            this.resetCampos(['email']);
-        } else if (password !== repPassword){ //Si no coinciden las contraseñas
+
+
+        if (password !== repPassword){ //Si no coinciden las contraseñas
             alert("No coinciden las contraseñas.");
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
-        } else if (true){  //Inserción correcta
-            alert("Usuario registrado correctamente: "+ username);
-            history.push('/MenuInicio');
-        } else{     //Fallo de registro por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
+            return;
         }
+        
+        //Insertar usuario en la bd
+        this.guardarRegistro(username, history);
+        
         e.preventDefault();
     }
 
@@ -97,7 +121,7 @@ class FormRegistro extends React.Component{
                     </div>
                     <div>
                         <label for="email">Email </label>
-                        <input type="text" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
+                        <input type="email" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="password">Contraseña</label>

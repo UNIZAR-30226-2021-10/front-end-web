@@ -1,11 +1,14 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/MenuInicio.css';
-
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 class Header extends React.Component{
     render(){
         const history = this.props.history;
         const help = '/images/help.png';
+        const cookies = new Cookies();
+        console.log(cookies.get('user'));
         return(
             <div className="Header">
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
@@ -43,27 +46,46 @@ class FormInicio extends React.Component{
             }
         }
     }
+    guardarLogin = () => {
+        const history = this.props.history;
+        const {username,password} = this.state; //Datos introducidos por el usuario
+        axios.post("http://localhost:3050/MenuInicio", {nickname: username,password: password})         
+                        .then(response => { //Está registrado
+                            console.log(response.data);
+                            //Hacer cookie con lo que te devuelve en response
+                            const cookies = new Cookies();
+                            cookies.set('user', response.data.email.nickname, {path: '/'});
+                            cookies.set('email', response.data.email.email, {path: '/'});
+                            cookies.set('puntos', response.data.email.puntos, {path: '/'});
+                            cookies.set('monedas', response.data.email.monedas, {path: '/'});
+
+                            alert("Usuario logeado correctamente: "+ username);
+                            history.push('/DecisionJuego', {usuario: username}); 
+                            
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            
+                            //Insertar usuario en la bd
+                            if (error.response.status === 400){  //Si el usuario ya está siendo usado o es inválido
+                                alert("Nombre de usuario o contrasena incorrectos");
+                                //Borrar nombre de usuario del input
+                                this.resetCampos(['username']);
+                                this.resetCampos(['password']);
+                            }else{     //Fallo de registro por otros motivos
+                                alert('Ha habido un fallo, vuelva a intentarlo.');
+                                this.resetCampos(['username']);
+                                this.resetCampos(['password']);
+                            }
+                                
+                        });
+    }
 
     handleSubmit(e) {
-        const history = this.props.history;
-        //Cogemos los datos introducidos por el usuario
-        const username = this.state.username;
-        const password = this.state.password;
         //Comprobar si el usuario esta en la bd y coincide la password
-        if (false){  //No está registrado el usuario en la bd
-            alert('No hay ningún usuario registrado con nombre: '+ username);
-            //Borrar nombre de usuario del input
-            this.resetCampos(['username']);
-        } else if(false){   //No coincide el password con ese usuario
-            alert('El usuario o la contraseña no son correctos');
-            //Borrar todos los campos
-            this.resetCampos(['username','password']);
-        } else if(true){  //Está registrado
-            alert("Bienvenido: "+ username);
-            history.push('/DecisionJuego', {usuario: username});
-        } else{     //Fallo de login por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
-        } 
+        //Comprobar si hay un usuario registrado con esos datos en la db
+        this.guardarLogin();
+
         e.preventDefault();
     }
 
