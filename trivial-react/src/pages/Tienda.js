@@ -4,6 +4,7 @@ import '../css/Tienda.css';
 import {ConsoleSqlOutlined, LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
 import {help} from './images';
+const baseUrl = '';
 
 class Header extends React.Component{
     render(){
