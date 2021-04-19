@@ -1,13 +1,13 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/FinalIndividual.css';
+import {trofeo} from './images';
 
 class FinalIndividual extends React.Component {
 
     render() {
         const history = this.props.history;
         const jugador = this.props.location.state.jugador;
-        const trofeo = 'images/trofeo.png';
         return (
             <div className="FinalIndividual">
                 <div className="header">

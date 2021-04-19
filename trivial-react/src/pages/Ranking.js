@@ -2,12 +2,11 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Ranking.css';
 import {LeftOutlined, CaretRightOutlined} from '@ant-design/icons';
+import {help, ranking, imgUsuario, first, second, third} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
-        const ranking = 'images/ranking.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -25,14 +24,14 @@ class Header extends React.Component{
 }
 
 const USUARIOS =[
-    {username: "usuario1", avatar: '/images/usuario.png', puntos: "512"},
-    {username: "usuario2", avatar: '/images/usuario.png', puntos: "678"},
-    {username: "usuario3", avatar: '/images/usuario.png', puntos: "324"},
-    {username: "usuario4", avatar: '/images/usuario.png', puntos: "982"},
-    {username: "usuario5", avatar: '/images/usuario.png', puntos: "429"},
-    {username: "usuario7", avatar: '/images/usuario.png', puntos: "129"},
-    {username: "usuario8", avatar: '/images/usuario.png', puntos: "65"},
-    {username: "usuario9", avatar: '/images/usuario.png', puntos: "912"}
+    {username: "usuario1", avatar: imgUsuario, puntos: "512"},
+    {username: "usuario2", avatar: imgUsuario, puntos: "678"},
+    {username: "usuario3", avatar: imgUsuario, puntos: "324"},
+    {username: "usuario4", avatar: imgUsuario, puntos: "982"},
+    {username: "usuario5", avatar: imgUsuario, puntos: "429"},
+    {username: "usuario7", avatar: imgUsuario, puntos: "129"},
+    {username: "usuario8", avatar: imgUsuario, puntos: "65"},
+    {username: "usuario9", avatar: imgUsuario, puntos: "912"}
 ];
 
 class MostrarRanking extends React.Component{
@@ -64,13 +63,13 @@ class MostrarRanking extends React.Component{
             number = number+1;
             if(number==1){
                 color= "rgb(214, 204, 55)";
-                puesto = "/images/first.png";
+                puesto = first;
             } else if (number==2){
                 color="rgb(143, 150, 143)";
-                puesto = "/images/second.png";
+                puesto = second;
             } else if (number==3){
                 color="rgb(148, 88, 39)";
-                puesto = "/images/third.png";
+                puesto = third;
             } else{
                 color="rgb(228, 195, 195)";
             }

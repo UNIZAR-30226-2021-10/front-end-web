@@ -1,13 +1,13 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Registrarse.css';
-import {ConsoleSqlOutlined, LeftOutlined} from '@ant-design/icons';
+import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
+import {help, imgAvatar} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help ='/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -107,11 +107,10 @@ class FormRegistro extends React.Component{
     }
 
     render(){
-        const avatar='/images/avatar.png';
         return(
             <div className="FormRegistro">
                 <div className="imgAvatar">
-                    <img src={avatar} alt="Avatar"/>
+                    <img src={imgAvatar} alt="Avatar"/>
                     <input type="file" name="avatar" onChange={this.handleChange} required/>
                 </div>
                 <form onSubmit={this.handleSubmit}>

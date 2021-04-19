@@ -2,13 +2,13 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Upload.css';
 import UploadService from './uploadService';
+import {help, insertarFile, textPlain, applicationPdf ,imgDownload} from './images';
 
 const baseUrl = 'http://localhost:3060';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <h1>Administrador</h1>
@@ -112,9 +112,10 @@ class FormTienda extends React.Component{
                     <label for="productCategory">Product category:</label>
                     <select name="productCategory" defaultValue={''} onChange={handleChange} required>
                         <option value="" disabled hidden>Selecciona la categoría del producto</option>
-                        <option value="trajes">Trajes</option>
-                        <option value="sombreros">Sombreros</option>
-                        <option value="camisetas">Camisetas</option>
+                        <option value="color">Color</option>
+                        <option value="cabeza">Cabeza</option>
+                        <option value="cara">Cara</option>
+                        <option value="cuerpo">Cuerpo</option>
                     </select>
                 </div>
                 <div>
@@ -133,6 +134,7 @@ class FormTienda extends React.Component{
                         <option value="verde" style={{background: "#B0F2C2"}}>Verde</option>
                         <option value="azul" style={{background: "#B0C2F2"}}>Azul</option>
                         <option value="morado" style={{background: "#E9B0F2"}}>Morado</option>
+                        <option value="rosa" style={{background: "#ff7987"}}>Rosa</option>
                     </select>
                 </div>
                 <div>
@@ -151,7 +153,7 @@ class UploadSection extends React.Component{
             selectCategoria: '',
             //Tipo archivo, imagen y datos del archivo
             selectTipoArchivo: '',
-            pathImage: baseUrl+'/general/insertarFile.png',
+            pathImage: insertarFile,
             file: '',
             //En caso de ser un archivo de la categoría producto
             productName: '',
@@ -186,11 +188,11 @@ class UploadSection extends React.Component{
                 }
             } else if(file.type.includes("text/plain")){    //Si es un fichero de texto
                 //Actualizar estado: pathImage
-                this.setState({pathImage: baseUrl+'/general/textPlain.png'}); //Imagen base 64
+                this.setState({pathImage: textPlain}); //Imagen base 64
                 
             } else if(file.type.includes("application/pdf")){   //Si es un pdf
                 //Actualizar estado: pathImage
-                this.setState({pathImage: baseUrl+'/general/applicationPdf.png'}); //Imagen base 64
+                this.setState({pathImage: applicationPdf}); //Imagen base 64
             }
             else{   //No coincide con ningún tipo
                 console.log("Error");
@@ -211,7 +213,6 @@ class UploadSection extends React.Component{
                 productCategory: selectCategoria, //Categoría del producto
                 productPrice: '0', //Precio del producto
                 productColor: '-',  //Color del producto
-                esAO:'0'
             }
         } else if (selectCategoria === "tienda"){
             data = {
@@ -221,7 +222,6 @@ class UploadSection extends React.Component{
                 productCategory: productCategory, //Categoría del producto
                 productPrice: productPrice, //Precio del producto
                 productColor: productColor,  //Color del producto
-                esAO:'0'
             }
         }
 
@@ -306,7 +306,7 @@ class DownloadSection extends React.Component{
                     <td>
                         <a className="linkDownload" href={linkDownload} download={nameDownload}>
                             Click here to download
-                            <img className="downloadIcon" src={baseUrl+"/general/download.png"} alt="Download Icon"></img>
+                            <img className="downloadIcon" src={baseUrl+ imgDownload} alt="Download Icon"></img>
                         </a>
                     </td>
                 </tr>
@@ -346,7 +346,6 @@ class HistorialSection extends React.Component{
                 <tr key={uploadResponse.iditem}>
                     <td>{uploadResponse.Precio}</td>
                     <td>{uploadResponse.Nombre}</td>
-                    <td>{uploadResponse.esAO}</td>
                     <td>{uploadResponse.Tipo}</td>
                     <td>{uploadResponse.Color}</td>
                     <td>{uploadResponse.Imagen}</td>
@@ -366,7 +365,6 @@ class HistorialSection extends React.Component{
                         <tr>
                             <th>Precio</th>
                             <th>Nombre</th>
-                            <th>esAO</th>
                             <th>Tipo</th>
                             <th>Color</th>
                             <th>Imagen</th>

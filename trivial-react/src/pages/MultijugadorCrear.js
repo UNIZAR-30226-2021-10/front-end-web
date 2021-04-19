@@ -3,13 +3,13 @@ import {withRouter} from 'react-router-dom';
 import '../css/MultijugadorCrear.css';
 import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
+import {help, imgUsuario} from './images';
 
-const baseUrl='http://localhost:3001/partidas';
+const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -28,21 +28,10 @@ class FormCrearMultijugador extends React.Component{
         super(props);
         this.state = {
             selectJugadores: '',
-            selectRondas: '',
-            partidas:''
+            selectRondas: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount(){
-        const peticionGet = async()=>{
-            await axios.get(baseUrl)
-            .then(response=>{
-               this.setState({partidas: response.data});
-            })
-        }
-        peticionGet();
     }
     
     handleChange(e) {
@@ -71,6 +60,76 @@ class FormCrearMultijugador extends React.Component{
         return code;
     } 
 
+    // Petición get a la db: busca una partida con codigo "code".
+    buscarCodigo(codigo){
+        //Mirar si existe una partida con ese código
+        return new Promise((resolve, reject) => {
+            fetch(baseUrl+'/Multijugador_PartidaCode?codigo='+ codigo)
+            .then(response=>{   //Existe una partida con ese código
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }
+
+    // Usada para generar un código válido de partida.
+    generarCodigoPartida(){
+        const longitud = 6; //Código de 6 letras o dígitos.
+        const code = this.generarCodigo(longitud);  //Genera código
+        return new Promise((resolve,reject) => {
+            this.buscarCodigo(code)
+            .then((json) =>{
+                console.log("Partida con código " + code + " existente: "+ json);
+                this.generarCodigoPartida()
+                .then((res) => {resolve(res)})
+                .catch((err) => {reject(err)})
+            })
+            .catch((err) =>{
+                if (err == 400){ 
+                    console.log("No existe la partida con codigo: "+ code);
+                    resolve(code);
+                }else{
+                    console.log("Otro error: "+err);
+                    reject("ERROR");
+                }
+            })
+        })
+    }
+
+    //Petición post a la db: guarda la partida creada en las tabla partida.
+    //y guarda al usuario como jugador de la partida.
+    postPartida(codigo, jugador){
+        const selectJugadores = this.state.selectJugadores;
+        const selectRondas = this.state.selectRondas;
+        //Construcción del email
+        const email = jugador.username + "@gmail.com";
+        //Construcción del formato de fecha
+        var d = new Date();
+        const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        const fecha = d.getFullYear() + "--" + meses[d.getMonth()] + "--" + d.getDate() + 
+                    "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
+        
+        //Guarda los resultados en la tabla partida.
+        axios.post(baseUrl+'/FinalMultijugador_Partida', 
+            { fecha: fecha, numJugadores: selectJugadores, rondas: selectRondas, ganador: jugador.username, codigo: codigo})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+            //Guarda los resultados en la tabla juega.
+            axios.post(baseUrl+'/FinalMultijugador_Juega', 
+                { codigo: codigo, email: email, puntos: jugador.puntos})
+            .then(response => { //Respuesta del servidor
+                console.log(response.data.message);  
+            }).catch(e => { //Error
+                console.log(e);     
+            });
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+    }
+
     handleSubmit(e) {
         const history = this.props.history;
         const usuario = this.props.usuario;
@@ -78,38 +137,29 @@ class FormCrearMultijugador extends React.Component{
         const selectJugadores = this.state.selectJugadores;
         const selectRondas = this.state.selectRondas;
         //Buscamos avatar en bd
-        const avatar = '/images/usuario.png';
+        const avatar = imgUsuario;
         const jugador = {username: usuario, avatar: avatar, puntos:'0'};
         //Crear partida
-        if(true){  //Se puede crear partida
-            const longitud = 6;
-            let code = this.generarCodigo(longitud);
-            console.log(code);
-            const partidas = this.state.partidas;
-            partidas.filter((partida,index) => partida.code === code);
-            if (partidas.length != 0){ //Si el código está ya en la bd
-                code = this.generarCodigo(longitud);
-            }
-            // Introducir en bd (code, jugadoresEnPartida, maxJugadores, maxRondas)
-            const partidaNueva = {   
-                code: code, 
-                jugadoresEnPartida: [jugador],
-                maxJugadores: selectJugadores,
-                maxRondas: selectRondas
-            }
-            const res = axios.post(baseUrl, partidaNueva);
-            alert("Has creado una partida nueva. Código: "+ code);
-            history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
-                {   usuario: '0',
-                    maxRondas: selectRondas,
-                    code: code,
-                    jugadores: [jugador],
-                    maxJugadores: selectJugadores,
-                    firstJoin: true
-                });
-        } else{     //Fallo de creación de partida por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
-        } 
+        this.generarCodigoPartida()
+        .then((code) =>{
+            console.log("Se ha generado partida con código: "+code);
+            if(code){  //Si se genera un código válido
+                // Introducir en bd la partida y el jugador.
+                this.postPartida(code, jugador);
+                alert("Has creado una partida nueva. Código: "+ code);
+                history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
+                    {   usuario: '0',
+                        maxRondas: selectRondas,
+                        code: code,
+                        jugadores: [jugador],
+                        maxJugadores: selectJugadores,
+                        firstJoin: true
+                    });
+            } else{     //Fallo de creación de partida por otros motivos
+                alert('Ha habido un fallo, vuelva a intentarlo.');
+            } 
+        })
+        .catch((err) => console.log(err));
         e.preventDefault();
     }
 

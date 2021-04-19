@@ -2,11 +2,11 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/CambiarContrasena.css';
 import {LeftOutlined} from '@ant-design/icons';
+import {help} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">

@@ -1,6 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/FinalMultijugador.css';
+import {trofeo} from './images';
 
 class FinalMultijugador extends React.Component {
 
@@ -33,7 +34,6 @@ class FinalMultijugador extends React.Component {
         const history = this.props.history;
         const {jugadores,usuario} = this.props.location.state;
         const {ganadores,ranking} = this.ganadores();
-        const trofeo = 'images/trofeo.png';
         return (
             <div className="FinalMultijugador">
                 <div className="header">

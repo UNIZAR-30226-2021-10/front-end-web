@@ -357,6 +357,24 @@
       "maxJugadores": "4",
       "maxRondas": "15",
       "id": 21
+    },
+    {
+      "code": "owo1gt",
+      "jugadoresEnPartida": [
+        {
+          "username": "angela",
+          "avatar": "http://localhost:3060/appImages/usuario.png",
+          "puntos": "0"
+        },
+        {
+          "username": "andrea",
+          "avatar": "http://localhost:3060/appImages/usuario.png",
+          "puntos": "0"
+        }
+      ],
+      "maxJugadores": "2",
+      "maxRondas": "5",
+      "id": 22
     }
   ]
 }

@@ -3,10 +3,11 @@ import {withRouter} from 'react-router-dom';
 import '../css/MenuInicio.css';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import {help, logo} from './images';
+
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
         const cookies = new Cookies();
         console.log(cookies.get('user'));
         return(
@@ -90,7 +91,6 @@ class FormInicio extends React.Component{
     }
 
     render(){
-        const logo = '/images/logo.png';
         return(
             <div className="FormInicio">
                 <img className="imgLogo" src={logo} alt="Wondergames Logo"></img>

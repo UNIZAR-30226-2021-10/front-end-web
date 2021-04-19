@@ -2,11 +2,11 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/ModoIndividual.css';
 import {LeftOutlined} from '@ant-design/icons';
+import {help, imgUsuario} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -44,8 +44,7 @@ class FormCrearMultijugador extends React.Component{
         //Cogemos los datos introducidos por el usuario
         const selectRondas = this.state.selectRondas;
         //Buscamos avatar en bd
-        const avatar = '/images/usuario.png';
-        const jugador = {username: usuario, avatar: avatar, puntos:'0'};
+        const jugador = {username: usuario, avatar: imgUsuario, puntos:'0'};
         //Crear partida
         if(true){  //Se puede crear partida
             // Introducir en bd (code, jugadoresEnPartida, maxJugadores, maxRondas)

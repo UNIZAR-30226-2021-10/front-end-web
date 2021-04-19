@@ -4,6 +4,7 @@ import '../css/PerfilUsuario.css';
 import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
+import {imgAvatar} from './images';
 
 class Header extends React.Component{
     render(){
@@ -93,8 +94,8 @@ class InfoPerfilUsuario extends React.Component{
 class PerfilUsuario extends React.Component{
     render(){
         const usuarios = [
-            {usuario: "usuario1", email: "usuario1@gmail.com", avatar:'/images/avatar.png'},
-            {usuario: "usuario2", email: "usuario2@gmail.com", avatar:'/images/avatar.png'}
+            {usuario: "usuario1", email: "usuario1@gmail.com", avatar: imgAvatar},
+            {usuario: "usuario2", email: "usuario2@gmail.com", avatar: imgAvatar}
         ];
         const partidas = [
             {usuario: "usuario1", puntos: "1324", monedas: "563"},

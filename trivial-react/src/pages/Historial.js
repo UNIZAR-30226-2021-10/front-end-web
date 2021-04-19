@@ -2,12 +2,11 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Historial.css';
 import {LeftOutlined} from '@ant-design/icons';
+import {help, historial, imgUsuario} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
-        const historial = 'images/historial.jpg';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -26,8 +25,8 @@ class Header extends React.Component{
 const partida1 = {   
     code: "ab12cx", 
     jugadoresEnPartida: [ //Ordenados por clasificación 1* a 4*
-        {username: "usuario1", avatar: '/images/usuario.png', puntos:'200'},
-        {username: "usuario2", avatar: '/images/usuario.png', puntos:'180'}
+        {username: "usuario1", avatar: imgUsuario, puntos:'200'},
+        {username: "usuario2", avatar: imgUsuario, puntos:'180'}
     ],
     maxJugadores: 2,
     maxRondas: 10,
@@ -38,9 +37,9 @@ const partida1 = {
 const partida2 = {   
     code: "jh24kd", 
     jugadoresEnPartida: [ //Ordenados por clasificación 1* a 4*
-        {username: "usuario1", avatar: '/images/usuario.png', puntos:'210'},
-        {username: "usuario2", avatar: '/images/usuario.png', puntos:'150'},
-        {username: "usuario3", avatar: '/images/usuario.png', puntos:'100'}
+        {username: "usuario1", avatar: imgUsuario, puntos:'210'},
+        {username: "usuario2", avatar: imgUsuario, puntos:'150'},
+        {username: "usuario3", avatar: imgUsuario, puntos:'100'}
     ],
     maxJugadores: 3,
     maxRondas: 15,
@@ -51,10 +50,10 @@ const partida2 = {
 const partida3 = {   
     code: "gaq23i", 
     jugadoresEnPartida: [ //Ordenados por clasificación 1* a 4*
-        {username: "usuario1", avatar: '/images/usuario.png', puntos:'300'},
-        {username: "usuario2", avatar: '/images/usuario.png', puntos:'280'},
-        {username: "usuario3", avatar: '/images/usuario.png', puntos:'190'},
-        {username: "usuario4", avatar: '/images/usuario.png', puntos:'20'}
+        {username: "usuario1", avatar: imgUsuario, puntos:'300'},
+        {username: "usuario2", avatar: imgUsuario, puntos:'280'},
+        {username: "usuario3", avatar: imgUsuario, puntos:'190'},
+        {username: "usuario4", avatar: imgUsuario, puntos:'20'}
     ],
     maxJugadores: 4,
     maxRondas: 15,
@@ -69,7 +68,7 @@ const RESULTADOSMULTI =[ // Ordenados de más a menos reciente en día y hora.
 ];
 
 const partida4 = {   
-    jugador: {username: "usuario1", avatar: '/images/usuario.png', puntos:'100'},
+    jugador: {username: "usuario1", avatar: imgUsuario, puntos:'100'},
     maxJugadores: 1,
     maxRondas: 5,
     fecha: "12-04-2021",
@@ -77,7 +76,7 @@ const partida4 = {
 }
 
 const partida5 = {   
-    jugador: {username: "usuario1", avatar: '/images/usuario.png', puntos:'180'},
+    jugador: {username: "usuario1", avatar: imgUsuario, puntos:'180'},
     maxJugadores: 1,
     maxRondas: 10,
     fecha: "12-04-2021",
@@ -85,7 +84,7 @@ const partida5 = {
 }
 
 const partida6 = {   
-    jugador: {username: "usuario1", avatar: '/images/usuario.png', puntos:'200'},
+    jugador: {username: "usuario1", avatar: imgUsuario, puntos:'200'},
     maxJugadores: 1,
     maxRondas: 15,
     fecha: "12-04-2021",

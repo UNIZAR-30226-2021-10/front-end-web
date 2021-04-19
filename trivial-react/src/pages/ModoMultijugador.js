@@ -3,13 +3,13 @@ import {withRouter} from 'react-router-dom';
 import '../css/ModoMultijugador.css'
 import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
+import {help, imgUsuario} from './images';
 
-const baseUrl='http://localhost:3001/partidas';
+const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -26,21 +26,10 @@ class UnirseAPartida extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            code: '',
-            partidas: ''
+            code: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount(){
-        const peticionGet = async()=>{
-            await axios.get(baseUrl)
-            .then(response=>{
-               this.setState({partidas: response.data});
-            })
-        }
-        peticionGet();
     }
 
     handleChange(e) {
@@ -62,56 +51,152 @@ class UnirseAPartida extends React.Component{
         }
     }
 
+    //Petición post a la db: guarda al usuario como jugador de la partida.
+    postJugador(codigo, jugador){
+        //Construcción del email
+        const email = jugador.username + "@gmail.com";
+
+        //Guarda los resultados en la tabla juega.
+        axios.post(baseUrl+'/FinalMultijugador_Juega', 
+            { codigo: codigo, email: email, puntos: jugador.puntos})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+    }
+
+    // Petición get a la db: busca una partida con codigo "code".
+    buscarCodigo(codigo){
+        //Mirar si existe una partida con ese código
+        return new Promise((resolve, reject) => {
+            fetch(baseUrl+'/Multijugador_PartidaCode?codigo='+ codigo)
+            .then(response=>{   //Existe una partida con ese código
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }
+
+    // Petición get a la db: busca los jugadores y sus usuarios de la partida con id "idpartida".
+    buscarJugadoresUsuario(idpartida){
+        //Buscar jugadores y sus usuarios de la partida de id "idpartida"
+        return new Promise((resolve, reject) => {
+            fetch(baseUrl+'/Multijugador_PartidaJugadoresUsuario?idpartida='+ idpartida)
+            .then(response=>{   //Hay jugadores en esa partida
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }
+
+    /*// Petición get a la db: busca los jugadores de la partida con id "idpartida".
+    buscarJugadores(idpartida){
+        //Buscar jugadores de la partida de id "idpartida"
+        return new Promise((resolve, reject) => {
+            fetch(baseUrl+'/Multijugador_PartidaJugadores?idpartida='+ idpartida)
+            .then(response=>{   //Hay jugadores en esa partida
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }
+
+    // Petición get a la db: busca al usuario con correo "email".
+    buscarUsuario(email){
+        return new Promise((resolve, reject) => {
+            fetch(baseUrl+'/Multijugador_PartidaUsuario?email='+ email)
+            .then(response=>{   //Usuario encontrado
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }*/
+
     handleSubmit(e) {
         const history = this.props.history;
         const usuario = this.props.usuario;
         //Cogemos el codigo introducido por el usuario y la información de las partidas de la db
-        const {code,partidas} = this.state;
-        //Buscar informacion de la partida con codigo "code"
-        const busqPartidas =  partidas.filter((partida,index) => partida.code===code);
-        if(busqPartidas.length==0){   //El código no coincide con ninguna partida existente
-            alert("El código no coincide con ninguna partida existente.");
-            //Borrar el campo del código
-            this.resetCampos(['code']);
-        } else{     //Existe la partida
-            const partida = busqPartidas[0];
-            let user = "-1";
-            let firstJoin = true;
-            partida.jugadoresEnPartida.forEach((jugador, index) => {
-                if (jugador.username===usuario){
-                    user = index; 
-                    firstJoin = false;
+        const {code} = this.state;
+        //Construir email
+        const email = usuario + "@gmail.com";
+        this.buscarCodigo(code)
+        .then((res) =>{    //Existe la partida
+            const partida = res[0];
+            console.log("Partida con código " + code + " existente: "+ partida.idpartida);
+            //Buscar los jugadores y sus usuarios de la partida
+            this.buscarJugadoresUsuario(partida.idpartida)
+            .then((jugadores) =>{
+                console.log(jugadores);
+                //Mirar tu posicion en la partida y si es la primera vez que te unes
+                let user = "-1";
+                let firstJoin = true;
+                //Construir los jugadores para pantalla Multijugador Unirse
+                let jugadoresUnirse = [];
+                jugadores.forEach((jugador, index) => {
+                    if (jugador.usuario_email===email){
+                        user = index; 
+                        firstJoin = false;
+                    }
+                    jugadoresUnirse.push({username: jugador.nickname, avatar: jugador.imagen, puntos: jugador.puntuacion});
+                });
+                if(jugadores.length==partida.numJugadores && user=="-1"){   //Si la partida está llena y no estas entre los jugadores
+                    alert("La partida está completa.");
+                    //Borrar el campo del código
+                    this.resetCampos(['code']);
+                }else { //Si hay hueco en la partida o estás entre los jugadores
+                    alert("Bienvenido a la partida "+ usuario);
+                    if(user!="-1"){ //Si estas entre los jugadores -> unirse
+                        console.log("Estoy entre los jugadores: "+user);
+
+                    }else{ //Si la partida no está llena y no estas entre los jugadores -> nuevo
+                        console.log("Soy un nuevo jugador: "+user);
+                        //Buscamos avatar del usuario en bd y creamos el jugador nuevo
+                        const avatar = imgUsuario;
+                        const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
+                        jugadoresUnirse.push(jugadorNuevo);
+                        user = jugadoresUnirse.length-1;
+
+                        //Insertar nuevo jugador en db
+                        this.postJugador(partida.codigo, jugadorNuevo);
+                    }
+                    history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
+                        {   usuario: user, 
+                            maxRondas: partida.rondas,
+                            code: partida.codigo, 
+                            jugadores: jugadoresUnirse,
+                            maxJugadores: partida.numJugadores,
+                            firstJoin: firstJoin
+                        });
                 }
+            })
+            .catch((err) => {
+                console.log("Error busqueda jugadores y usuarios: "+err);
             });
-            if(partida.jugadoresEnPartida.length==partida.maxJugadores && user=="-1"){   //Si la partida está llena y no estas entre los jugadores
-                alert("La partida está completa.");
+        })
+        .catch((err) =>{
+            if (err == 400){ 
+                console.log("No existe la partida con codigo: "+ code);
+                alert("El código no coincide con ninguna partida existente.");
                 //Borrar el campo del código
                 this.resetCampos(['code']);
-            } else if(true){    //Si hay hueco en la partida o estás entre los jugadores
-                alert("Bienvenido a la partida "+ usuario);
-                if(user!="-1"){ //Si estas entre los jugadores -> unirse
-                    console.log(user);
-                }else{ //Si la partida no está llena y no estas entre los jugadores -> nuevo
-                    //Buscamos avatar del usuario en bd y creamos el jugador nuevo
-                    const avatar = '/images/usuario.png';
-                    const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
-                    partida.jugadoresEnPartida.push(jugadorNuevo);
-                    user = partida.jugadoresEnPartida.length-1;
-                    //Actualizar partidas en db
-                    const res = axios.put(baseUrl+"/"+partida.id, partida);
-                }
-                history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
-                    {   usuario: user, 
-                        maxRondas: partida.maxRondas,
-                        code: partida.code, 
-                        jugadores: partida.jugadoresEnPartida,
-                        maxJugadores: partida.maxJugadores,
-                        firstJoin: firstJoin
-                    });
-            } else{     //Fallo de unirse en una partida por otros motivos
-                alert('Ha habido un fallo, vuelva a intentarlo.');
+            }else{
+                console.log("Error busqueda partida: "+err);
+                alert("Ha habido un error, vuelva a intentarlo otra vez.");
             }
-        }
+        })
         e.preventDefault();
     }
 

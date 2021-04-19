@@ -4,13 +4,13 @@ import '../css/IndividualPartida.css'
 import {LeftOutlined} from '@ant-design/icons';
 import Dado from '../components/Dado';
 import axios from 'axios';
+import {help, amarillo, azul, marron, naranja, rosa, verde} from './images';
 
 const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -107,7 +107,7 @@ class IndividualPartida extends React.Component{
         this.state = {
             ronda: '1',
             jugador: this.props.location.state.jugador,
-            dado: {img:'/images/dado/marron.jpeg', category:"Tira el dado", color:'black'},
+            dado: {img: marron, category:"Tira el dado", color:'black'},
             hasTiradoDado: false,
             pregunta: '',
             colorBtnA: 'white',
@@ -192,26 +192,8 @@ class IndividualPartida extends React.Component{
         const email = jugador.username + "@gmail.com";
 
         //Guarda los resultados en las tablas partida y juega.
-        /*axios.post(baseUrl+'/FinalIndividual', 
+        axios.post(baseUrl+'/FinalIndividual', 
             { fecha: fecha, numJugadores: 1, rondas: maxRondas, ganador: jugador.username, email: email, puntos: jugador.puntos})
-        .then(response => { //Respuesta del servidor
-            console.log(response.data.message);  
-        }).catch(e => { //Error
-            console.log(e);     
-        });*/
-
-        //Guarda los resultados en la tabla partida.
-        axios.post(baseUrl+'/FinalIndividual_Partida', 
-            { fecha: fecha, numJugadores: 1, rondas: maxRondas, ganador: jugador.username})
-        .then(response => { //Respuesta del servidor
-            console.log(response.data.message);  
-        }).catch(e => { //Error
-            console.log(e);     
-        });
-
-        //Guarda los resultados en la tabla juega.
-        axios.post(baseUrl+'/FinalIndividual_Juega', 
-            { fecha: fecha, email: email, puntos: jugador.puntos})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
         }).catch(e => { //Error
@@ -300,8 +282,7 @@ class IndividualPartida extends React.Component{
     tirarDado(){
         const {hasTiradoDado} = this.state;
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
-        const imagenes = [  '/images/dado/marron.jpeg', '/images/dado/azul.jpeg', '/images/dado/amarillo.jpeg',
-                            '/images/dado/rosa.jpeg', '/images/dado/verde.jpeg', '/images/dado/naranja.jpeg'];
+        const imagenes = [  marron, azul, amarillo, rosa, verde, naranja];
         const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
         if (!hasTiradoDado){
             const valor = this.rand(0,5);

@@ -1,14 +1,14 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Tienda.css';
-import {LeftOutlined} from '@ant-design/icons';
+import {ConsoleSqlOutlined, LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
+import {help} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
         const usuario = this.props.usuario;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -89,9 +89,31 @@ class Tienda extends React.Component{
         this.comprarItem = this.comprarItem.bind(this);
     }
 
+    // Petición get a la db: busca los items de la tienda.
+    buscarItems(){
+        return new Promise((resolve, reject) => {
+            fetch(baseUrl+'/PantallaTienda')
+            .then(response=>{   //Encuentra los items
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }
+
     estadoInicial(){
         const usuarioLoggedIn = this.props.location.state.usuario;
         const tablaPartidas = partidas.filter((partida,index) => partida.usuario===usuarioLoggedIn);
+        this.buscarItems()
+        .then((response) => {
+            const setItems = response;
+        })
+        .catch((err ) => {
+            console.log("Error al buscar los items: "+err)
+        })
+
         const tablaCompras = compras.filter((compra,index) => compra.usuario===usuarioLoggedIn);
         const arrayComprados = [];
         tablaCompras.forEach((compra,index) =>{

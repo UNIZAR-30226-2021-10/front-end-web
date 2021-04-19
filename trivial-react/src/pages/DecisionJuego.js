@@ -1,16 +1,15 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/DecisionJuego.css';
+import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
         const username = this.props.usuario;
-        const help = '/images/help.png';
-        const historial = '/images/historialicon.png';
         return(
             <div className="Header">
-                <img className="iconHistorial" src={historial} alt="Historial Icon" onClick={() => history.push("/Historial", {usuario: username})}></img>
+                <img className="iconHistorial" src={historialIcon} alt="Historial Icon" onClick={() => history.push("/Historial", {usuario: username})}></img>
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
             </div>
         );
@@ -21,7 +20,6 @@ class Decision extends React.Component{
     render(){
         const history = this.props.history;
         const username = this.props.usuario;
-        const logo = '/images/logo.png'; 
         return(
             <div className="Decision">
                 <img className="imgLogo" src={logo} alt="Wondergames Logo"></img>
@@ -42,14 +40,11 @@ class Footer extends React.Component{
     render(){
         const history = this.props.history;
         const username = this.props.usuario;
-        const compras = '/images/compras.png';
-        const ranking = '/images/trofeo.png';
-        const usuario = '/images/usuario.png';
         return(
             <div className="Footer">
                 <img className="iconCompras" src={compras} alt="Shop Icon" onClick={() => history.push("/Tienda", {usuario: username})}></img>
-                <img className="iconRanking" src={ranking} alt="Ranking Icon" onClick={() => history.push("/Ranking", {usuario: username})}></img>
-                <img className="iconUsuario" src={usuario} alt="User Icon" onClick={() => history.push("/PerfilUsuario", {usuario: username})}></img>
+                <img className="iconRanking" src={trofeo} alt="Ranking Icon" onClick={() => history.push("/Ranking", {usuario: username})}></img>
+                <img className="iconUsuario" src={imgUsuario} alt="User Icon" onClick={() => history.push("/PerfilUsuario", {usuario: username})}></img>
             </div>
         );
     }

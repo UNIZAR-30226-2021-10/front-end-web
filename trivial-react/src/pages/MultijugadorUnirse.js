@@ -9,6 +9,7 @@ import Usuario from '../components/Usuario';
 import Chat from '../components/Chat';
 import AbandonarPartida from '../components/AbandonarPartida';
 import axios from 'axios';
+import {chat, amarillo, azul, marron, naranja, rosa, verde} from './images';
 
 const baseUrl='http://localhost:3050';
 
@@ -168,7 +169,6 @@ class FooterChat extends React.Component{
     }
 
     render(){
-        const chat = '/images/chat.png';
         return(
             <div className="FooterChat">
                 <img className="imgChat" src={chat} alt="Chat Image" 
@@ -188,7 +188,7 @@ class MultijugadorUnirse extends React.Component{
             ronda: '1',
             turno: '0',
             jugadores: this.props.location.state.jugadores,
-            dado: {img:'/images/dado/marron.jpeg', category:"Tira el dado", color:'black'},
+            dado: {img: marron, category:"Tira el dado", color:'black'},
             hasTiradoDado: false,
             pregunta: '',
             colorBtnA: 'white',
@@ -351,32 +351,28 @@ class MultijugadorUnirse extends React.Component{
         }
     }
 
-    //Petición post a la db: guarda los resultados en las tablas partida, juega y usuario
+    //Petición post a la db: guarda los resultados en las tablas juega y usuario
+    //y si es el ganador actualiza el campo ganador de la tabla partida.
     //jugadores: ordenados de mayor a menor puntuación.
     //usuario: índice en el vector "jugadores" del usuario que hizo login.
-    /*postPartida(jugadores, usuario){
-        const {maxRondas,maxJugadores}=this.props.location.state;
+    postPartida(jugadores, usuario){
+        //Código de la partida.
+        const {code}=this.props.location.state;
+        //Datos del jugador: username, avatar, puntos.
         const jugador = jugadores[usuario];
-
-        //Construcción del formato de fecha
-        var d = new Date();
-        const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-        const fecha = d.getFullYear() + "--" + meses[d.getMonth()] + "--" + d.getDate() + 
-                    "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
-        //Construcción de monedas y correo
+        //Construcción de monedas y email
         const monedas = jugador.puntos*0.4;
         const email = jugador.username + "@gmail.com";
 
-        //El ganador guarda los resultados en las tabla partida.
-        //Guarda los resultados en la tabla juega.
-        axios.post(baseUrl+'/FinalIndividual', 
-            { fecha: fecha, numJugadores: maxJugadores, rondas: maxRondas, ganador: jugadores[0].username, email: email, puntos: jugador.puntos})
-        .then(response => { //Respuesta del servidor
-            console.log(response.data.message);  
-        }).catch(e => { //Error
-            console.log(e);     
-        });
+        //Actualiza la tabla partida.
+        if (usuario == 0){  //Si eres el ganador
+            //Actualizar la partida de codigo "code" en la tabla partida.
+            //code y jugador.username
+        }
 
+        //Actualiza la tabla juega.
+        //code y jugador.puntos
+        
         //Guarda los resultados en la tabla usuario.
         axios.post(baseUrl+'/FinalIndividual_Usuario', 
             { email: email, monedas: monedas, puntos: jugador.puntos })
@@ -385,7 +381,7 @@ class MultijugadorUnirse extends React.Component{
         }).catch(e => { //Error
             console.log(e);         
         });
-    }*/
+    }
 
     handleTurno() {
         const history = this.props.history;
@@ -400,7 +396,7 @@ class MultijugadorUnirse extends React.Component{
             this.BubbleSortDesc(jugadoresDesc,jugadoresDesc.length, user);
             console.log(jugadoresDesc, user);
             //Finalizar partida
-            //this.postPartida(jugadoresDesc, user);
+            this.postPartida(jugadoresDesc, user);
             history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: user});
         } else {  //Se sigue jugando
             if (turno==(maxJugadores-1)){   //Cuando es el último turno, se actualiza la ronda
@@ -470,8 +466,7 @@ class MultijugadorUnirse extends React.Component{
         const {hasTiradoDado,jugadores} = this.state;
         const maxJugadores = this.props.location.state.maxJugadores;
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
-        const imagenes = [  '/images/dado/marron.jpeg', '/images/dado/azul.jpeg', '/images/dado/amarillo.jpeg',
-                            '/images/dado/rosa.jpeg', '/images/dado/verde.jpeg', '/images/dado/naranja.jpeg'];
+        const imagenes = [  marron, azul, amarillo, rosa, verde, naranja ];
         const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
         if (!hasTiradoDado && jugadores.length==maxJugadores && true){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);

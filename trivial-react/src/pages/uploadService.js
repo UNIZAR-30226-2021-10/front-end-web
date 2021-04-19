@@ -3,10 +3,10 @@ import axios from 'axios';
 const baseUrl = 'http://localhost:3060';
 
 class UploadService{
-    getImages(){
+    /*getImages(){
         console.log("Get images cliente");
         return axios.get(baseUrl+'/download');
-    }
+    }*/
 
     async getHistorial(){
         console.log("Get images cliente");

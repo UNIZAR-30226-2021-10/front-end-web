@@ -3,12 +3,12 @@ import {withRouter} from 'react-router-dom';
 import '../css/ItemTienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
+import {help} from './images';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
         const usuario = this.props.usuario;
-        const help = '/images/help.png';
         return(
             <div className="Header">
                 <div className="iconAtras">
