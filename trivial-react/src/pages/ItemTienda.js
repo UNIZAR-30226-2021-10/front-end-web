@@ -64,17 +64,17 @@ class ComprarItem extends React.Component{
         const cookies = new Cookies();
         const history = this.props.history;
         const item = this.props.item;
-        const monedas = this.props.monedas;
+        let monedas = this.props.monedas;
         //Compra del objeto
-        if (monedas >= Number(item.precio)){  //Si tienes monedas suficientes
+        if (monedas >= item.Precio){  //Si tienes monedas suficientes
             //Actualizar las monedas en las cookies-> monedas = monedas-precio;
-            monedas = monedas - Number(item.precio);
+            monedas = monedas - item.Precio;
             cookies.set('monedas', monedas, {path: '/'});
             //Restar las monedas en la tabla usuarios de la db
             this.restarMonedas();
             //Insertar elemento comprado en la db
             this.postObjetoNuevo();
-            alert("Comprado: "+ item.nombre);
+            alert("Comprado: "+ item.Nombre);
             history.goBack();
         } else{ //Si no tienes monedas suficientes
             alert("Tienes "+ monedas +" monedas y el item "+ 

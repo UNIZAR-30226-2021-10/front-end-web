@@ -4,7 +4,9 @@ import '../css/PerfilUsuario.css';
 import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
-import {imgAvatar} from './images';
+import axios from 'axios';
+
+const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
@@ -39,29 +41,19 @@ class InfoPerfilUsuario extends React.Component{
         history.push("/MenuInicio");
     }
     render(){
+        const cookies = new Cookies();
         const history = this.props.history;
-        const usuarios=this.props.usuarios[0];
-        const partidas=this.props.partidas[0];
-        const compras=this.props.compras;
-        const setItems=this.props.setItems;
-        const arrayComprados = [];
-        compras.forEach((compra,index) =>{
-            arrayComprados.push(compra.item);
-        });
+        const itemsComprados = this.props.itemsComprados;
 
         const cols=[];
-        setItems.forEach((itemCatalogo) => {
-            if (arrayComprados.indexOf(itemCatalogo.nombre) > -1){
-                cols.push(<Item item={itemCatalogo}/>);
-            }
+        itemsComprados.forEach((item) => {
+            cols.push(<Item item={item}/>);
         });
-
-        const cookies = new Cookies();
 
         return(
             <div className="InfoPerfilUsuario">
                 <div className="imgAvatar">
-                    {/*<img src={usuarios.avatar} alt="Avatar"></img>*/}
+                    {<img src={cookies.get('avatar')} alt="Avatar"></img>}
                     <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
                 </div>
                 <tbody>
@@ -92,45 +84,51 @@ class InfoPerfilUsuario extends React.Component{
 }
 
 class PerfilUsuario extends React.Component{
-    render(){
-        const usuarios = [
-            {usuario: "usuario1", email: "usuario1@gmail.com", avatar: imgAvatar},
-            {usuario: "usuario2", email: "usuario2@gmail.com", avatar: imgAvatar}
-        ];
-        const partidas = [
-            {usuario: "usuario1", puntos: "1324", monedas: "563"},
-            {usuario: "usuario2", puntos: "324", monedas: "100"}
-        ];
-        const compras = [
-            {usuario: "usuario1", item: "traje1"},
-            {usuario: "usuario1", item: "sombrero1"},
-            {usuario: "usuario2", item: "traje2"},
-            {usuario: "usuario2", item: "sombrero2"}
-        ];
-        const setItems = [
-            {nombre:"traje1", category: "trajes", icono: '/images/items/traje1.png'},
-            {nombre:"traje2", category: "trajes", icono: '/images/items/traje2.png'},
-            {nombre:"traje3", category: "trajes", icono: '/images/items/traje3.png'},
-            {nombre:"sombrero1", category: "sombreros", icono: '/images/items/sombrero1.png'},
-            {nombre:"sombrero2", category: "sombreros", icono: '/images/items/sombrero2.png'},
-            {nombre:"sombrero3", category: "sombreros", icono: '/images/items/sombrero3.png'}
-        ];
+    constructor(props) {
+        super(props);
+        this.state = {
+            itemsComprados: []
+        };
+    }
 
+    // Petición get a la db: busca los items que tiene el usuario.
+    buscarItems(email){
+        return new Promise((resolve, reject) => {
+            axios.post(baseUrl+'/PerfilUsuario', {email: email})
+            .then(response=>{   //Encuentra los items
+                if (response.status == 200) { //response.ok
+                    resolve(response.data); //response.json()
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }
+
+    componentDidMount(){
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+        this.buscarItems(email)
+        .then((response) => {
+            this.setState({itemsComprados: response});
+        })
+        .catch((err) => {
+            console.log("Error al buscar los items: "+err)
+        })
+    }
+
+    render(){
         const history = this.props.history;
         const usuarioLoggedIn = this.props.location.state.usuario;
-        const tablaUsuarios = usuarios.filter((usuario,index) => usuario.usuario===usuarioLoggedIn);
-        const tablaPartidas = partidas.filter((partida,index) => partida.usuario===usuarioLoggedIn);
-        const tablaCompras = compras.filter((compra,index) => compra.usuario===usuarioLoggedIn);
+        const itemsComprados = this.state.itemsComprados;
+        console.log(itemsComprados);
 
         return(
             <div className="PerfilUsuario">
                 <Header history={history} usuario={usuarioLoggedIn}/>
                 <InfoPerfilUsuario 
                     history={history}
-                    usuarios={tablaUsuarios}
-                    partidas={tablaPartidas}
-                    compras={tablaCompras}
-                    setItems={setItems}
+                    itemsComprados={itemsComprados}
                 />
             </div>
         );
