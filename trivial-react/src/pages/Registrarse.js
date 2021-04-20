@@ -5,6 +5,8 @@ import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import {help, imgAvatar} from './images';
 
+const baseUrl='http://localhost:3050';
+
 class Header extends React.Component{
     render(){
         const history = this.props.history;
@@ -53,13 +55,25 @@ class FormRegistro extends React.Component{
         }
     }
 
-    guardarRegistro = (username, history) => { 
+    postObjetoNuevo(nombreItem, email){
+        //Guarda los resultados en la tabla juega.
+        axios.post(baseUrl+'/ObjetoTienda', 
+            { nombreObjeto: nombreItem, email: email})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+    }
+
+    guardarRegistro = (username, history, urlItem) => { 
  
-        axios.post("http://localhost:3050/Registrarse", {nickname:this.state.username,email:this.state.email,password:this.state.password,})
+        axios.post("http://localhost:3050/Registrarse", {nickname:this.state.username,email:this.state.email,password:this.state.password,imagen:urlItem})
                         
             .then(response => {console.log(response.data);
                 
                 if (response.status === 200){               //Inserción correcta
+                    this.postObjetoNuevo("Naranja", this.state.email)
                     alert("Usuario registrado correctamente: "+ username);
                     history.push('/MenuInicio');
                 }
@@ -101,7 +115,8 @@ class FormRegistro extends React.Component{
         }
         
         //Insertar usuario en la bd
-        this.guardarRegistro(username, history);
+        const urlItem = "http://localhost:3060/tienda/color_naranja.png";
+        this.guardarRegistro(username, history,urlItem);
         
         e.preventDefault();
     }
