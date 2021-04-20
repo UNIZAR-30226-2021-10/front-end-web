@@ -25,6 +25,7 @@ class FormCodigoVerificacion extends React.Component{
         super(props);
         this.state = {
             email: '',
+            inputCode: '',
             password: '',
             repPassword: ''
         };
@@ -54,19 +55,35 @@ class FormCodigoVerificacion extends React.Component{
     handleSubmit(e) {
         console.log(e);
         const history = this.props.history;
+
+        //Guardamos el codigo generado
+        const generatedCode = this.props.generatedCode;
+        
         //Cogemos los datos introducidos por el usuario
         const email = this.state.email;
+        const inputCode = this.state.inputCode;
         const password = this.state.password;
         const repPassword = this.state.repPassword;
-
-        if (password !== repPassword){ //Si no coinciden las contraseñas
+        
+        if (password !== repPassword){  //Si no coinciden las contraseñas
             alert("No coinciden las contraseñas.");
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
+            e.preventDefault();
             return;
-        }
 
-        e.preventDefault();
+        } else if (generatedCode!=inputCode){  //Código de verificación incorrecto
+            alert("Código de verificación incorrecto");
+            //Borrar datos de los inputs de las contraseñas
+            this.resetCampos(['inputCode']);
+            e.preventDefault();
+            return;
+
+        } else {
+            
+            history.push("/MenuInicio");
+        }
+        
     }
 
     render(){
@@ -78,8 +95,8 @@ class FormCodigoVerificacion extends React.Component{
                         <input type="text" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
                     </div>
                     <div>
-                        <label for="codigo">Introduzca el codigo de verification</label>
-                        <input type="text" name="codigo" placeholder="Enter your verification code" onChange={this.handleChange} required/>
+                        <label for="inputCode">Introduzca el codigo de verification</label>
+                        <input type="text" name="inputCode" placeholder="Enter your verification code" onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="password">Introduzca la nueva contraseña</label>
@@ -101,10 +118,12 @@ class FormCodigoVerificacion extends React.Component{
 class CodigoVerificacion extends React.Component{
     render(){
         const history = this.props.history;
+        const generatedCode = this.props.location.state.code;
+        console.log(generatedCode);
         return(
             <div className="CodigoVerificacion">
                 <Header history={history}/>
-                <FormCodigoVerificacion history={history}/>
+                <FormCodigoVerificacion history={history} generatedCode={generatedCode}/>
             </div>
         );
     }

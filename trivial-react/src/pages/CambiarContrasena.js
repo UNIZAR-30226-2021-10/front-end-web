@@ -30,6 +30,19 @@ class FormCambiarContrasena extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    sendEmail(e, parametros) {
+        e.preventDefault();
+
+        console.log(parametros);
+    
+        emailjs.send('service_9bwq6tl', 'template_478ah1c', parametros, 'user_MD5fVQzrQFyQksPaNTl3G')
+          .then((result) => {
+              console.log(result.text);
+          }, (error) => {
+              console.log(error.text);
+          });
+      }
     
     handleChange(e) {
         const {name, value}=e.target;
@@ -39,13 +52,31 @@ class FormCambiarContrasena extends React.Component{
         console.log(this.state);
     }
 
+    //Devuelve un codigo aleatorio de 5 digitos
+    generarCodigo() {
+        let min = 10000;
+        let max = 100000;
+        return Math.floor(min + (Math.random() * (max-min)));
+    }
+
     handleSubmit(e) {
         
         const history = this.props.history;
-        //Cogemos los datos introducidos por el usuario
+
+        //Cogemos el email introducido por el usuario
         const email = this.state.email;
-        console.log(email);
-        history.push("CodigoVerificacion");
+
+        //Generamos un codigo de verificacion aleatorio
+        const codigo = this.generarCodigo();
+
+        //Parametros para el correo a enviar
+        var parametros = {
+            email: email,   //Destinatario
+            code: codigo    //Codigo de verificacion
+        };
+
+        this.sendEmail(e, parametros);
+        history.push("/CodigoVerificacion", {code: codigo});
 
         
         e.preventDefault();
