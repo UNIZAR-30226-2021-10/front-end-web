@@ -3,7 +3,8 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import '../css/App.css';
 import MenuInicio from '../pages/MenuInicio'
 import Registrarse from '../pages/Registrarse'
-import CambiarContrasena from '../pages/CambiarContrasena'
+import CambiarContrasena from '../pages/CambiarContrasena';
+import CodigoVerificacion from '../pages/CodigoVerificacion';
 import AyudaJuego from '../pages/AyudaJuego';
 import DecisionJuego from '../pages/DecisionJuego';
 import ModoMultijugador from '../pages/ModoMultijugador';
@@ -33,6 +34,7 @@ class App extends React.Component{
             <Route exact path="/MenuInicio" component={MenuInicio}/>
             <Route exact path="/Registrarse" component={Registrarse}/>
             <Route exact path="/CambiarContrasena" component={CambiarContrasena}/>
+            <Route exact path="/CodigoVerificacion" component={CodigoVerificacion}/>
             <Route exact path="/DecisionJuego" component={DecisionJuego}/>
             <Route exact path="/ModoMultijugador" component={ModoMultijugador}/>
             <Route exact path="/ModoIndividual" component={ModoIndividual}/>

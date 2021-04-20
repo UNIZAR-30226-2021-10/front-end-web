@@ -3,8 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/CambiarContrasena.css';
 import {LeftOutlined} from '@ant-design/icons';
 import {help} from './images';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
+import emailjs from 'emailjs-com';
 
 class Header extends React.Component{
     render(){
@@ -27,8 +26,6 @@ class FormCambiarContrasena extends React.Component{
         super(props);
         this.state = {
             email: '',
-            password: '',
-            repPassword: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,36 +39,15 @@ class FormCambiarContrasena extends React.Component{
         console.log(this.state);
     }
 
-    resetCampos(campos){
-        var inputs = document.getElementsByTagName('input');
-        for (var h=0;h<inputs.length;h++){
-            for (var i=0; i<campos.length;i++){
-                if(inputs[h].name==campos[i]){
-                    inputs[h].value="";
-                }
-            }
-        }
-    }
-
     handleSubmit(e) {
-        console.log(e);
+        
         const history = this.props.history;
         //Cogemos los datos introducidos por el usuario
         const email = this.state.email;
-        const password = this.state.password;
-        const repPassword = this.state.repPassword;
+        console.log(email);
+        history.push("CodigoVerificacion");
 
-        if (password !== repPassword){ //Si no coinciden las contraseñas
-            alert("No coinciden las contraseñas.");
-            //Borrar datos de los inputs de las contraseñas
-            this.resetCampos(['password','repPassword']);
-            return;
-        } else{
-            const cookies = new Cookies();
-            cookies.set ('password', this.state.password, {path: '/codigoContrasena'});
-            history.push('/codigoContrasena');
-        }
-
+        
         e.preventDefault();
     }
 
@@ -81,18 +57,15 @@ class FormCambiarContrasena extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="email">Introduzca el email</label>
-                        <input type="text" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
+                        <input type="email" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
                     </div>
                     <div>
-                        <label for="password">Introduzca la nueva contraseña</label>
-                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
+                        <h3>Cuando pulse el boton "Enviar" recibirá un correo electrónico con un código de validación
+                            que deberá introducir en la siguiente pantalla
+                        </h3>
                     </div>
                     <div>
-                        <label for="repPassword">Repetir la nueva contraseña</label>
-                        <input type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
-                    </div>
-                    <div>
-                        <button type="submit">Confirmar</button>
+                        <button type="submit">Enviar</button>
                     </div>
                 </form>
             </div>
