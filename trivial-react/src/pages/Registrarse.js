@@ -122,11 +122,11 @@ class FormRegistro extends React.Component{
     }
 
     render(){
+        const urlItem = "http://localhost:3060/tienda/color_naranja.png";
         return(
             <div className="FormRegistro">
                 <div className="imgAvatar">
-                    <img src={imgAvatar} alt="Avatar"/>
-                    <input type="file" name="avatar" onChange={this.handleChange} required/>
+                    <img src={urlItem} alt="Avatar"/>
                 </div>
                 <form onSubmit={this.handleSubmit}>
                     <div>
