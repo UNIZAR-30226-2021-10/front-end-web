@@ -306,7 +306,7 @@ class DownloadSection extends React.Component{
                     <td>
                         <a className="linkDownload" href={linkDownload} download={nameDownload}>
                             Click here to download
-                            <img className="downloadIcon" src={baseUrl+ imgDownload} alt="Download Icon"></img>
+                            <img className="downloadIcon" src={imgDownload} alt="Download Icon"></img>
                         </a>
                     </td>
                 </tr>

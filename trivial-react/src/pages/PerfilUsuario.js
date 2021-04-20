@@ -14,7 +14,7 @@ class Header extends React.Component{
         return(
             <div className="Header">
                 <div className="iconAtras">
-                    <LeftOutlined onClick={() => history.push("/DecisionJuego", {usuario: usuario})}/> 
+                    <LeftOutlined onClick={() => history.push("/DecisionJuego")}/> 
                     Atrás
                 </div>
                 <h1>Perfil de {cookies.get('user')}</h1>

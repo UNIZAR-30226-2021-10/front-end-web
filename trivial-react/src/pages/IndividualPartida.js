@@ -5,6 +5,7 @@ import {LeftOutlined} from '@ant-design/icons';
 import Dado from '../components/Dado';
 import axios from 'axios';
 import {help, amarillo, azul, marron, naranja, rosa, verde} from './images';
+import Cookies from 'universal-cookie';
 
 const baseUrl='http://localhost:3050';
 
@@ -181,15 +182,16 @@ class IndividualPartida extends React.Component{
     postPartida(){
         const {maxRondas}=this.props.location.state;
         const {jugador}=this.state;
+        const cookies = new Cookies();
+        const email = cookies.get('email');
 
         //Construcción del formato de fecha
         var d = new Date();
         const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
         const fecha = d.getFullYear() + "--" + meses[d.getMonth()] + "--" + d.getDate() + 
                     "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
-        //Construcción de monedas y correo
-        const monedas = jugador.puntos*0.4;
-        const email = jugador.username + "@gmail.com";
+        //Construcción de monedas
+        const monedas = jugador.puntos*0.5;
 
         //Guarda los resultados en las tablas partida y juega.
         axios.post(baseUrl+'/FinalIndividual', 
@@ -197,7 +199,7 @@ class IndividualPartida extends React.Component{
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
         }).catch(e => { //Error
-            console.log(e);     
+            console.log("Error en las tablas partida y juega: "+e);     
         });
 
         //Guarda los resultados en la tabla usuario.
@@ -206,7 +208,7 @@ class IndividualPartida extends React.Component{
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
         }).catch(e => { //Error
-            console.log(e);         
+            console.log("Error en la tabla usuario: "+e);         
         });
     }
 
@@ -218,6 +220,12 @@ class IndividualPartida extends React.Component{
         if (ronda==maxRondas){ //Ya se han jugado todas las rondas
             //Finalizar partida
             this.postPartida();
+            //Actualizar cookies
+            const cookies = new Cookies();
+            const monedas = Number(cookies.get('monedas')) + jugador.puntos*0.5;
+            const puntos = Number(cookies.get('puntos')) + jugador.puntos;
+            cookies.set('monedas', monedas, {path: '/'});
+            cookies.set('puntos', puntos, {path: '/'});
             history.push('/FinalIndividual', {jugador: jugador});
         } else {  //Se sigue jugando
             this.setState({ronda: (Number(ronda)+1)%(Number(maxRondas)+1)});

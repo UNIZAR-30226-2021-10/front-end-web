@@ -8,6 +8,7 @@ import Dado from '../components/Dado';
 import Usuario from '../components/Usuario';
 import Chat from '../components/Chat';
 import AbandonarPartida from '../components/AbandonarPartida';
+import Cookies from 'universal-cookie';
 import axios from 'axios';
 import {chat, amarillo, azul, marron, naranja, rosa, verde} from './images';
 
@@ -356,13 +357,16 @@ class MultijugadorUnirse extends React.Component{
     //jugadores: ordenados de mayor a menor puntuación.
     //usuario: índice en el vector "jugadores" del usuario que hizo login.
     postPartida(jugadores, usuario){
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+
         //Código de la partida.
         const {code}=this.props.location.state;
         //Datos del jugador: username, avatar, puntos.
         const jugador = jugadores[usuario];
         //Construcción de monedas y email
-        const monedas = jugador.puntos*0.4;
-        const email = jugador.username + "@gmail.com";
+        const monedas = jugador.puntos*0.5;
+        
 
         //Actualiza la tabla partida.
         if (usuario == 0){  //Si eres el ganador

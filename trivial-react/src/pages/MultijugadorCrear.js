@@ -2,8 +2,9 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/MultijugadorCrear.css';
 import {LeftOutlined} from '@ant-design/icons';
+import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {help, imgUsuario} from './images';
+import {help} from './images';
 
 const baseUrl='http://localhost:3050';
 
@@ -102,10 +103,10 @@ class FormCrearMultijugador extends React.Component{
     //Petición post a la db: guarda la partida creada en las tabla partida.
     //y guarda al usuario como jugador de la partida.
     postPartida(codigo, jugador){
+        const cookies = new Cookies();
+        const email = cookies.get('email');
         const selectJugadores = this.state.selectJugadores;
         const selectRondas = this.state.selectRondas;
-        //Construcción del email
-        const email = jugador.username + "@gmail.com";
         //Construcción del formato de fecha
         var d = new Date();
         const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
@@ -131,13 +132,14 @@ class FormCrearMultijugador extends React.Component{
     }
 
     handleSubmit(e) {
+        const cookies = new Cookies();
         const history = this.props.history;
         const usuario = this.props.usuario;
         //Cogemos los datos introducidos por el usuario
         const selectJugadores = this.state.selectJugadores;
         const selectRondas = this.state.selectRondas;
-        //Buscamos avatar en bd
-        const avatar = imgUsuario;
+        //Construir jugador
+        const avatar = cookies.get('avatar');
         const jugador = {username: usuario, avatar: avatar, puntos:'0'};
         //Crear partida
         this.generarCodigoPartida()

@@ -2,8 +2,9 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/ModoMultijugador.css'
 import {LeftOutlined} from '@ant-design/icons';
+import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {help, imgUsuario} from './images';
+import {help} from './images';
 
 const baseUrl='http://localhost:3050';
 
@@ -53,9 +54,9 @@ class UnirseAPartida extends React.Component{
 
     //Petición post a la db: guarda al usuario como jugador de la partida.
     postJugador(codigo, jugador){
-        //Construcción del email
-        const email = jugador.username + "@gmail.com";
-
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+        
         //Guarda los resultados en la tabla juega.
         axios.post(baseUrl+'/FinalMultijugador_Juega', 
             { codigo: codigo, email: email, puntos: jugador.puntos})
@@ -126,12 +127,12 @@ class UnirseAPartida extends React.Component{
     }*/
 
     handleSubmit(e) {
+        const cookies = new Cookies();
+        const email = cookies.get('email');
         const history = this.props.history;
         const usuario = this.props.usuario;
         //Cogemos el codigo introducido por el usuario y la información de las partidas de la db
         const {code} = this.state;
-        //Construir email
-        const email = usuario + "@gmail.com";
         this.buscarCodigo(code)
         .then((res) =>{    //Existe la partida
             const partida = res[0];
@@ -163,8 +164,8 @@ class UnirseAPartida extends React.Component{
 
                     }else{ //Si la partida no está llena y no estas entre los jugadores -> nuevo
                         console.log("Soy un nuevo jugador: "+user);
-                        //Buscamos avatar del usuario en bd y creamos el jugador nuevo
-                        const avatar = imgUsuario;
+                        //Construir jugador nuevo
+                        const avatar = cookies.get('avatar');
                         const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
                         jugadoresUnirse.push(jugadorNuevo);
                         user = jugadoresUnirse.length-1;

@@ -1,5 +1,6 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import '../css/DecisionJuego.css';
 import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
 
@@ -53,7 +54,8 @@ class Footer extends React.Component{
 class DecisionJuego extends React.Component{
     render(){
         const history = this.props.history;
-        const usuario = this.props.location.state.usuario;
+        const cookies = new Cookies();
+        const usuario = cookies.get('user');
         return(
             <div className="DecisionJuego">
                 <Header history={history} usuario={usuario}/>

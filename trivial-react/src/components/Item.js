@@ -9,10 +9,10 @@ class Item extends React.Component {
         <tbody className="infoItem">
           <tr className="nombre">
             <th>Nombre:</th>
-            <td>{item.nombre}</td>
+            <td>{item.Nombre}</td>
           </tr>
           <div>
-            <img className="iconItem" src={item.icono} alt={"Item "+item.nombre}></img>
+            <img className="iconItem" src={item.Imagen} alt={"Item "+item.Nombre}></img>
           </div>
         </tbody>
       </div>

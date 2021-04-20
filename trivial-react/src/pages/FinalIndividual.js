@@ -24,7 +24,7 @@ class FinalIndividual extends React.Component {
                 </div>
                 <div className="footer"> 
                     <button className="btnNuevaPartida" onClick={() => history.push("/ModoIndividual", {usuario: jugador.username})}>Nueva partida</button>
-                    <button className="btnSalir" onClick={() => history.push("/DecisionJuego", {usuario: jugador.username})}>Salir</button>
+                    <button className="btnSalir" onClick={() => history.push("/DecisionJuego")}>Salir</button>
                 </div>
             </div>
         )

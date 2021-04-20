@@ -60,7 +60,7 @@ class FinalMultijugador extends React.Component {
                     <tbody className="ranking">
                         {ranking}
                     </tbody>
-                    <button className="btnSalir" onClick={() => history.push("/DecisionJuego", {usuario: jugadores[usuario].username})}>Salir</button>
+                    <button className="btnSalir" onClick={() => history.push("/DecisionJuego")}>Salir</button>
                 </div>
             </div>
         )

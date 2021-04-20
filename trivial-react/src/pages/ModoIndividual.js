@@ -2,7 +2,8 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/ModoIndividual.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {help, imgUsuario} from './images';
+import {help} from './images';
+import Cookies from 'universal-cookie';
 
 class Header extends React.Component{
     render(){
@@ -39,12 +40,14 @@ class FormCrearMultijugador extends React.Component{
     }
 
     handleSubmit(e) {
+        const cookies = new Cookies();
         const history = this.props.history;
         const usuario = this.props.usuario;
         //Cogemos los datos introducidos por el usuario
         const selectRondas = this.state.selectRondas;
-        //Buscamos avatar en bd
-        const jugador = {username: usuario, avatar: imgUsuario, puntos:'0'};
+        //Construir jugador
+        const avatar = cookies.get('avatar');
+        const jugador = {username: usuario, avatar: avatar, puntos:'0'};
         //Crear partida
         if(true){  //Se puede crear partida
             // Introducir en bd (code, jugadoresEnPartida, maxJugadores, maxRondas)

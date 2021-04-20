@@ -59,9 +59,10 @@ class FormInicio extends React.Component{
                             cookies.set('email', response.data.email.email, {path: '/'});
                             cookies.set('puntos', response.data.email.puntos, {path: '/'});
                             cookies.set('monedas', response.data.email.monedas, {path: '/'});
+                            cookies.set('avatar', response.data.email.imagen, {path: '/'});
 
                             alert("Usuario logeado correctamente: "+ username);
-                            history.push('/DecisionJuego', {usuario: username}); 
+                            history.push('/DecisionJuego'); 
                             
                         })
                         .catch(error => {

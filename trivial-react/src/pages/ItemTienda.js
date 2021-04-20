@@ -4,11 +4,14 @@ import '../css/ItemTienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
 import {help} from './images';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+
+const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
         const history = this.props.history;
-        const usuario = this.props.usuario;
         return(
             <div className="Header">
                 <div className="iconAtras">
@@ -27,19 +30,55 @@ class ComprarItem extends React.Component{
         this.handleCompra = this.handleCompra.bind(this);
     }
 
+    restarMonedas(){
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+        const item = this.props.item;
+
+        //Guarda los resultados en la tabla juega.
+        axios.post(baseUrl+'/ObjetoTienda_RestarMonedas', 
+            { precioObjeto: item.Precio, email: email})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+    }
+
+    postObjetoNuevo(){
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+        const item = this.props.item;
+
+        //Guarda los resultados en la tabla juega.
+        axios.post(baseUrl+'/ObjetoTienda', 
+            { nombreObjeto: item.Nombre, email: email})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+    }
+
     handleCompra(e){
+        const cookies = new Cookies();
         const history = this.props.history;
         const item = this.props.item;
         const monedas = this.props.monedas;
         //Compra del objeto
-        if (Number(monedas) >= Number(item.precio)){  //Si tienes monedas suficientes
-            //Insertar elemento comprado en tabla de compras
-            //Actualizar las monedas -> monedas = monedas-precio;
+        if (monedas >= Number(item.precio)){  //Si tienes monedas suficientes
+            //Actualizar las monedas en las cookies-> monedas = monedas-precio;
+            monedas = monedas - Number(item.precio);
+            cookies.set('monedas', monedas, {path: '/'});
+            //Restar las monedas en la tabla usuarios de la db
+            this.restarMonedas();
+            //Insertar elemento comprado en la db
+            this.postObjetoNuevo();
             alert("Comprado: "+ item.nombre);
             history.goBack();
         } else{ //Si no tienes monedas suficientes
             alert("Tienes "+ monedas +" monedas y el item "+ 
-            item.nombre+" cuesta "+item.precio+" monedas.");
+            item.Nombre+" cuesta "+item.Precio+" monedas.");
         }
         e.preventDefault();
     }
@@ -61,7 +100,7 @@ class ComprarItem extends React.Component{
                 <tbody className="infoPrecio">
                     <tr>
                         <th>Precio:</th>
-                        <td>{item.precio}</td>
+                        <td>{item.Precio}</td>
                     </tr>
                 </tbody>
                 <div>

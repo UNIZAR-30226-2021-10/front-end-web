@@ -19,8 +19,8 @@ class AbandonarPartida extends React.Component{
                         <button onClick={this.cerrarAbandonar}>Cancelar</button>
                     </div>
                     <div className="filaBtn">
-                        <button className="btnPosponer" onClick={() => history.push('/DecisionJuego', {usuario: usuario})}>Posponer</button>
-                        <button className="btnAbandonar" onClick={() => history.push('/DecisionJuego', {usuario: usuario})}>Abandonar</button>
+                        <button className="btnPosponer" onClick={() => history.push('/DecisionJuego')}>Posponer</button>
+                        <button className="btnAbandonar" onClick={() => history.push('/DecisionJuego')}>Abandonar</button>
                     </div>
                 </div>
             </div>
