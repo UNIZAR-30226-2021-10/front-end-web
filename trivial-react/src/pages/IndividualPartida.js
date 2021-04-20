@@ -108,7 +108,7 @@ class IndividualPartida extends React.Component{
         this.state = {
             ronda: '1',
             jugador: this.props.location.state.jugador,
-            dado: {img: marron, category:"Tira el dado", color:'black'},
+            dado: {img: marron, category:"", color:'black'},
             hasTiradoDado: false,
             pregunta: '',
             colorBtnA: 'white',
@@ -236,7 +236,7 @@ class IndividualPartida extends React.Component{
                         colorBtnB: 'white',
                         colorBtnC: 'white',
                         colorBtnD: 'white',
-                        dado: {img: this.state.dado.img, category:"Tira el dado", color:'black'}
+                        dado: {img: this.state.dado.img, category:"", color:'black'}
         });
     }
 

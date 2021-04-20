@@ -189,7 +189,7 @@ class MultijugadorUnirse extends React.Component{
             ronda: '1',
             turno: '0',
             jugadores: this.props.location.state.jugadores,
-            dado: {img: marron, category:"Tira el dado", color:'black'},
+            dado: {img: marron, category:"", color:'black'},
             hasTiradoDado: false,
             pregunta: '',
             colorBtnA: 'white',
@@ -370,12 +370,24 @@ class MultijugadorUnirse extends React.Component{
 
         //Actualiza la tabla partida.
         if (usuario == 0){  //Si eres el ganador
-            //Actualizar la partida de codigo "code" en la tabla partida.
-            //code y jugador.username
+            //Actualizar la partida de codigo "code" con el ganador en la tabla partida.
+            axios.post(baseUrl+'/FinalMultijugador_Partida', 
+                { codigo: code, ganador: jugador.username})
+            .then(response => { //Respuesta del servidor
+                console.log(response.data.message);  
+            }).catch(e => { //Error
+                console.log(e);         
+            });
         }
 
-        //Actualiza la tabla juega.
-        //code y jugador.puntos
+        //Actualizar la partida de codigo "code" con la puntuación en la tabla juega.
+        axios.post(baseUrl+'/FinalMultijugador_Juega', 
+            { codigo: code, puntos: jugador.puntos})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);         
+        });
         
         //Guarda los resultados en la tabla usuario.
         axios.post(baseUrl+'/FinalIndividual_Usuario', 
@@ -415,7 +427,7 @@ class MultijugadorUnirse extends React.Component{
                         colorBtnB: 'white',
                         colorBtnC: 'white',
                         colorBtnD: 'white',
-                        dado: {img:this.state.dado.img, category:"Tira el dado", color:'black'}
+                        dado: {img:this.state.dado.img, category:"", color:'black'}
         });
     }
 

@@ -114,12 +114,12 @@ class FormCrearMultijugador extends React.Component{
                     "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
         
         //Guarda los resultados en la tabla partida.
-        axios.post(baseUrl+'/FinalMultijugador_Partida', 
+        axios.post(baseUrl+'/CrearMultijugador_Partida', 
             { fecha: fecha, numJugadores: selectJugadores, rondas: selectRondas, ganador: jugador.username, codigo: codigo})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
             //Guarda los resultados en la tabla juega.
-            axios.post(baseUrl+'/FinalMultijugador_Juega', 
+            axios.post(baseUrl+'/UnirseMultijugador_Juega', 
                 { codigo: codigo, email: email, puntos: jugador.puntos})
             .then(response => { //Respuesta del servidor
                 console.log(response.data.message);  

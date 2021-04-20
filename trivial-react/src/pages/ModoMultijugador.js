@@ -52,21 +52,6 @@ class UnirseAPartida extends React.Component{
         }
     }
 
-    //Petición post a la db: guarda al usuario como jugador de la partida.
-    postJugador(codigo, jugador){
-        const cookies = new Cookies();
-        const email = cookies.get('email');
-        
-        //Guarda los resultados en la tabla juega.
-        axios.post(baseUrl+'/FinalMultijugador_Juega', 
-            { codigo: codigo, email: email, puntos: jugador.puntos})
-        .then(response => { //Respuesta del servidor
-            console.log(response.data.message);  
-        }).catch(e => { //Error
-            console.log(e);     
-        });
-    }
-
     // Petición get a la db: busca una partida con codigo "code".
     buscarCodigo(codigo){
         //Mirar si existe una partida con ese código
@@ -125,6 +110,21 @@ class UnirseAPartida extends React.Component{
             })
         });
     }*/
+
+    //Petición post a la db: guarda al usuario como jugador de la partida.
+    postJugador(codigo, jugador){
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+        
+        //Guarda los resultados en la tabla juega.
+        axios.post(baseUrl+'/UnirseMultijugador_Juega', 
+            { codigo: codigo, email: email, puntos: jugador.puntos})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+    }
 
     handleSubmit(e) {
         const cookies = new Cookies();
