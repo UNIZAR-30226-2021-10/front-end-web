@@ -8,6 +8,7 @@ class FinalIndividual extends React.Component {
     render() {
         const history = this.props.history;
         const jugador = this.props.location.state.jugador;
+        const monedas = jugador.puntos*0.5;
         return (
             <div className="FinalIndividual">
                 <div className="header">
@@ -19,7 +20,7 @@ class FinalIndividual extends React.Component {
                         <h1>Puntos totales</h1>
                         <h1>{jugador.puntos}</h1>
                         <h1>Monedas ganadas</h1>
-                        <h1>{Math.floor(jugador.puntos * 0.4)}</h1>
+                        <h1>{monedas}</h1>
                     </div>
                 </div>
                 <div className="footer"> 

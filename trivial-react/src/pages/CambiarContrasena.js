@@ -3,6 +3,8 @@ import {withRouter} from 'react-router-dom';
 import '../css/CambiarContrasena.css';
 import {LeftOutlined} from '@ant-design/icons';
 import {help} from './images';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 class Header extends React.Component{
     render(){
@@ -58,25 +60,18 @@ class FormCambiarContrasena extends React.Component{
         const email = this.state.email;
         const password = this.state.password;
         const repPassword = this.state.repPassword;
-        //Buscar usuario en la bd con correo "email" y cambiar contraseña
+
         if (password !== repPassword){ //Si no coinciden las contraseñas
             alert("No coinciden las contraseñas.");
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
-        } else if (false){ //No coincide el email con el de ningún usuario registrado
-            alert("No existe ningún usuario con el email: "+ email);
-            //Borrar todos los campos
-            this.resetCampos(['email','password','repPassword']);
-        } else if (true){  //Existe el usuario
-            //Verificación mediante envío de email
-            alert("Verifica el cambio de contraseña desde el email que te hemos enviado.");
-            //Esperar a que acepte el cambio desde email (poner timeout)
-            //Cambiar contraseña en la bd
-            alert("Contraseña cambiada correctamente.");
-            history.push('/MenuInicio');
-        } else{     //Fallo de cambio de contraseña por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
+            return;
+        } else{
+            const cookies = new Cookies();
+            cookies.set ('password', this.state.password, {path: '/codigoContrasena'});
+            history.push('/codigoContrasena');
         }
+
         e.preventDefault();
     }
 

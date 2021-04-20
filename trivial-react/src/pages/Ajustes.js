@@ -3,6 +3,8 @@ import {withRouter} from 'react-router-dom';
 import '../css/Ajustes.css';
 import {LeftOutlined} from '@ant-design/icons';
 import {ajustes} from './images';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 class Header extends React.Component{
     render(){
@@ -55,35 +57,59 @@ class FormAjustes extends React.Component{
     }
     
     handleSubmit(e) {
+
+        const cookies = new Cookies();
+
         const history = this.props.history;
         const usuarioLogged = this.props.usuario;
         const username = this.state.username;
-        const email = this.state.email;
+        const email = cookies.get('email');
         const password = this.state.password;
         const repPassword = this.state.repPassword;
-        //Cambiar datos introducidos de ese usuario en bd.
-        if (false){  //Si el usuario ya está siendo usado o es inválido
-            alert("Nombre de usuario no disponible.");
-            //Borrar nombre de usuario del input
-            this.resetCampos(['username']);
-        } else if (false){  //Si el email es inválido
-            alert("Email inválido.");
-            //Borrar email del input
-            this.resetCampos(['email']);
-        } else if (password !== repPassword){ //Si no coinciden las contraseñas
+
+        if (password !== repPassword){ //Si no coinciden las contraseñas
             alert("No coinciden las contraseñas.");
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
-        } else if (true){  //Valores cambiados correctamente
-            alert("Datos modificados correctamente.");
-            history.push("/PerfilUsuario", {usuario: username});
-        } else{     //Fallo, por nombre de usuario ya usado u otra cosa
-            alert('Ha habido un fallo, vuelva a intentarlo.');
+            return;
         }
+
+
+        axios.post("http://localhost:3050/AjustesUsuario", {nickname: username,password: password, email: email})         
+                        .then(response => { //Está registrado
+                            console.log(response.data);
+                            
+                            //Actualizar cookies
+                            const cookies = new Cookies();
+                            cookies.set('user', username, {path: '/'});
+                            cookies.set('email', email, {path: '/'});
+
+                            alert("Datos modificados correctamente");
+                            
+                            history.push('/PerfilUsuario', {usuario: username}); 
+                            
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            
+                            //Insertar usuario en la bd
+                            if (error.response.status === 400){         //Si el usuario ya está siendo usado o es inválido
+                                alert("Nombre de usuario no disponible.");
+                                //Borrar nombre de usuario del input
+                                this.resetCampos(['username']);
+                            } else{                                    //Fallo de registro por otros motivos
+                                alert('Ha habido un fallo, vuelva a intentarlo.');
+                            }
+                                
+                        });
+
         e.preventDefault();
     }
 
     render(){
+
+        const cookies = new Cookies();
+
         return(
             <div className="FormAjustes">
                 <form onSubmit={this.handleSubmit}>
@@ -93,7 +119,7 @@ class FormAjustes extends React.Component{
                     </div>
                     <div>
                         <label for="email">Email</label>
-                        <input type="text" name="email" placeholder="Enter your email." onChange={this.handleChange}/>
+                        <input type="text" name="email" value={cookies.get('email')} readOnly/>
                     </div>
                     <div>
                         <label for="password">Contraseña</label>
@@ -114,8 +140,9 @@ class FormAjustes extends React.Component{
 
 class Ajustes extends React.Component{
     render(){
+        const cookies = new Cookies();
         const history = this.props.history;
-        const usuario = this.props.location.state.usuario;
+        const usuario = cookies.get('user');
         return(
             <div className="Ajustes">
                 <Header history={history}/>
