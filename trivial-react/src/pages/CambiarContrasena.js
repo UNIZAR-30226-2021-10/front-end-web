@@ -33,8 +33,6 @@ class FormCambiarContrasena extends React.Component{
 
     sendEmail(e, parametros) {
         e.preventDefault();
-
-        console.log(parametros);
     
         emailjs.send('service_9bwq6tl', 'template_478ah1c', parametros, 'user_MD5fVQzrQFyQksPaNTl3G')
           .then((result) => {
@@ -76,7 +74,7 @@ class FormCambiarContrasena extends React.Component{
         };
 
         this.sendEmail(e, parametros);
-        history.push("/CodigoVerificacion", {code: codigo});
+        history.push("/CodigoVerificacion", {code: codigo, email:email});
 
         
         e.preventDefault();

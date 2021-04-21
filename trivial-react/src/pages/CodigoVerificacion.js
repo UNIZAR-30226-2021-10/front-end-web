@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/CodigoVerificacion.css';
 import {LeftOutlined} from '@ant-design/icons';
 import {help} from './images';
+import axios from 'axios';
 
 class Header extends React.Component{
     render(){
@@ -52,38 +53,57 @@ class FormCodigoVerificacion extends React.Component{
         }
     }
 
+    changePassword() {
+
+        axios.post("http://localhost:3050/CambiarContrasenya", {password: this.state.password, email: this.props.email})         
+                        .then(response => { //Está registrado
+                            
+                            alert("Se ha modificado la contraseña correctamente");
+                            this.props.history.push("/MenuInicio");
+                            
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            
+                            //Insertar usuario en la bd
+                            if (error.response.status === 400){         //Usuario no registrado
+                                alert("No existe ningún usuario registrado con este email.");
+                            } else{                                    //Fallo de registro por otros motivos
+                                alert('Ha habido un fallo, vuelva a intentarlo.');
+                            }
+                                
+                        });
+    }
+
     handleSubmit(e) {
         console.log(e);
-        const history = this.props.history;
 
         //Guardamos el codigo generado
         const generatedCode = this.props.generatedCode;
+        const email = this.props.email;
         
         //Cogemos los datos introducidos por el usuario
-        const email = this.state.email;
         const inputCode = this.state.inputCode;
         const password = this.state.password;
         const repPassword = this.state.repPassword;
         
         if (password !== repPassword){  //Si no coinciden las contraseñas
             alert("No coinciden las contraseñas.");
+
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
-            e.preventDefault();
-            return;
 
         } else if (generatedCode!=inputCode){  //Código de verificación incorrecto
             alert("Código de verificación incorrecto");
-            //Borrar datos de los inputs de las contraseñas
-            this.resetCampos(['inputCode']);
-            e.preventDefault();
-            return;
 
-        } else {
-            
-            history.push("/MenuInicio");
+            //Borrar datos del imput del código
+            this.resetCampos(['inputCode']);
+
+        } else {    //Se realiza el cambio de contraseña
+            this.changePassword();
         }
-        
+
+        e.preventDefault();
     }
 
     render(){
@@ -92,7 +112,7 @@ class FormCodigoVerificacion extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="email">Introduzca el email</label>
-                        <input type="text" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
+                        <input type="email" name="email" value={this.props.email} readOnly/>
                     </div>
                     <div>
                         <label for="inputCode">Introduzca el codigo de verification</label>
@@ -119,11 +139,11 @@ class CodigoVerificacion extends React.Component{
     render(){
         const history = this.props.history;
         const generatedCode = this.props.location.state.code;
-        console.log(generatedCode);
+        const email = this.props.location.state.email;
         return(
             <div className="CodigoVerificacion">
                 <Header history={history}/>
-                <FormCodigoVerificacion history={history} generatedCode={generatedCode}/>
+                <FormCodigoVerificacion history={history} generatedCode={generatedCode} email={email}/>
             </div>
         );
     }
