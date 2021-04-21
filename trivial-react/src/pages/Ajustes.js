@@ -5,6 +5,8 @@ import {LeftOutlined} from '@ant-design/icons';
 import {ajustes} from './images';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import swal from 'sweetalert';
+
 
 class Header extends React.Component{
     render(){
@@ -35,6 +37,8 @@ class FormAjustes extends React.Component{
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.eliminarCuenta = this.eliminarCuenta.bind(this);
+
     }
     
     handleChange(e) {
@@ -106,6 +110,51 @@ class FormAjustes extends React.Component{
         e.preventDefault();
     }
 
+    handleEliminar(){
+
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+        
+        //Eliminar cuenta de BBDD
+        axios.post("http://localhost:3050/EliminarCuenta", {email: email})         
+                        .then(response => { //Está registrado
+
+                            //Borrar cookies
+                            cookies.remove('user');
+                            cookies.remove('email');
+                            cookies.remove('puntos');
+                            cookies.remove('monedas');
+                            this.props.history.push("/MenuInicio")
+                            
+                        })
+                        .catch(error => {
+                            console.log(error);
+                                //Fallo de registro por otros motivos
+                                alert('Ha habido un fallo, vuelva a intentarlo.');
+                                
+                        });
+
+    }
+
+    eliminarCuenta(e) {
+
+        swal({
+            title: "¿Estás seguro?",
+            text: "Tu cuenta será permanentemente borrada",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    this.handleEliminar();
+                    swal("Tu cuenta ha sido eliminada correctamente", {
+                    icon: "success",
+                    })
+                }
+        });
+    }
+
     render(){
 
         const cookies = new Cookies();
@@ -132,7 +181,12 @@ class FormAjustes extends React.Component{
                     <div>
                         <button type="submit">Guardar Cambios</button>
                     </div>
-                </form>
+                </form>                
+
+                <div>
+                    <button type="submit" onClick={() => this.eliminarCuenta()}>Eliminar cuenta</button>
+                </div>
+
             </div>
         );
     }
