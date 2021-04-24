@@ -1,19 +1,18 @@
-    
-.FormCambiarContrasena{
+.FormCodigoVerificacion{
     height: 80vh;
     width: 100vw;
 }
 
-.CambiarContrasena form div label{
+.CodigoVerificacion form div label{
     height: 6vh;
     width: 40%;
 }
 
-.CambiarContrasena form div input{
+.CodigoVerificacion form div input{
     width: 40%;
 }
 
-.CambiarContrasena button {
+.CodigoVerificacion button {
     height: 5vh;
     background-color: rgb(101, 172, 128);
     color: black;
