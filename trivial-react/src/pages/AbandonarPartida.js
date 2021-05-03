@@ -1,16 +1,14 @@
 import React from 'react';
-import '../css/AbandonarPartida.css';
+import {withRouter} from 'react-router-dom';
+import '../css/AbandonarPartida.css'
 import storage from '../lib/storage';
 
 class AbandonarPartida extends React.Component{
-    cerrarAbandonar = () => {
-        this.props.setParentsState([{clickAtras: false}]);
-    }
 
     abandonarPartida = () => {
         const history = this.props.history;
         //Borrar estado de la partida
-        storage(localStorage).removeData("estadoMulti");
+        storage(localStorage).removeData("estado");
         //Salir de la partida
         history.push('/DecisionJuego');
     }
@@ -24,7 +22,7 @@ class AbandonarPartida extends React.Component{
                         <h1>¿Desea abandonar la partida?</h1>
                     </div>
                     <div className="filaBtn">
-                        <button onClick={this.cerrarAbandonar}>Cancelar</button>
+                        <button onClick={() => history.goBack()}>Cancelar</button>
                     </div>
                     <div className="filaBtn">
                         <button className="btnPosponer" onClick={() => history.push('/DecisionJuego')}>Posponer</button>
@@ -36,4 +34,4 @@ class AbandonarPartida extends React.Component{
     }
 }
 
-export default AbandonarPartida;
+export default withRouter(AbandonarPartida);

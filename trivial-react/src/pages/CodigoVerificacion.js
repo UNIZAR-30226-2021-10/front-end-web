@@ -46,7 +46,7 @@ class FormCodigoVerificacion extends React.Component{
         var inputs = document.getElementsByTagName('input');
         for (var h=0;h<inputs.length;h++){
             for (var i=0; i<campos.length;i++){
-                if(inputs[h].name==campos[i]){
+                if(inputs[h].name === campos[i]){
                     inputs[h].value="";
                 }
             }
@@ -80,7 +80,6 @@ class FormCodigoVerificacion extends React.Component{
 
         //Guardamos el codigo generado
         const generatedCode = this.props.generatedCode;
-        const email = this.props.email;
         
         //Cogemos los datos introducidos por el usuario
         const inputCode = this.state.inputCode;
@@ -93,7 +92,7 @@ class FormCodigoVerificacion extends React.Component{
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
 
-        } else if (generatedCode!=inputCode){  //Código de verificación incorrecto
+        } else if (generatedCode !== inputCode){  //Código de verificación incorrecto
             alert("Código de verificación incorrecto");
 
             //Borrar datos del imput del código

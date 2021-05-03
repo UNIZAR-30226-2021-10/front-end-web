@@ -21,21 +21,73 @@ class Header extends React.Component{
 }
 
 class Messages extends React.Component {
-    comentario(minEnvioMens) {
-        if (minEnvioMens==="admin"){
+    comentario(date) {
+        if (date === "admin"){
             return "";
-        }else{
+        } else{
+            //Fecha y hora actual
             var d = new Date();
-            const minActuales = d.getMinutes();
-            const diferencia = Number(minActuales)-Number(minEnvioMens);
-            if (diferencia==0){
-                return "Enviado ahora.";
-            } else if (diferencia>0){
-                return "Enviado hace "+diferencia+" minutos.";
+            const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+            const anyoActual = d.getFullYear();
+            const mesActual = meses[d.getMonth()];
+            const diaActual = d.getDate();
+            const horaActual = d.getHours();
+            const minActual = d.getMinutes();
+            const segActual = d.getSeconds();
+
+            //Fecha y hora del mensaje
+            let fecha = date;
+            const anyoMens = fecha.split('--')[0];  //Año
+            const mesMens = fecha.split('--')[1];   //Mes
+            fecha = fecha.split('--')[2];
+            const diaMens = fecha.split('(')[0];    //Día
+            fecha = fecha.split('(')[1];
+            fecha = fecha.split(')')[0];
+            const horaMens = fecha.split(':')[0];  //Horas
+            const minMens = fecha.split(':')[1];    //Minutos
+            const segMens = fecha.split(':')[1];    //Minutos
+
+            console.log("FECHAS ACTUALES: ");
+            console.log(horaActual + "-" + minActual + "-" + segActual);
+
+            console.log("FECHAS MENSAJE: ");
+            console.log(horaMens + "-" + minMens + "-" + segMens);
+
+            let dif;
+            if (anyoActual > anyoMens){
+                dif = Number(anyoActual)-Number(anyoMens);
+                return "Enviado hace "+ dif + " años.";
+            } else if (mesActual > mesMens){
+                dif = Number(mesActual)-Number(mesMens);
+                return "Enviado hace "+ dif + " meses.";
+            } else if (diaActual > diaMens){
+                dif = Number(diaActual)-Number(diaMens);
+                return "Enviado hace "+ dif + " días.";
+            } else if (horaActual > horaMens){
+                dif = Number(horaActual)-Number(horaMens);
+                return "Enviado hace "+ dif + " horas.";
+            } else if (minActual > minMens){
+                dif = Number(minActual)-Number(minMens);
+                return "Enviado hace "+ dif + " minutos.";
+            } else if (segActual > segMens){
+                dif = Number(segActual)-Number(segMens);
+                return "Enviado hace "+ dif + " segundos.";
             } else{
-                return "Enviado hace mucho.";
+                return "Enviado ahora.";
             }
         }
+    }
+
+    bajarScroll(){
+        var scroll = document.getElementsByClassName("Messages");
+        scroll = scroll[0];
+        if (scroll){
+            scroll.scrollTop = scroll.scrollHeight;
+        }
+    }
+
+    componentDidUpdate(){
+        this.bajarScroll();
     }
 
     render(){
@@ -57,15 +109,15 @@ class Messages extends React.Component {
                         }
                         return (
                             <div>
-                                { message.sender!=usuario ? (
+                                { message.sender !== usuario ? (
                                 <li key={message.id} className="izquierda">
                                     <div className="sender" style={{ color: color}}>{nombre}</div>
                                     <div className="messageConFlecha">
                                         <img className="imgAvatar" src={message.avatar} alt={"Avatar de "+ nombre}></img>
                                         <div class="flecha-izquierda"></div>
                                         <div className="text" style={{ background: color}}>{message.text}</div>
+                                        <div className="date">{this.comentario(message.date)}</div>
                                     </div>
-                                    <div className="date">{this.comentario(message.date)}</div>
                                 </li>
                                 ):(
                                 <li key={message.id} className="derecha">
@@ -74,8 +126,8 @@ class Messages extends React.Component {
                                         <img className="imgAvatar" src={message.avatar} alt={"Avatar de "+ nombre}></img>
                                         <div className="text" style={{ background: color}}>{message.text}</div>
                                         <div class="flecha-derecha"></div>
+                                        <div className="date">{this.comentario(message.date)}</div>
                                     </div>
-                                    <div className="date">{this.comentario(message.date)}</div>
                                 </li>
                                 )}
                             </div>

@@ -1,11 +1,11 @@
 import io from 'socket.io-client';
 let socket;
-export const iniciarSocket = (username, code, firstJoin, history) => {
+export const iniciarSocket = (username, code, firstJoin, avatar, history) => {
     socket = io('localhost:5000', {
         transports: [ 'websocket' ],
         upgrade: false
     });
-    socket.emit('join', {username: username, code: code, firstJoin: firstJoin}, (error) =>{
+    socket.emit('join', {username: username, code: code, firstJoin: firstJoin, avatar: avatar}, (error) =>{
         if (error){
             alert(error);
             history.goBack();

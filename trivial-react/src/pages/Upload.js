@@ -4,8 +4,6 @@ import '../css/Upload.css';
 import UploadService from './uploadService';
 import {help, insertarFile, textPlain, applicationPdf ,imgDownload} from './images';
 
-const baseUrl = 'http://localhost:3060';
-
 class Header extends React.Component{
     render(){
         const history = this.props.history;

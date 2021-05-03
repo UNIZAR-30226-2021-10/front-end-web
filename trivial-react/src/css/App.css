@@ -48,11 +48,11 @@
   float: right;
 }
 
-.CambiarContrasena h1, .PerfilUsuario h1,
-.Ajustes h1, .MultijugadorCrear h1, .ModoIndividual h1,
+.Registrarse h1, .CambiarContrasena h1, .PerfilUsuario h1,
+.Ajustes h1, .MultijugadorCrear h1, .Tienda h1,
 .Ranking h1, .Historial h1, .Upload h1{
   height: 100%;
-  width: 30%;
+  width: 35%;
   float: left;
   font-weight: bold;
   font-size: calc(10px + 4vmin);
@@ -100,6 +100,10 @@ tbody th {
   height: 4vh;
   padding: 2% 10% 2% 0%;
   width: fit-content;
+}
+
+p, h1, li, th, td{
+  font-family: cursive;
 }
 
 

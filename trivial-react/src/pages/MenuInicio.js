@@ -41,7 +41,7 @@ class FormInicio extends React.Component{
         var inputs = document.getElementsByTagName('input');
         for (var h=0;h<inputs.length;h++){
             for (var i=0; i<campos.length;i++){
-                if(inputs[h].name==campos[i]){
+                if(inputs[h].name === campos[i]){
                     inputs[h].value="";
                 }
             }

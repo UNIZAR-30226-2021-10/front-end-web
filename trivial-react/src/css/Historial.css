@@ -34,8 +34,8 @@
 
 .MostrarHistorial .historial{
     height: 90%;
-    width: 45%;
-    margin-left: 25%;
+    width: 55%;
+    margin-left: 20%;
     overflow: auto;
 }
 

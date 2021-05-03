@@ -18,7 +18,7 @@ class Header extends React.Component{
                     Atrás
                 </div>
                 <div className="tituloAjustes">
-                    <img className="imgAjustes" src={ajustes} alt="Settings Image"></img>
+                    <img className="imgAjustes" src={ajustes} alt="Settings Icon"></img>
                     <h1>Ajustes</h1>
                 </div>
             </div>
@@ -53,7 +53,7 @@ class FormAjustes extends React.Component{
         var inputs = document.getElementsByTagName('input');
         for (var h=0;h<inputs.length;h++){
             for (var i=0; i<campos.length;i++){
-                if(inputs[h].name==campos[i]){
+                if(inputs[h].name === campos[i]){
                     inputs[h].value="";
                 }
             }
@@ -65,7 +65,6 @@ class FormAjustes extends React.Component{
         const cookies = new Cookies();
 
         const history = this.props.history;
-        const usuarioLogged = this.props.usuario;
         const username = this.state.username;
         const email = cookies.get('email');
         const password = this.state.password;
