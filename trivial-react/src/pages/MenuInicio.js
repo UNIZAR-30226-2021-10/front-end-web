@@ -53,22 +53,23 @@ class FormInicio extends React.Component{
         axios.post("http://localhost:3050/MenuInicio", {nickname: username,password: password})         
                         .then(response => { //Está registrado
                             console.log(response.data);
-                            //Hacer cookie con lo que te devuelve en response
-                            const cookies = new Cookies();
-                            cookies.set('user', response.data.email.nickname, {path: '/'});
-                            cookies.set('email', response.data.email.email, {path: '/'});
-                            cookies.set('puntos', response.data.email.puntos, {path: '/'});
-                            cookies.set('monedas', response.data.email.monedas, {path: '/'});
-                            cookies.set('avatar', response.data.email.imagen, {path: '/'});
+                            if (username === "admin"){
+                                //Ir a la ventana del administrador
+                                history.push('/Upload');
+                            } else{
+                                //Hacer cookie con lo que te devuelve en response
+                                const cookies = new Cookies();
+                                cookies.set('user', response.data.email.nickname, {path: '/'});
+                                cookies.set('email', response.data.email.email, {path: '/'});
+                                cookies.set('puntos', response.data.email.puntos, {path: '/'});
+                                cookies.set('monedas', response.data.email.monedas, {path: '/'});
+                                cookies.set('avatar', response.data.email.imagen, {path: '/'});
 
-                            alert("Usuario logeado correctamente: "+ username);
-                            history.push('/DecisionJuego'); 
-                            
+                                history.push('/DecisionJuego');
+                            }
                         })
                         .catch(error => {
                             console.log(error);
-                            
-                            //Insertar usuario en la bd
                             if (error.response.status === 400){  //Si el usuario ya está siendo usado o es inválido
                                 alert("Nombre de usuario o contrasena incorrectos");
                                 //Borrar nombre de usuario del input

@@ -23,11 +23,13 @@
     margin: auto auto;
 }
 
-.FooterMenu .UploadSection, .HistorialSection, .DownloadSection{
+.FooterMenu .UploadSection, .HistorialSection, 
+.DownloadSection, .HomeSection{
     height: 90%;
     width: 100%;
     margin: auto;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .FooterMenu .categoriaArchivo{
@@ -77,6 +79,10 @@
     margin-left: 2%;
 }
 
+.FooterMenu .HistorialSection tbody, .DownloadSection tbody, .HomeSection tbody{
+    margin-left: 10%;
+}
+
 .FooterMenu th, .FooterMenu td {
     width: max-content;
     text-align: center;
@@ -95,6 +101,7 @@
 
 .FooterMenu .HistorialSection td, .DownloadSection td{
     background-color: rgb(156, 156, 156);
+    font-size: calc(10px + 1vmin);
 }
 
 .FooterMenu .DownloadSection img{
