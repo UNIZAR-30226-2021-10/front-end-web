@@ -6,8 +6,21 @@ import Item from '../components/Item';
 import {help} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { LayeredImage } from "react-layered-image";
 
 const baseUrl='http://localhost:3050';
+
+const style = {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+};
+
 
 class Header extends React.Component{
     render(){
@@ -18,11 +31,12 @@ class Header extends React.Component{
                     <LeftOutlined onClick={() => history.goBack()}/> 
                     Atrás
                 </div>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
-            </div>
+                
+            </div>  
         );
     }
 }
+
 
 class ComprarItem extends React.Component{
     constructor(props) {
@@ -121,6 +135,7 @@ class ItemTienda extends React.Component {
             <Header history={history}/>
             <ComprarItem history={history} item={item} monedas={monedas}/>
         </div>
+       
     )
   }  
 };

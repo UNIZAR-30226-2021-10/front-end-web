@@ -40,6 +40,85 @@ class InfoPerfilUsuario extends React.Component{
         cookies.remove('monedas');
         history.push("/MenuInicio");
     }
+    equipar = (thisItem) =>{
+        const itemsComprados = this.props.itemsComprados;
+        const history = this.props.history;
+        if (thisItem.Tipo == 'color'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'color'){
+                    if (item.Nombre == thisItem.Nombre){
+                        item.equipado=1;
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+            console.log(itemsComprados);
+        }
+        else if (thisItem.Tipo == 'cuerpo'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'cuerpo'){
+                    if (item.Nombre == thisItem.Nombre){
+                        item.equipado=1;
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        
+        }
+        else if (thisItem.Tipo == 'cara'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'cara'){
+                    if (item.Nombre == thisItem.Nombre){
+                        item.equipado=1;
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        
+        }
+        else if (thisItem.Tipo == 'cabeza'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'cabeza'){
+                    if (item.Nombre == thisItem.Nombre){
+                        item.equipado=1;
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        
+        }
+    }
+    actualizarBD = () =>{
+        const history = this.props.history;
+        const cookies = new Cookies();
+        const itemsComprados = this.props.itemsComprados;
+        const equipados=[];
+        const nombre=[];
+        const email = cookies.get('email');
+        itemsComprados.forEach((item) => {
+            equipados.push(item.equipado);
+            nombre.push(item.iditem);
+        })
+        axios.post(baseUrl+'/UpdateItemsUsuario', {equipados, nombre, email: email})
+            .then(response=>{   
+                if (response.status == 200) { 
+                    console.log("datos guardados");
+                }else{
+                    console.log("error al guardar los datos");
+                }
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+    }
     render(){
         const cookies = new Cookies();
         const history = this.props.history;
@@ -47,7 +126,11 @@ class InfoPerfilUsuario extends React.Component{
 
         const cols=[];
         itemsComprados.forEach((item) => {
-            cols.push(<Item item={item}/>);
+            cols.push(  <div className = "itemsTienda">
+                            <Item item={item}/> 
+                            <button className="btnEquip" onClick={()=> this.equipar(item)}>Equipar</button>
+                        </div>
+                    );
         });
 
         return(
@@ -78,6 +161,7 @@ class InfoPerfilUsuario extends React.Component{
                     </tr>
                 </tbody>
                 <div className="itemsComprados">{cols}</div>
+                <div className="guardar"> <button className="btnGuardar" onClick={() => this.actualizarBD()} > Guardar </button> </div>
             </div>
         );
     }
