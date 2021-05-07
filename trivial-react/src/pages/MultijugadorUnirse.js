@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import queryString from 'query-string';
-import {iniciarSocket,disconnectSocket, actualizarMensajes, enviarMensaje} from './Socket';
+import {iniciarSocket,disconnectSocket, actualizarMensajes, enviarMensaje, pasarTurno, actualizarEventos, sendFinPartida} from './Socket';
 import '../css/MultijugadorUnirse.css'
 import {LeftOutlined, LoadingOutlined} from '@ant-design/icons';
 import Dado from '../components/Dado';
@@ -116,7 +116,10 @@ class Pregunta extends React.Component{
         const { pregunta, usuario, turno, jugadores, maxJugadores,
                 colorBtnA, colorBtnB, colorBtnC, colorBtnD,
                 hasRespondido,hasTiradoDado} = this.props;
+
         const disabled=hasRespondido;
+
+        
         const diabledNext=!hasRespondido;
         //const disabled=(hasRespondido | turno!=usuario);
         return(
@@ -213,11 +216,14 @@ class MultijugadorUnirse extends React.Component{
         });
     };
 
-    componentDidMount(){ //Unión de un usuario a la sala de chat
+    //Unión de un usuario a la sala de chat
+    componentDidMount(){ 
         const history = this.props.history;
         const firstJoin = this.props.location.state.firstJoin;
-        const {messages, jugadores} = this.state;
+        const {messages, jugadores, turno} = this.state;
         const {username, code} = queryString.parse(history.location.search);
+        const {maxJugadores}=this.props.location.state;
+        console.log("COMPONENT DID MOUNT: " + maxJugadores);
 
         //Inicializar socket y unión del usuario "username" al chat con codigo "code"
         console.log(firstJoin);
@@ -225,6 +231,12 @@ class MultijugadorUnirse extends React.Component{
 
         //Actualizar array de mensajes con los que te llegan
         actualizarMensajes(messages, jugadores, this.setStates);
+
+
+        //VALE VALE EN PLAN EL PROBLEMA ES QUE COMO SE LO PASO POR PARAMETRO PUES NO SE ACTUALIZA SE PASA SIEMPRE 0 CREO?
+        //actualizarEventos(maxJugadores, turno, this.setStates);
+        actualizarEventos(this.setStates, this.endGame, history, this.props.location.state.usuario);
+
     }
 
     componentWillUnmount() {
@@ -292,6 +304,7 @@ class MultijugadorUnirse extends React.Component{
         );
     }
 
+    //Enviar mensaje en chat
     sendMessage(messageInput) {
         const {usuario} = this.props.location.state;
         const {jugadores} = this.state;
@@ -303,9 +316,13 @@ class MultijugadorUnirse extends React.Component{
         }
     }
 
+
+    //Al hacer click en una respuesta
     handleClick(e) {
         const {turno,jugadores,pregunta,hasRespondido} = this.state;
         if(!hasRespondido){
+
+            //Marcar en verde la respuesta correcta
             switch (pregunta.answer) {
                 case 'opcionA': this.setState({colorBtnA: 'green'}); break;
                 case 'opcionB': this.setState({colorBtnB: 'green'}); break;
@@ -313,12 +330,15 @@ class MultijugadorUnirse extends React.Component{
                 case 'opcionD': this.setState({colorBtnD: 'green'}); break;
                 default: break;
             }
+
+            //Respuesta respondida por el suuario
             let respuesta = e.target.name;
-            if (pregunta.answer == respuesta){  //Acierta
+            if (pregunta.answer == respuesta){  //Respuesta correcta
                 let actJugadores = jugadores;
                 actJugadores[turno].puntos = Number(jugadores[turno].puntos) + Number(pregunta.puntos);
                 this.setState({jugadores: actJugadores});
-            } else{     //Falla
+
+            } else{                             //Respuesta NO correcta
                 switch (respuesta) {
                     case 'opcionA': this.setState({colorBtnA: 'red'}); break;
                     case 'opcionB': this.setState({colorBtnB: 'red'}); break;
@@ -399,12 +419,24 @@ class MultijugadorUnirse extends React.Component{
         });
     }
 
+
+    //FIX ME: esto esta bastante chapucero habria que solucionarlo
+    // ademas los puntos no se pasan bien y por ahi
+    endGame(jugadoresDesc, history, usuario) {
+        history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: usuario});
+    }
+
+    //Al hacer click en siguiente para pasar el turno al siguiente jugador
     handleTurno() {
+
         const history = this.props.history;
         const {usuario,maxRondas,maxJugadores}=this.props.location.state;
         const {ronda,turno,jugadores}=this.state;
+        var nuevoTurno, nuevaRonda = ronda;
+
         //Pasar al siguiente turno
-        if (ronda==maxRondas && turno==(maxJugadores-1)){ //Ya se han jugado todas las rondas
+        if (ronda==maxRondas && turno==(maxJugadores-1)){   //Ya se han jugado todas las rondas
+            
             //Ordenamiento descendente bubble sort
             let jugadoresDesc = jugadores;
             let user = usuario;
@@ -413,14 +445,29 @@ class MultijugadorUnirse extends React.Component{
             console.log(jugadoresDesc, user);
             //Finalizar partida
             this.postPartida(jugadoresDesc, user);
-            history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: user});
-        } else {  //Se sigue jugando
+
+            //Enviar fin de partida al resto de jugadores
+            sendFinPartida(jugadoresDesc);
+
+            this.endGame(jugadoresDesc);
+            //history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: user});
+
+        } else {        //Se sigue jugando
+
             if (turno==(maxJugadores-1)){   //Cuando es el último turno, se actualiza la ronda
-                this.setState({ronda: (Number(ronda)+1)%(Number(maxRondas)+1)});
+                nuevaRonda = (Number(ronda)+1)%(Number(maxRondas)+1)
+                this.setState({ronda: nuevaRonda});
+                
             }
             //Actualizar turno
-            this.setState({turno: (turno+1)%maxJugadores});
+            nuevoTurno = (turno+1)%maxJugadores;
+            this.setState({turno: nuevoTurno});
+            
         }
+
+        //Enviar al resto de jugadores el nuevo turno y ronda
+        pasarTurno(nuevoTurno, nuevaRonda);
+
         this.setState({ hasRespondido: false,
                         hasTiradoDado: false,
                         colorBtnA: 'white',
@@ -442,6 +489,8 @@ class MultijugadorUnirse extends React.Component{
         await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
             .then(response=>{
                 const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
+
+                //Coloca aleatoriamente respuesta correcta
                 const opcionCorrecta = this.rand(1,4);
                 let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
                 switch (opcionCorrecta){
@@ -484,6 +533,9 @@ class MultijugadorUnirse extends React.Component{
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
         const imagenes = [  marron, azul, amarillo, rosa, verde, naranja ];
         const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
+
+
+        //TODO
         if (!hasTiradoDado && jugadores.length==maxJugadores && true){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);
             const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};

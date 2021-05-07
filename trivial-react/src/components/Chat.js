@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/Chat.css';
 import {LeftOutlined} from '@ant-design/icons';
+import Cookies from 'universal-cookie';
 
 class Header extends React.Component{
     cerrarChat = () => {
@@ -42,6 +43,8 @@ class Messages extends React.Component {
         const colores = ["#e9a6a1", "#e9dea1", "#b2e9a1", "#a1e4e9"];
         const messages = this.props.messages;
         const usuario = this.props.usuario;
+        // const cookies = new Cookies();
+        // const usuario = cookies.get('user');
         const jugadores = this.props.jugadores;
         return (
             <div className="Messages">
