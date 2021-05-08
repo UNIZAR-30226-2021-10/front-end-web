@@ -250,6 +250,8 @@ class MultijugadorUnirse extends React.Component{
                 colorBtnA, colorBtnB, colorBtnC, colorBtnD, hasRespondido,
                 clickAtras, clickChat, messages} = this.state;
         console.log(this.state);
+        console.log("MULTIJUGADOR UNIRSE:");
+        console.log()
         return(
             <div>
                 { clickAtras === true? (
@@ -351,6 +353,7 @@ class MultijugadorUnirse extends React.Component{
         }
     }
 
+    //Ordenacion para la posición de los jugadores
     BubbleSortDesc(values, length, user){
         var i, j, flag = 1;
         var temp;
@@ -386,6 +389,12 @@ class MultijugadorUnirse extends React.Component{
         const jugador = jugadores[usuario];
         //Construcción de monedas y email
         const monedas = jugador.puntos*0.5;
+
+        console.log("FIN DE LA PARTIDA");
+        var element;
+        jugadores.forEach(element => {
+            console.log("EMAIL DE LOS MUCHACHOS: " + element.email);
+        });
         
 
         //Actualiza la tabla partida.
@@ -420,8 +429,7 @@ class MultijugadorUnirse extends React.Component{
     }
 
 
-    //FIX ME: esto esta bastante chapucero habria que solucionarlo
-    // ademas los puntos no se pasan bien y por ahi
+    //Muestra la pantalla final del juego
     endGame(jugadoresDesc, history, usuario) {
         history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: usuario});
     }
@@ -449,8 +457,8 @@ class MultijugadorUnirse extends React.Component{
             //Enviar fin de partida al resto de jugadores
             sendFinPartida(jugadoresDesc);
 
-            this.endGame(jugadoresDesc);
-            //history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: user});
+
+            this.endGame(jugadoresDesc, history, usuario);
 
         } else {        //Se sigue jugando
 
@@ -466,7 +474,8 @@ class MultijugadorUnirse extends React.Component{
         }
 
         //Enviar al resto de jugadores el nuevo turno y ronda
-        pasarTurno(nuevoTurno, nuevaRonda);
+        console.log(usuario + " pasa turno con puntos: " +  jugadores[usuario].puntos);
+        pasarTurno(nuevoTurno, nuevaRonda, jugadores);
 
         this.setState({ hasRespondido: false,
                         hasTiradoDado: false,
@@ -533,10 +542,12 @@ class MultijugadorUnirse extends React.Component{
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
         const imagenes = [  marron, azul, amarillo, rosa, verde, naranja ];
         const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
+        const {usuario}=this.props.location.state;
+        const {turno}=this.state;
 
 
-        //TODO
-        if (!hasTiradoDado && jugadores.length==maxJugadores && true){ //true = Es tu turno = turno==usuario
+        //Si se cumple la condición puedes tirar el dado
+        if (!hasTiradoDado && jugadores.length==maxJugadores && usuario==turno){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);
             const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
             this.getPregunta(dado);

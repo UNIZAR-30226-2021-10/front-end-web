@@ -44,15 +44,17 @@ export const actualizarMensajes = (messages, jugadores, setParentsState) => {
 
 }
 
+//Recibe eventos de otros jugadores
 export const actualizarEventos = (setParentsState, endGame, history, usuario) => {
 
     //Otro jugador ha pasado el turno
-    socket.on('recibirTurno', (nuevoTurno, nuevaRonda) =>{
+    socket.on('recibirTurno', (nuevoTurno, nuevaRonda, jugadores) =>{
 
-        setParentsState([{turno:nuevoTurno, ronda:nuevaRonda}]);
+        setParentsState([{turno:nuevoTurno, ronda:nuevaRonda, jugadores:jugadores}]);
         console.log("Turno del jugador " + nuevoTurno);
     });
 
+    //Partida finalizada
     socket.on('finalizarPartida', (jugadoresDesc) =>{
 
         endGame(jugadoresDesc, history, usuario);
@@ -70,8 +72,9 @@ export const enviarMensaje = (message) => {
 }
 
 //Metodo para pasar el turno
-export const pasarTurno = (nuevoTurno, nuevaRonda) => {
-    socket.emit('pasarTurno', nuevoTurno, nuevaRonda);
+//jugadores: vector con la info de los jugadores para actualizar los puntos
+export const pasarTurno = (nuevoTurno, nuevaRonda, jugadores) => {
+    socket.emit('pasarTurno', nuevoTurno, nuevaRonda, jugadores);
     console.log("He pasado el turno");
 }
 

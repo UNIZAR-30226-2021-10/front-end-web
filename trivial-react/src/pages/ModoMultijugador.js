@@ -166,13 +166,16 @@ class UnirseAPartida extends React.Component{
                         console.log("Soy un nuevo jugador: "+user);
                         //Construir jugador nuevo
                         const avatar = cookies.get('avatar');
-                        const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
+                        const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0', email:email};
                         jugadoresUnirse.push(jugadorNuevo);
                         user = jugadoresUnirse.length-1;
 
                         //Insertar nuevo jugador en db
                         this.postJugador(partida.codigo, jugadorNuevo);
                     }
+                    
+                    console.log("EL MUCHCACHO:"); 
+                    console.log(jugadoresUnirse);
                     history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
                         {   usuario: user, 
                             maxRondas: partida.rondas,
