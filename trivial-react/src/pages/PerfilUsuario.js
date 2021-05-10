@@ -118,6 +118,7 @@ class InfoPerfilUsuario extends React.Component{
         const nombre=[];
         const imagenes=[];
         const email = cookies.get('email');
+        let avatar;
         itemsComprados.forEach((item) => {
             equipados.push(item.equipado);
             nombre.push(item.iditem);
@@ -136,12 +137,15 @@ class InfoPerfilUsuario extends React.Component{
             .catch(err=>{
                 console.log(err);
             })
-        const elemento = (
-            <div style={style}>
-		        <LayeredImage layers={imagenes} style={{ width: 400 }} />
-	        </div>
-        );
-        cookies.set('avatar', elemento, {path: '/'});
+        axios.post(baseUrl+'/construirAvatar', {color:imagenes[0], cara:imagenes[1]})
+            .then(response => {
+                avatar = response.status;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        cookies.set('avatar', avatar, {path: '/'});
+        console.log(avatar);
         history.push("/PerfilUsuario", {usuario: usuario});
     }
     render(){
