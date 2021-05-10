@@ -5,8 +5,21 @@ import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { LayeredImage } from "react-layered-image";
 
 const baseUrl='http://localhost:3050';
+
+const style = {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+  
 
 class Header extends React.Component{
     render(){
@@ -100,12 +113,17 @@ class InfoPerfilUsuario extends React.Component{
         const history = this.props.history;
         const cookies = new Cookies();
         const itemsComprados = this.props.itemsComprados;
+        const usuario = this.props.usuario;
         const equipados=[];
         const nombre=[];
+        const imagenes=[];
         const email = cookies.get('email');
         itemsComprados.forEach((item) => {
             equipados.push(item.equipado);
             nombre.push(item.iditem);
+            if(item.equipado == 1){
+                imagenes.push(item.Imagen);
+            }
         })
         axios.post(baseUrl+'/UpdateItemsUsuario', {equipados, nombre, email: email})
             .then(response=>{   
@@ -118,6 +136,13 @@ class InfoPerfilUsuario extends React.Component{
             .catch(err=>{
                 console.log(err);
             })
+        const elemento = (
+            <div style={style}>
+		        <LayeredImage layers={imagenes} style={{ width: 400 }} />
+	        </div>
+        );
+        cookies.set('avatar', elemento, {path: '/'});
+        history.push("/PerfilUsuario", {usuario: usuario});
     }
     render(){
         const cookies = new Cookies();
