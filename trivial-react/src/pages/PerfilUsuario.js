@@ -137,7 +137,7 @@ class InfoPerfilUsuario extends React.Component{
             .catch(err=>{
                 console.log(err);
             })
-        axios.post(baseUrl+'/construirAvatar', {color:imagenes[0], cara:imagenes[1]})
+        axios.post(baseUrl+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
                 avatar = response.status;
             })
