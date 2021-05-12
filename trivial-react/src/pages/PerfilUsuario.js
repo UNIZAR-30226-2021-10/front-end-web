@@ -60,20 +60,27 @@ class InfoPerfilUsuario extends React.Component{
             itemsComprados.forEach((item) => {
                 if(item.Tipo == 'color'){
                     if (item.Nombre == thisItem.Nombre){
-                        item.equipado=1;
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
                     }
                     else{
                         item.equipado=0;
                     }
                 }
             })
-            console.log(itemsComprados);
         }
         else if (thisItem.Tipo == 'cuerpo'){
             itemsComprados.forEach((item) => {
                 if(item.Tipo == 'cuerpo'){
                     if (item.Nombre == thisItem.Nombre){
-                        item.equipado=1;
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
                     }
                     else{
                         item.equipado=0;
@@ -86,7 +93,11 @@ class InfoPerfilUsuario extends React.Component{
             itemsComprados.forEach((item) => {
                 if(item.Tipo == 'cara'){
                     if (item.Nombre == thisItem.Nombre){
-                        item.equipado=1;
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
                     }
                     else{
                         item.equipado=0;
@@ -99,7 +110,11 @@ class InfoPerfilUsuario extends React.Component{
             itemsComprados.forEach((item) => {
                 if(item.Tipo == 'cabeza'){
                     if (item.Nombre == thisItem.Nombre){
-                        item.equipado=1;
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
                     }
                     else{
                         item.equipado=0;
@@ -123,9 +138,24 @@ class InfoPerfilUsuario extends React.Component{
             equipados.push(item.equipado);
             nombre.push(item.iditem);
             if(item.equipado == 1){
-                imagenes.push(item.Imagen);
+                if (imagenes.length>4){
+                    if (item.Tipo == 'color'){
+                        imagenes.shift();
+                        imagenes.unshift(item.Imagen);
+                    }else{
+                        imagenes.pop();
+                        imagenes.push(item.Imagen)
+                    }
+                }else {
+                    if (item.Tipo == 'color'){
+                        imagenes.unshift(item.Imagen);
+                    } else{
+                    imagenes.push(item.Imagen);
+                    }
+                }
             }
         })
+        console.log(imagenes);
         axios.post(baseUrl+'/UpdateItemsUsuario', {equipados, nombre, email: email})
             .then(response=>{   
                 if (response.status == 200) { 
@@ -145,7 +175,6 @@ class InfoPerfilUsuario extends React.Component{
                 console.log(err);
             })
         cookies.set('avatar', avatar, {path: '/'});
-        console.log(avatar);
         history.push("/PerfilUsuario", {usuario: usuario});
     }
     render(){
@@ -234,7 +263,6 @@ class PerfilUsuario extends React.Component{
         const history = this.props.history;
         const usuarioLoggedIn = this.props.location.state.usuario;
         const itemsComprados = this.state.itemsComprados;
-        console.log(itemsComprados);
 
         return(
             <div className="PerfilUsuario">
