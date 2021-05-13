@@ -8,6 +8,7 @@ import axios from 'axios';
 import { LayeredImage } from "react-layered-image";
 
 const baseUrl='http://localhost:3050';
+const urlImage= 'https://trivial-images.herokuapp.com'
 
 const style = {
     position: "absolute",
@@ -169,13 +170,21 @@ class InfoPerfilUsuario extends React.Component{
             })
         axios.post(baseUrl+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
-                avatar = response.status;
+                avatar = response.data;
+                axios.post(urlImage+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
+                .then(response =>{
+                    console.log(response.data.imagenAv);
+                    cookies.set('avatar', response.data.imagenAv, {path: '/'});
+                })
+                .catch(err => {
+                    console.log(err);
+                })
             })
             .catch(err => {
                 console.log(err);
             })
-        cookies.set('avatar', avatar, {path: '/'});
-        history.push("/PerfilUsuario", {usuario: usuario});
+        this.forceUpdate();
+        
     }
     render(){
         const cookies = new Cookies();
