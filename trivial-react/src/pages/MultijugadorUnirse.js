@@ -188,6 +188,7 @@ const MESSAGES_DATA = [];
 class MultijugadorUnirse extends React.Component{
     constructor(props) {
         super(props);
+
         this.state = {
             ronda: '1',
             turno: '0',
@@ -216,26 +217,26 @@ class MultijugadorUnirse extends React.Component{
         });
     };
 
-    //Unión de un usuario a la sala de chat
+
     componentDidMount(){ 
         const history = this.props.history;
         const firstJoin = this.props.location.state.firstJoin;
         const {messages, jugadores, turno} = this.state;
         const {username, code} = queryString.parse(history.location.search);
         const {maxJugadores}=this.props.location.state;
-        console.log("COMPONENT DID MOUNT: " + maxJugadores);
+        const cookies = new Cookies();
+        const avatar = cookies.get('avatar');
 
         //Inicializar socket y unión del usuario "username" al chat con codigo "code"
         console.log(firstJoin);
-        iniciarSocket(username, code, firstJoin, history);
+        iniciarSocket(username, code, firstJoin, history, avatar);
 
         //Actualizar array de mensajes con los que te llegan
         actualizarMensajes(messages, jugadores, this.setStates);
 
 
-        //VALE VALE EN PLAN EL PROBLEMA ES QUE COMO SE LO PASO POR PARAMETRO PUES NO SE ACTUALIZA SE PASA SIEMPRE 0 CREO?
-        //actualizarEventos(maxJugadores, turno, this.setStates);
-        actualizarEventos(this.setStates, this.endGame, history, this.props.location.state.usuario);
+        //Actualizar eventos de pasar turno y finalizar partida
+        actualizarEventos(this.setStates, this.endGame, history, this.props.location.state.usuario, code, jugadores);
 
     }
 
@@ -250,8 +251,6 @@ class MultijugadorUnirse extends React.Component{
                 colorBtnA, colorBtnB, colorBtnC, colorBtnD, hasRespondido,
                 clickAtras, clickChat, messages} = this.state;
         console.log(this.state);
-        console.log("MULTIJUGADOR UNIRSE:");
-        console.log()
         return(
             <div>
                 { clickAtras === true? (
@@ -379,26 +378,18 @@ class MultijugadorUnirse extends React.Component{
     //y si es el ganador actualiza el campo ganador de la tabla partida.
     //jugadores: ordenados de mayor a menor puntuación.
     //usuario: índice en el vector "jugadores" del usuario que hizo login.
-    postPartida(jugadores, usuario){
+    postPartida(jugador, ganador){
         const cookies = new Cookies();
         const email = cookies.get('email');
 
         //Código de la partida.
         const {code}=this.props.location.state;
-        //Datos del jugador: username, avatar, puntos.
-        const jugador = jugadores[usuario];
+        
         //Construcción de monedas y email
         const monedas = jugador.puntos*0.5;
 
-        console.log("FIN DE LA PARTIDA");
-        var element;
-        jugadores.forEach(element => {
-            console.log("EMAIL DE LOS MUCHACHOS: " + element.email);
-        });
-        
-
         //Actualiza la tabla partida.
-        if (usuario == 0){  //Si eres el ganador
+        if (ganador == 1){  //Si eres el ganador
             //Actualizar la partida de codigo "code" con el ganador en la tabla partida.
             axios.post(baseUrl+'/FinalMultijugador_Partida', 
                 { codigo: code, ganador: jugador.username})
@@ -428,9 +419,51 @@ class MultijugadorUnirse extends React.Component{
         });
     }
 
-
     //Muestra la pantalla final del juego
-    endGame(jugadoresDesc, history, usuario) {
+    endGame(jugadoresDesc, jugador, history, usuario, code) {
+        
+        //TODO
+        const ganador = jugadoresDesc[0].username==jugador.username;
+        console.log("Ganador")
+        console.log(ganador)
+        //this.postPartida(jugador, ganador);
+
+        const cookies = new Cookies();
+        const email = cookies.get('email');
+        
+        //Construcción de monedas y email
+        const monedas = jugador.puntos*0.5;
+
+        //Actualiza la tabla partida.
+        if (ganador == 1){  //Si eres el ganador
+            //Actualizar la partida de codigo "code" con el ganador en la tabla partida.    
+            axios.post(baseUrl+'/FinalMultijugador_Partida', 
+                { codigo: code, ganador: jugador.username})
+            .then(response => { //Respuesta del servidor
+                console.log(response.data.message);  
+            }).catch(e => { //Error
+                console.log(e);         
+            });
+        }
+
+        //Actualizar la partida de codigo "code" con la puntuación en la tabla juega.
+        axios.post(baseUrl+'/FinalMultijugador_Juega', 
+            { codigo: code, puntos: jugador.puntos})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);         
+        });
+        
+        //Guarda los resultados en la tabla usuario.
+        axios.post(baseUrl+'/FinalIndividual_Usuario', 
+            { email: email, monedas: monedas, puntos: jugador.puntos })
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);         
+        });
+
         history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: usuario});
     }
 
@@ -440,6 +473,7 @@ class MultijugadorUnirse extends React.Component{
         const history = this.props.history;
         const {usuario,maxRondas,maxJugadores}=this.props.location.state;
         const {ronda,turno,jugadores}=this.state;
+        const code = this.props;
         var nuevoTurno, nuevaRonda = ronda;
 
         //Pasar al siguiente turno
@@ -452,13 +486,13 @@ class MultijugadorUnirse extends React.Component{
             this.BubbleSortDesc(jugadoresDesc,jugadoresDesc.length, user);
             console.log(jugadoresDesc, user);
             //Finalizar partida
-            this.postPartida(jugadoresDesc, user);
+            //this.postPartida(jugadoresDesc, user);
 
             //Enviar fin de partida al resto de jugadores
             sendFinPartida(jugadoresDesc);
 
 
-            this.endGame(jugadoresDesc, history, usuario);
+            this.endGame(jugadoresDesc, jugadores[usuario], history, usuario, code);
 
         } else {        //Se sigue jugando
 
@@ -475,7 +509,7 @@ class MultijugadorUnirse extends React.Component{
 
         //Enviar al resto de jugadores el nuevo turno y ronda
         console.log(usuario + " pasa turno con puntos: " +  jugadores[usuario].puntos);
-        pasarTurno(nuevoTurno, nuevaRonda, jugadores);
+        pasarTurno(nuevoTurno, nuevaRonda,  jugadores[usuario].puntos);
 
         this.setState({ hasRespondido: false,
                         hasTiradoDado: false,

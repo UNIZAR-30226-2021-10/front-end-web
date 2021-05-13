@@ -2,12 +2,12 @@ import io from 'socket.io-client';
 let socket;
 
 //Iniciar socket del cliente
-export const iniciarSocket = (username, code, firstJoin, history) => {
+export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
     socket = io('localhost:5000', {
         transports: [ 'websocket' ],
         upgrade: false
     });
-    socket.emit('join', {username: username, code: code, firstJoin: firstJoin}, (error) =>{
+    socket.emit('join', {username: username, code: code, avatar:avatar, firstJoin: firstJoin}, (error) =>{
         if (error){
             alert(error);
             history.goBack();
@@ -38,17 +38,38 @@ export const actualizarMensajes = (messages, jugadores, setParentsState) => {
     //Nuevo jugador se une a la partida
     socket.on('newPlayer', (jugador) =>{
         var jugadoresActuales = jugadores;
+        
+        console.log(jugador)
         jugadoresActuales.push(jugador);
         setParentsState([{jugadores: jugadoresActuales}]);
     });
 
 }
 
+
+
+
 //Recibe eventos de otros jugadores
-export const actualizarEventos = (setParentsState, endGame, history, usuario) => {
+export const actualizarEventos = (setParentsState, endGame, history, usuario, code, jugadores) => {
 
     //Otro jugador ha pasado el turno
-    socket.on('recibirTurno', (nuevoTurno, nuevaRonda, jugadores) =>{
+    socket.on('recibirTurno', (nuevoTurno, nuevaRonda, puntos) =>{
+
+        //TODO ACTUALIZAR PARA JUGADOR DESCONECTADO        
+        var i=0;
+        var anterior;
+        var maxJugadores=jugadores.length;
+        jugadores.forEach(jugador => {
+            console.log(jugador);
+            if((i+1)%maxJugadores === nuevoTurno){
+                anterior=i;
+            }
+            i=i+1;
+        });
+        console.log(anterior)
+        console.log(puntos)
+        jugadores[anterior].puntos=puntos;
+        
 
         setParentsState([{turno:nuevoTurno, ronda:nuevaRonda, jugadores:jugadores}]);
         console.log("Turno del jugador " + nuevoTurno);
@@ -57,7 +78,7 @@ export const actualizarEventos = (setParentsState, endGame, history, usuario) =>
     //Partida finalizada
     socket.on('finalizarPartida', (jugadoresDesc) =>{
 
-        endGame(jugadoresDesc, history, usuario);
+        endGame(jugadoresDesc, jugadores[usuario], history, usuario, code);
         console.log("Fin de la partida");
     });
 

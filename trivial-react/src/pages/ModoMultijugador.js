@@ -74,6 +74,7 @@ class UnirseAPartida extends React.Component{
             fetch(baseUrl+'/Multijugador_PartidaJugadoresUsuario?idpartida='+ idpartida)
             .then(response=>{   //Hay jugadores en esa partida
                 if (response.ok) {
+                    console.log(response)
                     resolve(response.json());
                 }else{
                     reject(response.status);
@@ -151,7 +152,7 @@ class UnirseAPartida extends React.Component{
                         user = index; 
                         firstJoin = false;
                     }
-                    jugadoresUnirse.push({username: jugador.nickname, avatar: jugador.imagen, puntos: jugador.puntuacion});
+                    jugadoresUnirse.push({username: jugador.nickname, avatar: jugador.imagen, puntos: jugador.puntuacion, conectado:true});
                 });
                 if(jugadores.length==partida.numJugadores && user=="-1"){   //Si la partida está llena y no estas entre los jugadores
                     alert("La partida está completa.");
@@ -166,15 +167,14 @@ class UnirseAPartida extends React.Component{
                         console.log("Soy un nuevo jugador: "+user);
                         //Construir jugador nuevo
                         const avatar = cookies.get('avatar');
-                        const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0', email:email};
+                        const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
                         jugadoresUnirse.push(jugadorNuevo);
                         user = jugadoresUnirse.length-1;
 
                         //Insertar nuevo jugador en db
                         this.postJugador(partida.codigo, jugadorNuevo);
                     }
-                    
-                    console.log("EL MUCHCACHO:"); 
+
                     console.log(jugadoresUnirse);
                     history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
                         {   usuario: user, 
