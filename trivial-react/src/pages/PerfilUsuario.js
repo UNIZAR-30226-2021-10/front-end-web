@@ -205,6 +205,7 @@ class InfoPerfilUsuario extends React.Component{
                 <div className="imgAvatar">
                     {<img src={cookies.get('avatar')} alt="Avatar"></img>}
                     <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
+                    <button className="btnEquipar" onClick={() => history.push("/Equipacion")}>Equiparse</button>
                 </div>
                 <tbody>
                     <tr>
@@ -223,12 +224,7 @@ class InfoPerfilUsuario extends React.Component{
                         <th>Monedas Conseguidas:</th>
                         <td>{cookies.get('monedas')}</td>
                     </tr>
-                    <tr>
-                        <th>Items: </th>
-                    </tr>
                 </tbody>
-                <div className="itemsComprados">{cols}</div>
-                <div className="guardar"> <button className="btnGuardar" onClick={() => this.actualizarBD()} > Guardar </button> </div>
             </div>
         );
     }

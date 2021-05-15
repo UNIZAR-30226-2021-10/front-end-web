@@ -200,14 +200,6 @@ class InfoPerfilUsuario extends React.Component{
                         <td>{cookies.get('user')}</td>
                     </tr>
                     <tr>
-                        <th>Email:</th>
-                        <td>{cookies.get('email')}</td>
-                    </tr>
-                    <tr>
-                        <th>Puntos Acumulados:</th>
-                        <td>{cookies.get('puntos')}</td>
-                    </tr>
-                    <tr>
                         <th>Monedas Conseguidas:</th>
                         <td>{cookies.get('monedas')}</td>
                     </tr>
