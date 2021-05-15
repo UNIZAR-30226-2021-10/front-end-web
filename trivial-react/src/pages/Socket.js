@@ -38,9 +38,22 @@ export const actualizarMensajes = (messages, jugadores, setParentsState) => {
     //Nuevo jugador se une a la partida
     socket.on('newPlayer', (jugador) =>{
         var jugadoresActuales = jugadores;
-        
+        jugador.conectado=true;
         console.log(jugador)
         jugadoresActuales.push(jugador);
+        setParentsState([{jugadores: jugadoresActuales}]);
+    });
+
+    //Jugador de nombre username se desconecta
+    socket.on('desconexion', (jugadorDesconectado) =>{
+        var jugadoresActuales = jugadores;
+        
+        jugadoresActuales.forEach(j => {
+            if(j.username===jugadorDesconectado){
+                j.conectado=false;
+                j.puntos=0;
+            }
+        })
         setParentsState([{jugadores: jugadoresActuales}]);
     });
 
@@ -59,13 +72,31 @@ export const actualizarEventos = (setParentsState, endGame, history, usuario, co
         var i=0;
         var anterior;
         var maxJugadores=jugadores.length;
-        jugadores.forEach(jugador => {
-            console.log(jugador);
-            if((i+1)%maxJugadores === nuevoTurno){
-                anterior=i;
+
+        for(i=1; i<=maxJugadores; i++){
+            let index=(nuevoTurno+maxJugadores-i)%maxJugadores;
+            if(jugadores[index].conectado==true){
+                anterior=index;
+                break;
             }
-            i=i+1;
-        });
+        }
+        // jugadores.forEach(jugador => {
+        //     console.log(jugador);
+        //     if((i+1)%maxJugadores === nuevoTurno){
+        //         if(jugadores[i].conectado==true){
+        //             anterior=i;
+        //         } else if(jugadores[(i+maxJugadores-1)%maxJugadores]==true){
+        //             anterior = ((i+maxJugadores-1)%maxJugadores)
+        //         } else {
+        //             anterior = ((i+maxJugadores-2)%maxJugadores)
+        //         }
+                
+        //         anterior=i;
+
+
+        //     }
+        //     i=i+1;
+        // });
         console.log(anterior)
         console.log(puntos)
         jugadores[anterior].puntos=puntos;

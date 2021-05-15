@@ -394,8 +394,10 @@ class MultijugadorUnirse extends React.Component{
             axios.post(baseUrl+'/FinalMultijugador_Partida', 
                 { codigo: code, ganador: jugador.username})
             .then(response => { //Respuesta del servidor
+                
                 console.log(response.data.message);  
             }).catch(e => { //Error
+                
                 console.log(e);         
             });
         }
@@ -404,8 +406,10 @@ class MultijugadorUnirse extends React.Component{
         axios.post(baseUrl+'/FinalMultijugador_Juega', 
             { codigo: code, puntos: jugador.puntos})
         .then(response => { //Respuesta del servidor
+            
             console.log(response.data.message);  
         }).catch(e => { //Error
+            
             console.log(e);         
         });
         
@@ -413,8 +417,10 @@ class MultijugadorUnirse extends React.Component{
         axios.post(baseUrl+'/FinalIndividual_Usuario', 
             { email: email, monedas: monedas, puntos: jugador.puntos })
         .then(response => { //Respuesta del servidor
+            
             console.log(response.data.message);  
         }).catch(e => { //Error
+            
             console.log(e);         
         });
     }
@@ -422,9 +428,12 @@ class MultijugadorUnirse extends React.Component{
     //Muestra la pantalla final del juego
     endGame(jugadoresDesc, jugador, history, usuario, code) {
         
-        //TODO
-        const ganador = jugadoresDesc[0].username==jugador.username;
+        //TODO GANADOR SE HACE MAL
         console.log("Ganador")
+        console.log(jugadoresDesc[0].username)
+        console.log(jugador.username)
+        const ganador = jugadoresDesc[0].username===jugador.username;
+        
         console.log(ganador)
         //this.postPartida(jugador, ganador);
 
@@ -440,18 +449,25 @@ class MultijugadorUnirse extends React.Component{
             axios.post(baseUrl+'/FinalMultijugador_Partida', 
                 { codigo: code, ganador: jugador.username})
             .then(response => { //Respuesta del servidor
+                console.log("FINAL MULTIJUGADOR PARTIDA")
                 console.log(response.data.message);  
             }).catch(e => { //Error
+                console.log("FINAL MULTIJUGADOR PARTIDA ERROR")
                 console.log(e);         
             });
         }
 
         //Actualizar la partida de codigo "code" con la puntuación en la tabla juega.
-        axios.post(baseUrl+'/FinalMultijugador_Juega', 
-            { codigo: code, puntos: jugador.puntos})
+        console.log(code)
+        console.log(jugador.puntos)
+        console.log(email)
+        axios.post(baseUrl+'/FinalMultijugador_Juega2', 
+            { codigo: code, puntos: jugador.puntos, email:email})
         .then(response => { //Respuesta del servidor
+            console.log("FINAL MULTIJUGADOR JUEGA")
             console.log(response.data.message);  
         }).catch(e => { //Error
+            console.log("FINAL MULTIJUGADOR JUEGA ERROR")
             console.log(e);         
         });
         
@@ -459,8 +475,10 @@ class MultijugadorUnirse extends React.Component{
         axios.post(baseUrl+'/FinalIndividual_Usuario', 
             { email: email, monedas: monedas, puntos: jugador.puntos })
         .then(response => { //Respuesta del servidor
+            console.log("FINAL INDIVIDUAL USUARIO")
             console.log(response.data.message);  
         }).catch(e => { //Error
+            console.log("FINAL INDIVIDUAL USUARIO ERROR")
             console.log(e);         
         });
 
@@ -471,15 +489,22 @@ class MultijugadorUnirse extends React.Component{
     handleTurno() {
 
         const history = this.props.history;
-        const {usuario,maxRondas,maxJugadores}=this.props.location.state;
+        const {usuario,maxRondas,maxJugadores,code}=this.props.location.state;
         const {ronda,turno,jugadores}=this.state;
-        const code = this.props;
+
         var nuevoTurno, nuevaRonda = ronda;
 
         //Pasar al siguiente turno
-        if (ronda==maxRondas && turno==(maxJugadores-1)){   //Ya se han jugado todas las rondas
+        var ultimoTurno =   (turno==(maxJugadores-1))      || 
+                    (turno==(maxJugadores-2) && jugadores[maxJugadores-1].conectado==false)     || 
+                    (turno==(maxJugadores-3) && jugadores[maxJugadores-2].conectado==false 
+                            && jugadores[maxJugadores-1].conectado==false)                      || 
+                    (turno==(maxJugadores-4) && (jugadores[maxJugadores-3].conectado==false 
+                            && jugadores[maxJugadores-2].conectado==false && jugadores[maxJugadores-1].conectado==false));
+        if (ronda==maxRondas && ultimoTurno){   //Ya se han jugado todas las rondas
             
             //Ordenamiento descendente bubble sort
+            var jugadorMe = jugadores[usuario];
             let jugadoresDesc = jugadores;
             let user = usuario;
             console.log(jugadoresDesc, user);
@@ -491,18 +516,30 @@ class MultijugadorUnirse extends React.Component{
             //Enviar fin de partida al resto de jugadores
             sendFinPartida(jugadoresDesc);
 
-
-            this.endGame(jugadoresDesc, jugadores[usuario], history, usuario, code);
+            //Finalizar partida
+            this.endGame(jugadoresDesc, jugadorMe, history, usuario, code);
 
         } else {        //Se sigue jugando
 
-            if (turno==(maxJugadores-1)){   //Cuando es el último turno, se actualiza la ronda
+            if (ultimoTurno){   //Cuando es el último turno, se actualiza la ronda
                 nuevaRonda = (Number(ronda)+1)%(Number(maxRondas)+1)
                 this.setState({ronda: nuevaRonda});
                 
             }
             //Actualizar turno
-            nuevoTurno = (turno+1)%maxJugadores;
+            if(jugadores[(turno+1)%maxJugadores].conectado==true){
+                nuevoTurno = (turno+1)%maxJugadores;
+
+            } else if(jugadores[(turno+2)%maxJugadores].conectado==true){
+                nuevoTurno = (turno+2)%maxJugadores;
+
+            } else if(jugadores[(turno+3)%maxJugadores].conectado==true){
+                nuevoTurno = (turno+3)%maxJugadores;
+
+            } else{
+                nuevoTurno = (turno+4)%maxJugadores;
+            }
+
             this.setState({turno: nuevoTurno});
             
         }
