@@ -139,7 +139,7 @@ class InfoPerfilUsuario extends React.Component{
                     if (item.Tipo == 'color'){
                         imagenes.unshift(item.Imagen);
                     } else{
-                    imagenes.push(item.Imagen);
+                        imagenes.push(item.Imagen);
                     }
                 }
             }
@@ -159,6 +159,7 @@ class InfoPerfilUsuario extends React.Component{
         axios.post(baseUrl+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
                 avatar = response.data;
+                console.log("hola");
                 axios.post(urlImage+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
                 .then(response =>{
                     console.log(response.data.imagenAv);
@@ -249,8 +250,9 @@ class PerfilUsuario extends React.Component{
     }
 
     render(){
+        const cookies = new Cookies();
         const history = this.props.history;
-        const usuarioLoggedIn = this.props.location.state.usuario;
+        const usuarioLoggedIn = cookies.get('user');
         const itemsComprados = this.state.itemsComprados;
 
         return(
