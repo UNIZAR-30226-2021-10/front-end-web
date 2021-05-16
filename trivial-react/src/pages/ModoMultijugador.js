@@ -167,7 +167,7 @@ class UnirseAPartida extends React.Component{
                         console.log("Soy un nuevo jugador: "+user);
                         //Construir jugador nuevo
                         const avatar = cookies.get('avatar');
-                        const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0'};
+                        const jugadorNuevo = {username: usuario, avatar: avatar, puntos:'0', conectado:true};
                         jugadoresUnirse.push(jugadorNuevo);
                         user = jugadoresUnirse.length-1;
 

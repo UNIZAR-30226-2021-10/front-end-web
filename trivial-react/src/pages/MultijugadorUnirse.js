@@ -374,74 +374,24 @@ class MultijugadorUnirse extends React.Component{
         }
     }
 
-    //Petición post a la db: guarda los resultados en las tablas juega y usuario
-    //y si es el ganador actualiza el campo ganador de la tabla partida.
-    //jugadores: ordenados de mayor a menor puntuación.
-    //usuario: índice en el vector "jugadores" del usuario que hizo login.
-    postPartida(jugador, ganador){
-        const cookies = new Cookies();
-        const email = cookies.get('email');
 
-        //Código de la partida.
-        const {code}=this.props.location.state;
-        
-        //Construcción de monedas y email
-        const monedas = jugador.puntos*0.5;
-
-        //Actualiza la tabla partida.
-        if (ganador == 1){  //Si eres el ganador
-            //Actualizar la partida de codigo "code" con el ganador en la tabla partida.
-            axios.post(baseUrl+'/FinalMultijugador_Partida', 
-                { codigo: code, ganador: jugador.username})
-            .then(response => { //Respuesta del servidor
-                
-                console.log(response.data.message);  
-            }).catch(e => { //Error
-                
-                console.log(e);         
-            });
-        }
-
-        //Actualizar la partida de codigo "code" con la puntuación en la tabla juega.
-        axios.post(baseUrl+'/FinalMultijugador_Juega', 
-            { codigo: code, puntos: jugador.puntos})
-        .then(response => { //Respuesta del servidor
-            
-            console.log(response.data.message);  
-        }).catch(e => { //Error
-            
-            console.log(e);         
-        });
-        
-        //Guarda los resultados en la tabla usuario.
-        axios.post(baseUrl+'/FinalIndividual_Usuario', 
-            { email: email, monedas: monedas, puntos: jugador.puntos })
-        .then(response => { //Respuesta del servidor
-            
-            console.log(response.data.message);  
-        }).catch(e => { //Error
-            
-            console.log(e);         
-        });
-    }
-
-    //Muestra la pantalla final del juego
+    //Muestra la pantalla final del juego e introduce los datos de la partida en BBDD
     endGame(jugadoresDesc, jugador, history, usuario, code) {
         
-        //TODO GANADOR SE HACE MAL
         console.log("Ganador")
         console.log(jugadoresDesc[0].username)
         console.log(jugador.username)
         const ganador = jugadoresDesc[0].username===jugador.username;
         
         console.log(ganador)
-        //this.postPartida(jugador, ganador);
 
         const cookies = new Cookies();
         const email = cookies.get('email');
         
         //Construcción de monedas y email
         const monedas = jugador.puntos*0.5;
+        cookies.set('monedas', parseInt(cookies.get('monedas'),10) + monedas,  {path: '/'}); 
+        cookies.set('puntos', parseInt(cookies.get('puntos'),10) + jugador.puntos,  {path: '/'});
 
         //Actualiza la tabla partida.
         if (ganador == 1){  //Si eres el ganador
@@ -545,7 +495,7 @@ class MultijugadorUnirse extends React.Component{
         }
 
         //Enviar al resto de jugadores el nuevo turno y ronda
-        console.log(usuario + " pasa turno con puntos: " +  jugadores[usuario].puntos);
+        console.log(usuario + " pasa turno al usuario " + nuevoTurno);
         pasarTurno(nuevoTurno, nuevaRonda,  jugadores[usuario].puntos);
 
         this.setState({ hasRespondido: false,
