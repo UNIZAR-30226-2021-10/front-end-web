@@ -5,7 +5,6 @@ import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import { LayeredImage } from "react-layered-image";
 
 const baseUrl='http://localhost:3050';
 const urlImage= 'https://trivial-images.herokuapp.com'
@@ -189,7 +188,7 @@ class InfoPerfilUsuario extends React.Component{
     render(){
         const cookies = new Cookies();
         const itemsComprados = this.props.itemsComprados;
-
+        const history = this.props.history;
         const cols=[];
         itemsComprados.forEach((item) => {
             cols.push(  <div className = "itemsTienda">

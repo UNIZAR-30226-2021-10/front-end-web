@@ -6,7 +6,6 @@ import Item from '../components/Item';
 import {help} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import { LayeredImage } from "react-layered-image";
 
 const baseUrl='http://localhost:3050';
 
