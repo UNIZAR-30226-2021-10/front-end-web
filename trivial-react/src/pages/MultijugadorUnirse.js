@@ -184,7 +184,7 @@ class FooterChat extends React.Component{
     }
 }
 
-//const MESSAGES_DATA = [];
+const MESSAGES_DATA = [];
 
 class MultijugadorUnirse extends React.Component{
     constructor(props) {
