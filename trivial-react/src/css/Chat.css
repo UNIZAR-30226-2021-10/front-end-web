@@ -31,13 +31,13 @@
 }
 
 .Messages .izquierda .imgAvatar{
-    height: 6vh;
+    height: 10vh;
     width: auto;
     float: left;
 }
 
 .Messages .derecha .imgAvatar{
-    height: 6vh;
+    height: 10vh;
     width: auto;
     float: right;
 }

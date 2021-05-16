@@ -3,6 +3,7 @@ let socket;
 
 //Iniciar socket del cliente
 export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
+
     socket = io('localhost:5000', {
         transports: [ 'websocket' ],
         upgrade: false

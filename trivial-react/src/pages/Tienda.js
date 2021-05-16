@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/Tienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
-import {help} from './images';
+import {help, tienda} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 
@@ -17,6 +17,10 @@ class Header extends React.Component{
                 <div className="iconAtras">
                     <LeftOutlined onClick={() => history.push("/DecisionJuego")}/> 
                     Atrás
+                </div>
+                <div className="tituloTienda">
+                    <img className="imgTienda" src={tienda} alt="Tienda Icon"></img>
+                    <h1>Tienda</h1>
                 </div>
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
             </div>
@@ -78,8 +82,8 @@ class Tienda extends React.Component{
         return new Promise((resolve, reject) => {
             axios.post(baseUrl+'/PantallaTienda', {email: email})
             .then(response=>{   //Encuentra los items
-                if (response.status == 200) { //response.ok
-                    resolve(response.data); //response.json()
+                if (response.status === 200) { 
+                    resolve(response.data); 
                 }else{
                     reject(response.status);
                 }

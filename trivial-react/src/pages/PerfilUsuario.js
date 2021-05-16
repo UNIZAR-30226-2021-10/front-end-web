@@ -42,7 +42,6 @@ class InfoPerfilUsuario extends React.Component{
     }
     render(){
         const cookies = new Cookies();
-        const history = this.props.history;
         const itemsComprados = this.props.itemsComprados;
 
         const cols=[];
@@ -96,8 +95,8 @@ class PerfilUsuario extends React.Component{
         return new Promise((resolve, reject) => {
             axios.post(baseUrl+'/PerfilUsuario', {email: email})
             .then(response=>{   //Encuentra los items
-                if (response.status == 200) { //response.ok
-                    resolve(response.data); //response.json()
+                if (response.status === 200) { 
+                    resolve(response.data); 
                 }else{
                     reject(response.status);
                 }

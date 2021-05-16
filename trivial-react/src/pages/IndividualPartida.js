@@ -6,16 +6,18 @@ import Dado from '../components/Dado';
 import axios from 'axios';
 import {help, amarillo, azul, marron, naranja, rosa, verde} from './images';
 import Cookies from 'universal-cookie';
+import storage from '../lib/storage';
 
 const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
+
     render(){
         const history = this.props.history;
         return(
             <div className="Header">
                 <div className="iconAtras">
-                    <LeftOutlined onClick={() => history.goBack()}/> 
+                    <LeftOutlined onClick={() => history.push("/AbandonarPartida")}/> 
                     Atrás
                 </div>
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
@@ -105,21 +107,54 @@ class Pregunta extends React.Component{
 class IndividualPartida extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {
-            ronda: '1',
-            jugador: this.props.location.state.jugador,
-            dado: {img: marron, category:"", color:'black'},
-            hasTiradoDado: false,
-            pregunta: '',
-            colorBtnA: 'white',
-            colorBtnB: 'white',
-            colorBtnC: 'white',
-            colorBtnD: 'white',
-            hasRespondido: false
-        };
+        this.state = this.cargarEstado();
         this.handleClick = this.handleClick.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.tirarDado = this.tirarDado.bind(this);
+    }
+
+    cargarEstado() { //Carga el estado
+        var estado = storage(localStorage).getData("estado");
+        if (estado === null){  //Si no hay datos guardados como estado
+            //Construir jugador
+            const cookies = new Cookies();
+            const usuario = cookies.get('user');
+            const avatar = cookies.get('avatar');
+            estado = {
+                ronda: '1',
+                jugador: {username: usuario, avatar: avatar, puntos:'0'},
+                dado: {img: marron, category:"", color:'black'},
+                hasTiradoDado: false,
+                pregunta: '',
+                colorBtnA: 'white',
+                colorBtnB: 'white',
+                colorBtnC: 'white',
+                colorBtnD: 'white',
+                hasRespondido: false,
+                maxRondas: this.props.location.state.maxRondas
+            };
+        }
+        console.log(this.props.location.state);
+        console.log(estado);
+        return estado;
+    }
+
+    componentDidUpdate(){
+        //this.onBeforeUnloadPage();
+        this.onUnloadPage();
+    }
+
+    /*onBeforeUnloadPage(){ //Antes de recargar/salir de la pagina -> Preguntar
+        function areYouSure(e) {
+            var confirmationMessage = "Are you sure you want to exit this page?";
+            e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
+            return confirmationMessage;              // Gecko, WebKit, Chrome <34
+        }
+        window.onbeforeunload = areYouSure;
+    }*/
+
+    onUnloadPage(){ //Al recargar/salir de la página -> Guardar estado de la partida
+        window.onunload = storage(localStorage).setData("estado", this.state);
     }
 
     render(){
@@ -128,8 +163,7 @@ class IndividualPartida extends React.Component{
                 colorBtnA, colorBtnB, colorBtnC, colorBtnD, hasRespondido} = this.state;
         return(
             <div className="IndividualPartida">
-                <Header history={history} 
-                />
+                <Header history={history}/>
                 <Juego  history={history} 
                         ronda={ronda}
                         jugador={jugador} 
@@ -161,7 +195,7 @@ class IndividualPartida extends React.Component{
                 default: break;
             }
             let respuesta = e.target.name;
-            if (pregunta.answer == respuesta){  //Acierta
+            if (pregunta.answer === respuesta){  //Acierta
                 let actJugador = jugador;
                 actJugador.puntos = Number(jugador.puntos) + Number(pregunta.puntos);
                 this.setState({jugador: actJugador});
@@ -180,8 +214,7 @@ class IndividualPartida extends React.Component{
 
     //Petición post a la db: guarda los resultados en las tablas partida, juega y usuario
     postPartida(){
-        const {maxRondas}=this.props.location.state;
-        const {jugador}=this.state;
+        const {jugador, maxRondas}=this.state;
         const cookies = new Cookies();
         const email = cookies.get('email');
 
@@ -214,12 +247,13 @@ class IndividualPartida extends React.Component{
 
     handleNext() {
         const history = this.props.history;
-        const {maxRondas}=this.props.location.state;
-        const {ronda,jugador}=this.state;
+        const {ronda, jugador, maxRondas}=this.state;
         //Pasar al siguiente turno
-        if (ronda==maxRondas){ //Ya se han jugado todas las rondas
+        if (ronda === Number(maxRondas)){ //Ya se han jugado todas las rondas
             //Finalizar partida
             this.postPartida();
+            //Borrar estado de la partida
+            storage(localStorage).removeData("estado");
             //Actualizar cookies
             const cookies = new Cookies();
             const monedas = Number(cookies.get('monedas')) + jugador.puntos*0.5;
@@ -281,6 +315,8 @@ class IndividualPartida extends React.Component{
                         pregunta.opcionC=incorrecta3;
                         pregunta.opcionD=correcta;
                         pregunta.answer='opcionD';
+                        break;
+                    default:
                         break;
                 }
                 this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});

@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/Registrarse.css';
 import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
-import {help, imgAvatar} from './images';
+import {help} from './images';
 
 const baseUrl='http://localhost:3050';
 
@@ -16,6 +16,7 @@ class Header extends React.Component{
                     <LeftOutlined onClick={() => history.push("/MenuInicio")}/> 
                     Atrás
                 </div>
+                <h1>Registrarse</h1>
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
             </div>
         );
@@ -48,7 +49,7 @@ class FormRegistro extends React.Component{
         var inputs = document.getElementsByTagName('input');
         for (var h=0;h<inputs.length;h++){
             for (var i=0; i<campos.length;i++){
-                if(inputs[h].name==campos[i]){
+                if(inputs[h].name === campos[i]){
                     inputs[h].value="";
                 }
             }
@@ -102,7 +103,6 @@ class FormRegistro extends React.Component{
         const history = this.props.history;
         //Cogemos los datos introducidos por el usuario
         const username = this.state.username;
-        const email = this.state.email;
         const password = this.state.password;
         const repPassword = this.state.repPassword;
 

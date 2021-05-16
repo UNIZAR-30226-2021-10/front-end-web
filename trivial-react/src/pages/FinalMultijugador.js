@@ -13,7 +13,7 @@ class FinalMultijugador extends React.Component {
         let ranking = [];
         let color='';
         jugadores.forEach((jugador) =>{
-            if(jugador.puntos==maxPuntos){
+            if(jugador.puntos === maxPuntos){
                 ganadores.push(jugador.username);
                 color= "rgb(214, 204, 55)";
             }else{
@@ -32,7 +32,6 @@ class FinalMultijugador extends React.Component {
 
     render() {
         const history = this.props.history;
-        const {jugadores,usuario} = this.props.location.state;
         const {ganadores,ranking} = this.ganadores();
         return (
             <div className="FinalMultijugador">
@@ -40,9 +39,9 @@ class FinalMultijugador extends React.Component {
                     <h1>Fin de la partida</h1>
                 </div>
                 <div className="infoGanadores">
-                    <img className="imgVictoria" src={trofeo} alt={"Imagen Trofeo"}></img>
+                    <img className="imgVictoria" src={trofeo} alt={"Imagen Trofeo"}></img> 
                     <div>
-                        {ganadores.length==1 ? (
+                        {ganadores.length === 1 ? (
                             <h1>El ganador de la partida es <div className="negr">{ganadores[0]}</div></h1>
                         ): (
                             <h1>Empate: 

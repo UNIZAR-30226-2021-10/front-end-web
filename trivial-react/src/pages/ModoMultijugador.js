@@ -45,7 +45,7 @@ class UnirseAPartida extends React.Component{
         var inputs = document.getElementsByTagName('input');
         for (var h=0;h<inputs.length;h++){
             for (var i=0; i<campos.length;i++){
-                if(inputs[h].name==campos[i]){
+                if(inputs[h].name === campos[i]){
                     inputs[h].value="";
                 }
             }
@@ -148,19 +148,19 @@ class UnirseAPartida extends React.Component{
                 //Construir los jugadores para pantalla Multijugador Unirse
                 let jugadoresUnirse = [];
                 jugadores.forEach((jugador, index) => {
-                    if (jugador.usuario_email===email){
+                    if (jugador.usuario_email === email){
                         user = index; 
                         firstJoin = false;
                     }
                     jugadoresUnirse.push({username: jugador.nickname, avatar: jugador.imagen, puntos: jugador.puntuacion, conectado:true});
                 });
-                if(jugadores.length==partida.numJugadores && user=="-1"){   //Si la partida está llena y no estas entre los jugadores
+                if(jugadores.length === partida.numJugadores && user === "-1"){   //Si la partida está llena y no estas entre los jugadores
                     alert("La partida está completa.");
                     //Borrar el campo del código
                     this.resetCampos(['code']);
                 }else { //Si hay hueco en la partida o estás entre los jugadores
                     alert("Bienvenido a la partida "+ usuario);
-                    if(user!="-1"){ //Si estas entre los jugadores -> unirse
+                    if(user !== "-1"){ //Si estas entre los jugadores -> unirse
                         console.log("Estoy entre los jugadores: "+user);
 
                     }else{ //Si la partida no está llena y no estas entre los jugadores -> nuevo
@@ -191,7 +191,7 @@ class UnirseAPartida extends React.Component{
             });
         })
         .catch((err) =>{
-            if (err == 400){ 
+            if (err === 400){ 
                 console.log("No existe la partida con codigo: "+ code);
                 alert("El código no coincide con ninguna partida existente.");
                 //Borrar el campo del código
