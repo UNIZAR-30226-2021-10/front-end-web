@@ -22,26 +22,37 @@ class ReglasJuego extends React.Component{
     render(){
         return(
             <div className="ReglasJuego">
-                <h1>Objetivo del juego:</h1>
-                <p>El objetivo del juego es responder al mayor número de preguntas correctamente en
-                    el número de rondas que se escojan.
+                <p> Modos de juego: individual y multijugador.</p>
+                <p> Al empezar una partida individual le deberás dar al botón "Empezar" y eso lanzará el dado e 
+                    iniciará la partida. Si estás en modo multijugador la partida empezará automáticamente cuando 
+                    todos los jugadores estén en la partida. 
                 </p>
-                <h1>En tu turno:</h1>
-                <ol>
-                    <li>Dale al dado</li>
-                    <li>Responde la pregunta en 10 segs</li>
-                </ol>
-                <p>Existen 6 categorías: Historia, Geografía, Cine, Ciencias, Arte y Deporte.</p>
-                <p>Por cada pregunta que se contesta correctamente se otorgarán unos puntos. Cada categoría
-                    tiene unos puntos asignados.
+                <p> Deberás responder a la pregunta que te toque y el propio juego te indicará si es la correcta 
+                    en cuanto clique en ella. Deberás darle al botón "Siguiente" para pasar a la siguiente ronda.
                 </p>
-                <h1>Distintos modos de juego:</h1>
-                <p>Existen dos modos de juego: Multijugador e Individual. En modo individual se podrán
-                    obtener monedas para luego obtener objetos en la tienda para el avatar.
+                <p> El dado consta de seis colores. Cada uno de ellos está asociado a una categoria diferente de 
+                    manera. Las preguntas son multirespuesta y solo una de las opciones expuestas es la correcta. 
+                    Las categorías son las siguientes y te darán los siguientes puntos:
                 </p>
-                <h1>Quién gana:</h1>
-                <p>Si se juega en modo multijugador, ganará el jugador que más puntos haya conseguido 
-                    a lo largo de la partida.
+                <ul>
+                    <li>Geografía (azul): 30 puntos.</li>
+                    <li>Arte y Literatura (marrón): 20 puntos.</li>
+                    <li>Historia (amarillo): 25 puntos.</li>
+                    <li>Cine (rosa): 15 puntos.</li>
+                    <li>Ciencias y Naturaleza (verde): 5 puntos.</li>
+                    <li>Deportes y Pasatiempos (naranja): 10 puntos.</li>
+                </ul>
+                <p> El juego consiste en sumar puntos, los cuales se consiguen respondiendo correctamente a las 
+                    preguntas. Cada tema tiene un valor de puntos asociados. Conforme vayas obteniendo puntos 
+                    en las partidas, obtendrás monedas que más tarde puedes usar para comprar objetos para tu 
+                    avatar en la tienda. Puedes abandonar la partida cuando desees, simplemente dándole al botón 
+                    "Atras". Si abandonas la partida, esta no se registrará y será como si nunca hubieras jugado. 
+                    Puedes también posponer la partida y volver más tarde a ella. Las partidas multijugador tienen 
+                    un máximo de cuatro jugadores y gana el jugador que más puntos obtiene. Puedes crear una 
+                    partida o unirte a una ya existentecon un código (todas las partidas lo tienen, pregúntale 
+                    a tus amigos por el código de la partida que han creado). Además, el modo multijugador 
+                    consta de un chat que te permite hablar con tus rivales. 
+
                 </p>
             </div>
         );

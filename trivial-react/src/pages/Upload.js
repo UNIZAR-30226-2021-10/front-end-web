@@ -4,8 +4,6 @@ import '../css/Upload.css';
 import UploadService from './uploadService';
 import {help, insertarFile, textPlain, applicationPdf ,imgDownload} from './images';
 
-const baseUrl = 'http://localhost:3060';
-
 class Header extends React.Component{
     render(){
         const history = this.props.history;
@@ -21,41 +19,47 @@ class Header extends React.Component{
 class HomeSection extends React.Component{
     obtenerDatos(){
         const {historialUploaded} = this.props;
-        let numItems = 0, numTrajes = 0, numSombreros = 0, numCamisetas = 0;
+        let numItems = 0, numColor = 0, numCabeza = 0, numCara = 0, numCuerpo = 0;
         historialUploaded.forEach((image, index) => {
             switch (image.Tipo){
-                case "trajes":
+                case "color":
                     numItems++;
-                    numTrajes++;
+                    numColor++;
                     break;
-                case "sombreros":
+                case "cabeza":
                     numItems++;
-                    numSombreros++;
+                    numCabeza++;
                     break;
-                case "camisetas":
+                case "cara":
                     numItems++;
-                    numCamisetas++;
+                    numCara++;
+                    break;
+                case "cuerpo":
+                    numItems++;
+                    numCuerpo++;
                     break;
                 default:
                     break;
             }
         });
-        return {numItems, numTrajes, numSombreros, numCamisetas};
+        return {numItems, numColor, numCabeza, numCara, numCuerpo};
     }
 
     render(){
-        const {numItems, numTrajes, numSombreros, numCamisetas} = this.obtenerDatos();
+        const {numberOfUsers} = this.props;
+        const {numItems, numColor, numCabeza, numCara, numCuerpo} = this.obtenerDatos();
         return(
             <div className="HomeSection">
                 <p>En esta ventana se muestran datos estadísticos del juego.</p>
                 <table>
                     <tbody>
                         <tr><th>Datos estadísticos</th></tr>
-                        <tr><th>Número de usuarios registrados:</th><td>0</td></tr>
+                        <tr><th>Número de usuarios registrados:</th><td>{numberOfUsers}</td></tr>
                         <tr><th>Número de items en la tienda:</th><td>{numItems}</td></tr>
-                        <tr><th><li>Trajes</li></th><td>{numTrajes}</td></tr>
-                        <tr><th><li>Sombreros</li></th><td>{numSombreros}</td></tr>
-                        <tr><th><li>Camisetas</li></th><td>{numCamisetas}</td></tr>
+                        <tr><th><li>Color</li></th><td>{numColor}</td></tr>
+                        <tr><th><li>Cabeza</li></th><td>{numCabeza}</td></tr>
+                        <tr><th><li>Cara</li></th><td>{numCara}</td></tr>
+                        <tr><th><li>Cuerpo</li></th><td>{numCuerpo}</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -291,7 +295,7 @@ class DownloadSection extends React.Component{
             const linkDownload = uploadResponse.Imagen;
             let nameDownload;
             if (uploadResponse.Imagen){
-            nameDownload = uploadResponse.Tipo + "-" + 
+                nameDownload = uploadResponse.Tipo + "-" + 
                                  uploadResponse.Nombre + "-" + 
                                  uploadResponse.Color + "." + uploadResponse.Imagen.split('.')[1];
             } else{ 
@@ -382,7 +386,8 @@ class FooterMenu extends React.Component{
         super(props);
         this.state = {
             activeItem: 'home',
-            historialUploaded: []
+            historialUploaded: [],
+            numberOfUsers: 0
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -400,14 +405,20 @@ class FooterMenu extends React.Component{
             const historialUploaded = response.data.listaResults;
             this.setState({historialUploaded: historialUploaded});
         });
+
+        UploadService.getNumberOfUsers().then((response) => {
+            console.log(response);
+            const numberOfUsers = response.data[0].numberOfUsers;
+            this.setState({numberOfUsers: numberOfUsers});
+        });
     }
 
     seccion(){
-        const {activeItem, historialUploaded} = this.state;
+        const {activeItem, historialUploaded, numberOfUsers} = this.state;
         let seccion = [];
         if (activeItem === 'home'){
             seccion.push(
-                <HomeSection historialUploaded={historialUploaded}/>
+                <HomeSection historialUploaded={historialUploaded} numberOfUsers={numberOfUsers}/>
             );
         } else if (activeItem === 'upload'){
             seccion.push(

@@ -13,6 +13,10 @@ class UploadService{
         return await axios.get(baseUrl+'/historial');
     }
 
+    async getNumberOfUsers(){
+        return await axios.get(baseUrl+'/numberUsers')
+    }
+
     sendImages(data, file){
         console.log("Send images cliente");
         const form = new FormData();
@@ -22,7 +26,6 @@ class UploadService{
         form.append('productCategory', data.productCategory);
         form.append('productPrice', data.productPrice);
         form.append('productColor', data.productColor);
-        form.append('esAO', data.esAO);
         form.append('file', file);
         return axios.post(baseUrl+'/upload',form);
     }

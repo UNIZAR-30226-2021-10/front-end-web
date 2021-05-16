@@ -34,6 +34,8 @@ const logo = baseUrl+"/appImages/ventanas/logo.png";
 const ajustes = baseUrl+"/appImages/ventanas/ajustes.png";
 const imgAvatar = baseUrl+"/appImages/ventanas/avatar.png";
 const historial = baseUrl+"/appImages/ventanas/historial.jpg";
+const tienda = baseUrl+"/appImages/ventanas/tienda.png";
+const admin = baseUrl+"/appImages/ventanas/admin.png";
 
 //Iconos: Chat y Help
 const chat = baseUrl+"/appImages/iconos/chat.png";
@@ -43,5 +45,5 @@ export { compras, trofeo, imgUsuario, historialIcon,            //Menu
          amarillo, azul, marron, naranja, rosa, verde,          //Dado
          ranking, first, second, third,                         //Ranking
          insertarFile, textPlain, applicationPdf, imgDownload,  //Upload 
-         logo, ajustes, imgAvatar,  historial,                  //Ventanas
+         logo, ajustes, imgAvatar,  historial, tienda, admin,   //Ventanas
          chat, help }                                           //Iconos

@@ -2,7 +2,10 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Ranking.css';
 import {LeftOutlined, CaretRightOutlined} from '@ant-design/icons';
-import {help, ranking, imgUsuario, first, second, third} from './images';
+import {help, ranking, first, second, third} from './images';
+import axios from 'axios';
+
+const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
@@ -14,7 +17,7 @@ class Header extends React.Component{
                     Atrás
                 </div>
                 <div className="tituloRanking">
-                    <img className="imgRanking" src={ranking} alt="Ranking Image"></img>
+                    <img className="imgRanking" src={ranking} alt="Ranking Icon"></img>
                     <h1>Ranking</h1>
                 </div>
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
@@ -23,51 +26,56 @@ class Header extends React.Component{
     }
 }
 
-const USUARIOS =[
-    {username: "usuario1", avatar: imgUsuario, puntos: "512"},
-    {username: "usuario2", avatar: imgUsuario, puntos: "678"},
-    {username: "usuario3", avatar: imgUsuario, puntos: "324"},
-    {username: "usuario4", avatar: imgUsuario, puntos: "982"},
-    {username: "usuario5", avatar: imgUsuario, puntos: "429"},
-    {username: "usuario7", avatar: imgUsuario, puntos: "129"},
-    {username: "usuario8", avatar: imgUsuario, puntos: "65"},
-    {username: "usuario9", avatar: imgUsuario, puntos: "912"}
-];
-
 class MostrarRanking extends React.Component{
-    BubbleSortDesc(values, length){
-        var i, j, flag = 1;
-        var temp;
-        for (i = 1; (i <= length) && flag; i++){
-            flag = 0;
-            for (j = 0; j < (length - 1); j++){
-                if (Number(values[j + 1].puntos) > Number(values[j].puntos)){
-                    temp = values[j];
-                    values[j] = values[j + 1];
-                    values[j + 1] = temp;
-                    flag = 1;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            usuariosDesc: []
+        };
+    }
+
+    // Petición get a la db: busca la información de los usuarios registrados.
+    buscarUsuarios(){
+        return new Promise((resolve, reject) => {
+            axios.post(baseUrl+'/Ranking')
+            .then(response=>{   //Encuentra los items
+                if (response.status === 200) {
+                    resolve(response.data); 
+                }else{
+                    reject(response.status);
                 }
-            }
-        }
+            })
+        });
+    }
+
+    componentDidMount(){
+        this.buscarUsuarios()
+        .then((response) => {
+            console.log(response);
+            this.setState({usuariosDesc: response});
+        })
+        .catch((err) => {
+            console.log("Error al buscar los usuarios: "+err)
+        })
     }
 
     ranking(){
         const usuarioLogged = this.props.usuario;
-        const usuariosDesc = USUARIOS;
-        this.BubbleSortDesc(usuariosDesc,usuariosDesc.length);
+        const usuariosDesc = this.state.usuariosDesc;
         let ranking = [];
         let color='';
         let puesto='';
         var number=0;
         usuariosDesc.forEach((usuario) =>{
             number = number+1;
-            if(number==1){
+            if(number === 1){
                 color= "rgb(214, 204, 55)";
                 puesto = first;
-            } else if (number==2){
+            } else if (number === 2){
                 color="rgb(143, 150, 143)";
                 puesto = second;
-            } else if (number==3){
+            } else if (number === 3){
                 color="rgb(148, 88, 39)";
                 puesto = third;
             } else{
@@ -75,19 +83,19 @@ class MostrarRanking extends React.Component{
             }
             ranking.push(
                 <li className="filaRanking">
-                    { usuario.username == usuarioLogged ? (
+                    { usuario.nickname === usuarioLogged ? (
                         <div className="usuarioClasif"> <CaretRightOutlined twoToneColor="#52c41a" style={{ fontSize: "5vh" }}/></div>
                     ):(
-                        number==1 | number==2 | number==3 ? (
+                        number === 1 | number === 2 | number === 3 ? (
                             <div className="usuarioClasif">
-                                <img className="imgPuesto" src={puesto} alt="Puesto Image"></img>
+                                <img className="imgPuesto" src={puesto} alt="Puesto Icon"></img>
                             </div>
                         ):(<div className="usuarioClasif"> </div>) 
                     )}
                     <div className="fila" style={{ background: color}}>
                         <h1 className="posicion">#{number}</h1>
-                        <img className="imgAvatar" src={usuario.avatar} alt={"Avatar de "+ usuario.username}></img>
-                        <h1>{usuario.username}</h1>
+                        <img className="imgAvatar" src={usuario.imagen} alt={"Avatar de "+ usuario.nickname}></img>
+                        <h1>{usuario.nickname}</h1>
                         <h1>{usuario.puntos} puntos</h1>
                     </div>
                 </li>
