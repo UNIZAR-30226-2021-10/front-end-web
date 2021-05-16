@@ -21,3 +21,19 @@
     margin: 10% 10% auto 40%;
 }
 
+.color{
+    position:absolute;
+    height:140px;
+    width:140px;
+    top: 40px;
+    left : 40px;
+    z-index: 1;
+  }
+  
+.objeto{
+    position:absolute;
+    height:140px;
+    width:140px;
+    z-index: -1;
+}
+

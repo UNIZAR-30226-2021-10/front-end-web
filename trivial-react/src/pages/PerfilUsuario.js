@@ -5,8 +5,22 @@ import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { LayeredImage } from "react-layered-image";
 
 const baseUrl='http://localhost:3050';
+const urlImage= 'https://trivial-images.herokuapp.com'
+
+const style = {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+  
 
 class Header extends React.Component{
     render(){
@@ -40,13 +54,149 @@ class InfoPerfilUsuario extends React.Component{
         cookies.remove('monedas');
         history.push("/MenuInicio");
     }
+    equipar = (thisItem) =>{
+        const itemsComprados = this.props.itemsComprados;
+        const history = this.props.history;
+        if (thisItem.Tipo == 'color'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'color'){
+                    if (item.Nombre == thisItem.Nombre){
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        }
+        else if (thisItem.Tipo == 'cuerpo'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'cuerpo'){
+                    if (item.Nombre == thisItem.Nombre){
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        
+        }
+        else if (thisItem.Tipo == 'cara'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'cara'){
+                    if (item.Nombre == thisItem.Nombre){
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        
+        }
+        else if (thisItem.Tipo == 'cabeza'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo == 'cabeza'){
+                    if (item.Nombre == thisItem.Nombre){
+                        if (item.equipado == 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        
+        }
+    }
+    actualizarBD = () =>{
+        const history = this.props.history;
+        const cookies = new Cookies();
+        const itemsComprados = this.props.itemsComprados;
+        const usuario = this.props.usuario;
+        const equipados=[];
+        const nombre=[];
+        const imagenes=[];
+        const email = cookies.get('email');
+        let avatar;
+        itemsComprados.forEach((item) => {
+            equipados.push(item.equipado);
+            nombre.push(item.iditem);
+            if(item.equipado == 1){
+                if (imagenes.length>4){
+                    if (item.Tipo == 'color'){
+                        imagenes.shift();
+                        imagenes.unshift(item.Imagen);
+                    }else{
+                        imagenes.pop();
+                        imagenes.push(item.Imagen)
+                    }
+                }else {
+                    if (item.Tipo == 'color'){
+                        imagenes.unshift(item.Imagen);
+                    } else{
+                    imagenes.push(item.Imagen);
+                    }
+                }
+            }
+        })
+        console.log(imagenes);
+        axios.post(baseUrl+'/UpdateItemsUsuario', {equipados, nombre, email: email})
+            .then(response=>{   
+                if (response.status == 200) { 
+                    console.log("datos guardados");
+                }else{
+                    console.log("error al guardar los datos");
+                }
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+        axios.post(baseUrl+'/construirAvatar', {imagenes:imagenes})
+            .then(response => {
+                avatar = response.data;
+                axios.post(urlImage+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
+                .then(response =>{
+                    console.log(response.data.imagenAv);
+                    cookies.set('avatar', response.data.imagenAv, {path: '/'});
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        this.forceUpdate();
+        
+    }
     render(){
         const cookies = new Cookies();
         const itemsComprados = this.props.itemsComprados;
 
         const cols=[];
         itemsComprados.forEach((item) => {
-            cols.push(<Item item={item}/>);
+            cols.push(  <div className = "itemsTienda">
+                            <Item item={item}/> 
+                            <button className="btnEquip" onClick={()=> this.equipar(item)}>Equipar</button>
+                        </div>
+                    );
         });
 
         return(
@@ -54,6 +204,7 @@ class InfoPerfilUsuario extends React.Component{
                 <div className="imgAvatar">
                     {<img src={cookies.get('avatar')} alt="Avatar"></img>}
                     <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
+                    <button className="btnEquipar" onClick={() => history.push("/Equipacion")}>Equiparse</button>
                 </div>
                 <tbody>
                     <tr>
@@ -72,11 +223,7 @@ class InfoPerfilUsuario extends React.Component{
                         <th>Monedas Conseguidas:</th>
                         <td>{cookies.get('monedas')}</td>
                     </tr>
-                    <tr>
-                        <th>Items: </th>
-                    </tr>
                 </tbody>
-                <div className="itemsComprados">{cols}</div>
             </div>
         );
     }
@@ -120,7 +267,6 @@ class PerfilUsuario extends React.Component{
         const history = this.props.history;
         const usuarioLoggedIn = this.props.location.state.usuario;
         const itemsComprados = this.state.itemsComprados;
-        console.log(itemsComprados);
 
         return(
             <div className="PerfilUsuario">

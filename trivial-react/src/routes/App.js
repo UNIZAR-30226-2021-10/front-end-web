@@ -23,7 +23,9 @@ import FinalIndividual from '../pages/FinalIndividual';
 import Ranking from '../pages/Ranking';
 import Historial from '../pages/Historial';
 import Upload from '../pages/Upload';
+import Equipacion from '../pages/Equipacion';
 import AbandonarPartida from '../pages/AbandonarPartida';
+
 
 class App extends React.Component{
   render(){
@@ -55,6 +57,7 @@ class App extends React.Component{
             <Route exact path="/Ranking" component={Ranking}/>
             <Route exact path="/Historial" component={Historial}/>
             <Route exact path="/Upload" component={Upload}/>
+            <Route exact path="/Equipacion" component={Equipacion}/>
             <Route exact path="/AbandonarPartida" component={AbandonarPartida}/>
             <Route render={() => <h1>Not found!</h1>} />
           </Switch>
