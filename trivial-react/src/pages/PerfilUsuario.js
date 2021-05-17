@@ -42,6 +42,19 @@ class Header extends React.Component{
     }
 }
 
+class DisableCache extends React.Component{
+    render(){
+      return (
+        <head>
+            <meta Http-Equiv="Cache-Control" Content="no-cache"></meta>
+            <meta Http-Equiv="Pragma" Content="no-cache"></meta>
+            <meta Http-Equiv="Expires" Content="0"></meta>
+            <meta Http-Equiv="Pragma-directive: no-cache"></meta>
+            <meta Http-Equiv="Cache-directive: no-cache"></meta>
+        </head>
+      )
+    }
+  }
 
 
 class InfoPerfilUsuario extends React.Component{
@@ -183,13 +196,12 @@ class InfoPerfilUsuario extends React.Component{
             .catch(err => {
                 console.log(err);
             })
-        this.forceUpdate();
         
     }
     render(){
         const cookies = new Cookies();
         const itemsComprados = this.props.itemsComprados;
-
+        const history = this.props.history;
         const cols=[];
         itemsComprados.forEach((item) => {
             cols.push(  <div className = "itemsTienda">
@@ -264,12 +276,14 @@ class PerfilUsuario extends React.Component{
     }
 
     render(){
+        const cookies = new Cookies();
         const history = this.props.history;
-        const usuarioLoggedIn = this.props.location.state.usuario;
+        const usuarioLoggedIn = cookies.get('user');
         const itemsComprados = this.state.itemsComprados;
 
         return(
             <div className="PerfilUsuario">
+                <DisableCache/>
                 <Header history={history} usuario={usuarioLoggedIn}/>
                 <InfoPerfilUsuario 
                     history={history}
