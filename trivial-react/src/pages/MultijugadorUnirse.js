@@ -152,7 +152,7 @@ class Pregunta extends React.Component{
                         </div>
                         <button name="next" onClick={this.handleTurno} disabled={diabledNext}>Next</button>
                     </div>
-                ):( turno === usuario ? ( //Si no has tirado el dado y es tu turno, tienes que tirar el dado
+                ):( turno == usuario ? ( //Si no has tirado el dado y es tu turno, tienes que tirar el dado
                         <h1 className="tuTurno">¡Es tu turno, tira el dado!</h1>
                     ):(     //Si no es tu turno, tienes que esperar tu turno
                         <h1 className="esperaTurno">¡Espera tu turno!</h1>
