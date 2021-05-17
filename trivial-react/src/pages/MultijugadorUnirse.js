@@ -119,13 +119,12 @@ class Pregunta extends React.Component{
                 hasRespondido,hasTiradoDado} = this.props;
 
         const disabled=hasRespondido;
-
         
         const diabledNext=!hasRespondido;
         //const disabled=(hasRespondido | turno!=usuario);
         return(
             <div className="Pregunta"> 
-            { jugadores.length === maxJugadores ? (    //Si están todos los jugadores
+            { jugadores.length == maxJugadores ? (    //Si están todos los jugadores
                 hasTiradoDado ? (  //Si has tirado ya el dado, te sale la pregunta
                     <div>
                         <p>{pregunta.ask}</p>
