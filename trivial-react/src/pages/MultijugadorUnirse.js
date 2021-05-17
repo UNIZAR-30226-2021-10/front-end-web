@@ -122,6 +122,10 @@ class Pregunta extends React.Component{
         
         const diabledNext=!hasRespondido;
         //const disabled=(hasRespondido | turno!=usuario);
+        console.log(jugadores.length);
+        console.log(maxJugadores);
+        console.log("ME CAGO EN MI PUTA MADRE");
+
         return(
             <div className="Pregunta"> 
             { jugadores.length == maxJugadores ? (    //Si están todos los jugadores
@@ -499,7 +503,7 @@ class MultijugadorUnirse extends React.Component{
             console.log(jugadoresDesc, user);
             //Finalizar partida
             //this.postPartida(jugadoresDesc, user);
-
+            
             //Enviar fin de partida al resto de jugadores
             sendFinPartida(jugadoresDesc);
 
@@ -512,18 +516,23 @@ class MultijugadorUnirse extends React.Component{
                 nuevaRonda = (Number(ronda)+1)%(Number(maxRondas)+1)
                 this.setState({ronda: nuevaRonda});
             }
+            
             //Actualizar turno
             if(jugadores[(turno+1)%maxJugadores].conectado==true){
+                console.log("paso al 1")
                 nuevoTurno = (turno+1)%maxJugadores;
 
             } else if(jugadores[(turno+2)%maxJugadores].conectado==true){
                 nuevoTurno = (turno+2)%maxJugadores;
+                console.log("paso al 2")
 
             } else if(jugadores[(turno+3)%maxJugadores].conectado==true){
                 nuevoTurno = (turno+3)%maxJugadores;
+                console.log("paso al 3")
 
             } else{
                 nuevoTurno = (turno+4)%maxJugadores;
+                console.log("paso al 4")
             }
 
             this.setState({turno: nuevoTurno});

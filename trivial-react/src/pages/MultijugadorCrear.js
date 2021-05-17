@@ -141,7 +141,7 @@ class FormCrearMultijugador extends React.Component{
         //Construir jugador
         const avatar = cookies.get('avatar');
         const email = cookies.get('email');
-        const jugador = {username: usuario, avatar: avatar, puntos:'0'};
+        const jugador = {username: usuario, avatar: avatar, puntos:'0', conectado:true};
         //Crear partida
         this.generarCodigoPartida()
         .then((code) =>{
