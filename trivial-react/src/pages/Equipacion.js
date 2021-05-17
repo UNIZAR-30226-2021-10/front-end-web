@@ -29,10 +29,28 @@ class Header extends React.Component{
         );
     }
 }
-
+class DisableCache extends React.Component{
+    render(){
+      return (
+        <head>
+            <meta Http-Equiv="Cache-Control" Content="no-cache"></meta>
+            <meta Http-Equiv="Pragma" Content="no-cache"></meta>
+            <meta Http-Equiv="Expires" Content="0"></meta>
+            <meta Http-Equiv="Pragma-directive: no-cache"></meta>
+            <meta Http-Equiv="Cache-directive: no-cache"></meta>
+        </head>
+      )
+    }
+  }
 
 
 class InfoPerfilUsuario extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+          refresh: false
+          }
+    }
     borrarCookies = () =>{
         const history = this.props.history;
         const cookies = new Cookies();
@@ -164,6 +182,7 @@ class InfoPerfilUsuario extends React.Component{
                 .then(response =>{
                     console.log(response.data.imagenAv);
                     cookies.set('avatar', response.data.imagenAv, {path: '/'});
+                    window.location.reload(false);
                 })
                 .catch(err => {
                     console.log(err);
@@ -172,7 +191,6 @@ class InfoPerfilUsuario extends React.Component{
             .catch(err => {
                 console.log(err);
             })
-        this.forceUpdate();
         
     }
     render(){
@@ -257,6 +275,7 @@ class PerfilUsuario extends React.Component{
 
         return(
             <div className="PerfilUsuario">
+                <DisableCache/>
                 <Header history={history} usuario={usuarioLoggedIn}/>
                 <InfoPerfilUsuario 
                     history={history}
