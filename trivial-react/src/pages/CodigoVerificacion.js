@@ -92,7 +92,7 @@ class FormCodigoVerificacion extends React.Component{
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
 
-        } else if (generatedCode !== inputCode){  //Código de verificación incorrecto
+        } else if (generatedCode != inputCode){  //Código de verificación incorrecto
             alert("Código de verificación incorrecto");
 
             //Borrar datos del imput del código

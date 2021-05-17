@@ -174,6 +174,23 @@ class InfoPerfilUsuario extends React.Component{
             .catch(err=>{
                 console.log(err);
             })
+
+
+
+
+        const refreshCacheAndReload = () => {
+            if (caches) {
+                // Service worker cache should be cleared with caches.delete()
+                caches.keys().then((names) => {
+                for (const name of names) {
+                    caches.delete(name);
+                }
+                });
+            }
+            // delete browser cache and hard reload
+            window.location.reload(true);
+        };
+
         axios.post(baseUrl+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
                 avatar = response.data;
@@ -182,7 +199,7 @@ class InfoPerfilUsuario extends React.Component{
                 .then(response =>{
                     console.log(response.data.imagenAv);
                     cookies.set('avatar', response.data.imagenAv, {path: '/'});
-                    window.location.reload(false);
+                    refreshCacheAndReload();
                 })
                 .catch(err => {
                     console.log(err);
@@ -193,6 +210,7 @@ class InfoPerfilUsuario extends React.Component{
             })
         
     }
+    
     render(){
         const cookies = new Cookies();
         const history = this.props.history;
