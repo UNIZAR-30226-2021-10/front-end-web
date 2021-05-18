@@ -27,3 +27,9 @@
 .Ajustes form div input{
     width: 40%;
 }
+
+.square:before{
+    content: "";
+    display: block;
+    padding-top: 100%;  /* initial ratio of 1:1*/
+}
