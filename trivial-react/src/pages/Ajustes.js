@@ -6,6 +6,7 @@ import {ajustes} from './images';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import swal from 'sweetalert';
+import "bootstrap/dist/css/bootstrap.min.css"
 
 
 class Header extends React.Component{
@@ -16,10 +17,6 @@ class Header extends React.Component{
                 <div className="iconAtras">
                     <LeftOutlined onClick={() => history.goBack()}/> 
                     Atrás
-                </div>
-                <div className="tituloAjustes">
-                    <img className="imgAjustes" src={ajustes} alt="Settings Icon"></img>
-                    <h1>Ajustes</h1>
                 </div>
             </div>
         );
@@ -163,29 +160,28 @@ class FormAjustes extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="username">Nombre</label>
-                        <input type="text" name="username" placeholder="Enter your username." onChange={this.handleChange}/>
+                        <input type="text" class="form-control" name="username" placeholder="Enter your username." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="email">Email</label>
-                        <input type="text" name="email" value={cookies.get('email')} readOnly/>
+                        <input type="text" class="form-control" name="email" value={cookies.get('email')} readOnly/>
                     </div>
                     <div>
                         <label for="password">Contraseña</label>
-                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange}/>
+                        <input type="password" class="form-control" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="repPassword">Repetir Contraseña</label>
-                        <input type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange}/>
+                        <input type="password" class="form-control" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
-                        <button type="submit">Guardar Cambios</button>
+                        <button className="btn btn-primary btn-lg btn-block" type="submit">Guardar Cambios</button>
                     </div>
                 </form>                
 
                 <div>
-                    <button type="submit" onClick={() => this.eliminarCuenta()}>Eliminar cuenta</button>
+                    <button type="submit" className="btn btn-danger" onClick={() => this.eliminarCuenta()}>Eliminar cuenta</button>
                 </div>
-
             </div>
         );
     }

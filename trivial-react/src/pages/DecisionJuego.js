@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import '../css/DecisionJuego.css';
 import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
+import "bootstrap/dist/css/bootstrap.min.css"
 
 class Header extends React.Component{
     render(){
@@ -25,11 +26,10 @@ class Decision extends React.Component{
             <div className="Decision">
                 <img className="imgLogo" src={logo} alt="Wondergames Logo"></img>
                 <h1>¿Cómo quieres jugar?</h1>
-                <div className="respuestaBotones">
+                <div className="respuestaBotones btn-group justify-content-lg-center">
                     <h1>
-                        <button className="btnModoMultijugador" onClick={() => history.push("/ModoMultijugador", {usuario: username})}>Modo Multijugador</button>
-                        o
-                        <button className="btnModoIndividual" onClick={() => history.push("/ModoIndividual", {usuario: username})}>Modo Individual</button>
+                        <button className="btn btn-primary " onClick={() => history.push("/ModoMultijugador", {usuario: username})}>Modo Multijugador</button>
+                        <button className="btn btn-secondary" onClick={() => history.push("/ModoIndividual", {usuario: username})}>Modo Individual</button>
                     </h1>
                 </div>
             </div>
