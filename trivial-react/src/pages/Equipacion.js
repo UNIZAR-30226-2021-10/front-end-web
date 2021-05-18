@@ -222,9 +222,8 @@ class InfoPerfilUsuario extends React.Component{
 
         const cols=[];
         itemsComprados.forEach((item) => {
-            cols.push(  <div className = "itemsTienda">
+            cols.push(  <div className = "itemsTienda" onClick={()=> this.equipar(item)}>
                             <Item item={item}/> 
-                            <button className="btnEquip" onClick={()=> this.equipar(item)}>Equipar</button>
                         </div>
                     );
         });
