@@ -117,7 +117,7 @@ class ComprarItem extends React.Component{
                     </tr>
                 </tbody>
                 <div>
-                    <button onClick={this.handleCompra}>Comprar</button>
+                    <button className="btn btn-primary" onClick={this.handleCompra}>Comprar</button>
                 </div>
             </div>
         )

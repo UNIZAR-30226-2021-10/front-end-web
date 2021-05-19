@@ -84,7 +84,7 @@ class FormCrearMultijugador extends React.Component{
                                 <option value="15">15</option>
                             </select>
                         </div>
-                        <button type="submit">¡Comenzar!</button>
+                        <button className="btn btn-primary" type="submit">¡Comenzar!</button>
                     </form>
                 </div>
                 {estado !== null ? ( //Si hay datos guardados como "estado"

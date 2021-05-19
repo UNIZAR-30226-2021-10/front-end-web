@@ -188,7 +188,7 @@ class FormCrearMultijugador extends React.Component{
                             <option value="15">15</option>
                         </select>
                     </div>
-                    <button type="submit">Crear</button>
+                    <button className="btn btn-primary" type="submit">Crear</button>
                 </form>
             </div>
         );

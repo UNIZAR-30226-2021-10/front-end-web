@@ -99,13 +99,13 @@ class FormInicio extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="username">Usuario </label>
-                        <input type="text" name="username" placeholder="Enter your username." onChange={this.handleChange} required/>
+                        <input type="text" className="form-control" name="username" placeholder="Enter your username." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="password">Contraseña</label>
-                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
+                        <input type="password" className="form-control" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
                     </div>
-                    <button type="submit">Acceder</button>
+                    <button className="btn btn-primary" type="submit">Acceder</button>
                 </form>
             </div>
         );
@@ -118,9 +118,9 @@ class FooterInicio extends React.Component{
         return(
             <div className="FooterInicio">
                 <>
-                    <button className="btnContraseñaOlvidada" onClick={() => history.push("/CambiarContrasena")}>Contraseña Olvidada</button>
+                    <button className="btnContraseñaOlvidada btn btn-secondary" onClick={() => history.push("/CambiarContrasena")}>Contraseña Olvidada</button>
                 {"  "}
-                    <button className="btnRegistrarse" onClick={() => history.push("/Registrarse")}>Registrarse</button>
+                    <button className="btnRegistrarse btn btn-secondary" onClick={() => history.push("/Registrarse")}>Registrarse</button>
                 </>
             </div>
         );

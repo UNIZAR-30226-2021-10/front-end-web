@@ -5,6 +5,7 @@ import '../css/DecisionJuego.css';
 import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
 import "bootstrap/dist/css/bootstrap.min.css"
 
+
 class Header extends React.Component{
     render(){
         const history = this.props.history;
