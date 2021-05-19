@@ -5,7 +5,7 @@ import '../css/DecisionJuego.css';
 import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
 import "bootstrap/dist/css/bootstrap.min.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 
 

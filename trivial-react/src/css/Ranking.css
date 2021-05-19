@@ -70,6 +70,20 @@
     margin-left: 0%;
 }
 
+.fila .imgAvatar {
+    height: 5vh;
+    width: auto;
+    margin: 2% 10% 2% 10%;
+}
+
+.fila .pointsRnk{
+    font-weight: normal;
+    font-size: calc(4px + 2vmin);
+    text-transform: uppercase;
+    margin: 2% 1% 4% 0%;
+    display:block;
+}
+
 /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
 
 .MostrarRanking::-webkit-scrollbar {

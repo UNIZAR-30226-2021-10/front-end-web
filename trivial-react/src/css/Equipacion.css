@@ -10,6 +10,7 @@
 
 .itemsComprados{
     width: 80%;
+    display: inline-table;
     float: left;
     margin: 1% auto 1% 15%;
 }
@@ -19,7 +20,7 @@
     flex-direction: column;
     margin: 10% 10% auto 40%;
 }
-
+/*
 .color{
     position:absolute;
     height:140px;
@@ -34,4 +35,4 @@
     height:140px;
     width:140px;
     z-index: -1;
-}
+}*/

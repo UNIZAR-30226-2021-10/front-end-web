@@ -4,6 +4,8 @@ import '../css/Ranking.css';
 import {LeftOutlined, CaretRightOutlined} from '@ant-design/icons';
 import {help, ranking, first, second, third} from './images';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 const baseUrl='http://localhost:3050';
 
@@ -20,7 +22,7 @@ class Header extends React.Component{
                     <img className="imgRanking" src={ranking} alt="Ranking Icon"></img>
                     <h1>Ranking</h1>
                 </div>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
@@ -96,7 +98,7 @@ class MostrarRanking extends React.Component{
                         <h1 className="posicion">#{number}</h1>
                         <img className="imgAvatar" src={usuario.imagen} alt={"Avatar de "+ usuario.nickname}></img>
                         <h1>{usuario.nickname}</h1>
-                        <h1>{usuario.puntos} puntos</h1>
+                        <h1 className="pointsRnk">{usuario.puntos} puntos</h1>
                     </div>
                 </li>
             );

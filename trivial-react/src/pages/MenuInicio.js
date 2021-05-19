@@ -4,6 +4,8 @@ import '../css/MenuInicio.css';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {help, logo} from './images';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 class Header extends React.Component{
     render(){
@@ -12,7 +14,7 @@ class Header extends React.Component{
         console.log(cookies.get('user'));
         return(
             <div className="Header">
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }

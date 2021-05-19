@@ -6,6 +6,8 @@ import Item from '../components/Item';
 import {help, tienda} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 const baseUrl='http://localhost:3050';
 
@@ -22,7 +24,7 @@ class Header extends React.Component{
                     <img className="imgTienda" src={tienda} alt="Tienda Icon"></img>
                     <h1>Tienda</h1>
                 </div>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                    <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
