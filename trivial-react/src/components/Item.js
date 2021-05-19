@@ -12,7 +12,7 @@ class Item extends React.Component {
             <td>{item.Nombre}</td>
           </tr>
           <div>
-            <img className="iconItem" src={item.Imagen} alt={"Item "+item.Nombre}></img>
+            <img style={{ marginLeft: "35px", marginTop: "8px",cursor: "pointer"}}className="iconItem" src={item.Imagen} alt={"Item "+item.Nombre}></img>
           </div>
         </tbody>
       </div>

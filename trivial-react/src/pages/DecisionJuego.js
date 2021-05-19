@@ -4,6 +4,9 @@ import Cookies from 'universal-cookie';
 import '../css/DecisionJuego.css';
 import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
 import "bootstrap/dist/css/bootstrap.min.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+
 
 
 class Header extends React.Component{
@@ -13,7 +16,7 @@ class Header extends React.Component{
         return(
             <div className="Header">
                 <img className="iconHistorial" src={historialIcon} alt="Historial Icon" onClick={() => history.push("/Historial", {usuario: username})}></img>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
@@ -29,7 +32,8 @@ class Decision extends React.Component{
                 <h1>¿Cómo quieres jugar?</h1>
                 <div className="respuestaBotones btn-group justify-content-lg-center">
                     <h1>
-                        <button className="btn btn-primary " onClick={() => history.push("/ModoMultijugador", {usuario: username})}>Modo Multijugador</button>
+                        <button  className="btn btn-primary " onClick={() => history.push("/ModoMultijugador", {usuario: username})}>Modo Multijugador</button>
+                        <span>                        </span>
                         <button className="btn btn-secondary" onClick={() => history.push("/ModoIndividual", {usuario: username})}>Modo Individual</button>
                     </h1>
                 </div>

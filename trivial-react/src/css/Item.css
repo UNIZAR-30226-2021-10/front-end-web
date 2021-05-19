@@ -13,5 +13,11 @@
 
 .iconItem{
     height: 7vw;
-    margin: 5% 10%;
+    margin: 8% 10%;
+    top: 5%;
+}
+
+.mostrarItem{
+    cursor: none;
+    
 }

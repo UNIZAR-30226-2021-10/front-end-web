@@ -212,7 +212,7 @@ class UnirseAPartida extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <input type="text" className="form-control" name="code" placeholder="Enter the starting code." onChange={this.handleChange} required/>
-                        <button className="btn primary-btn" type="submit">Acceder</button>
+                        <button  className="btn primary-btn" type="submit"> <b>Acceder </b></button>
                     </div>
                 </form>
             </div>
@@ -241,9 +241,8 @@ class CrearPartida extends React.Component{
     render(){
         return(
             <div className="CrearPartida">
-                <h1>O</h1>
-                <h1>Crea una nueva</h1>
-                <button className="btn btn-primary" onClick={this.handleCrearPartida}>Crear partida nueva</button>
+                <h1>Crea una nueva partida</h1>
+                <button className="btn btn-primary" onClick={this.handleCrearPartida}><b>Crear partida nueva</b></button>
             </div>
         );
     }

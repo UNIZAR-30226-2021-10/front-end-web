@@ -180,7 +180,7 @@ class FormAjustes extends React.Component{
                 </form>                
 
                 <div>
-                    <button type="submit" className="btn btn-danger" onClick={() => this.eliminarCuenta()}>Eliminar cuenta</button>
+                    <button type="submit" style={{marginTop: "15px"}} className="btn btn-danger" onClick={() => this.eliminarCuenta()}>Eliminar cuenta</button>
                 </div>
             </div>
         );

@@ -5,13 +5,24 @@
 }
 
 .DecisionJuego .iconHistorial{
-    height: 25%;
+    height: 45%;    
     float: left;
     margin: auto 0.5%;
 }
 
+.DecisionJuego .iconHistorial:hover{
+    padding-bottom: 4px;
+    cursor: pointer;
+    border-radius: 17px;
+    -webkit-transition: border-radius 2s;
+    transition: border-radius 2s;
+}
+
 .DecisionJuego .imgLogo{
     height: 40%;
+    border-radius: 70px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    
 }
 
 .DecisionJuego h1{
@@ -22,6 +33,7 @@
 .respuestaBotones{
     height: 20vh;
     width: 100vw;
+    margin-top: -10px;
 }
 
 .DecisionJuego button {
@@ -46,6 +58,8 @@
     width: 100vw;
 }
 
+
+
 .iconCompras{
     height: 9vh;
     width: 5vw;
@@ -65,4 +79,22 @@
     width: 5vw;
     float: right;
     margin: auto 28% auto 10%;
+}
+
+.Decision .btn.btn-primary{
+    background-color:rgb(129, 33, 153);
+    border: none;
+}
+
+.Decision .btn.btn-primary:hover{
+    background-color:rgb(155, 54, 238);
+}
+
+
+.Decision .btn.btn-secondary{
+    background-color:rgb(250, 189, 46);
+}
+
+.Decision .btn.btn-secondary:hover{
+    background-color:rgb(219, 182, 95);
 }

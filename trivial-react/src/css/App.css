@@ -1,6 +1,9 @@
 .App {
   text-align: center;
+  
 }
+
+
 
 .CambiarContrasena, .DecisionJuego, .MenuInicio, 
 .PerfilUsuario, .Registrarse, .Ajustes, .Tienda, 
@@ -9,7 +12,7 @@
 .FinalMultijugador, .AbandonarPartida, .ModoIndividual,
 .IndividualPartida, .FinalIndividual, .AyudaJuego, .Chat,
 .Ranking, .Historial, .Upload{
-  background-color: white;
+ 
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -33,6 +36,23 @@
 .iconHelp{
   height: 25%;
   float: right;
+  margin: auto 0.5%;
+  width: 100px;
+}
+
+.svg-inline--fa.fa-w-16{
+  width: auto;
+  height: 30%;
+  cursor: pointer;
+}
+
+
+
+.svg-inline--fa.fa-w-16:hover{
+    padding-bottom: 4px;
+    border-radius: 17px;
+    -webkit-transition: border-radius 2s;
+    transition: border-radius 2s;
 }
 
 .iconSettings{
