@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  background-image: url("file:///home/lucas/Desktop/UNIZAR-30226-2021-10/front-end-web/trivial-react/src/components/fondo_wonder.png");
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  background-size: cover;
+  background-position: center;
 }
 
 .CambiarContrasena, .DecisionJuego, .MenuInicio, 
@@ -9,7 +15,6 @@
 .FinalMultijugador, .AbandonarPartida, .ModoIndividual,
 .IndividualPartida, .FinalIndividual, .AyudaJuego, .Chat,
 .Ranking, .Historial, .Upload{
-  background-color: white;
   height: 100vh;
   display: flex;
   flex-direction: column;
