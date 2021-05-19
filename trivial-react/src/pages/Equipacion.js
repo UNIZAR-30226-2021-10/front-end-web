@@ -162,6 +162,10 @@ class InfoPerfilUsuario extends React.Component{
                 }
             }
         })
+        if (imagenes[0].tipo != 'color'){
+            imagenes.unshift(itemsComprados[0].Imagen);
+            itemsComprados[0].equipado = 1;
+        }
         console.log(imagenes);
         axios.post(baseUrl+'/UpdateItemsUsuario', {equipados, nombre, email: email})
             .then(response=>{   
@@ -218,9 +222,8 @@ class InfoPerfilUsuario extends React.Component{
 
         const cols=[];
         itemsComprados.forEach((item) => {
-            cols.push(  <div className = "itemsTienda">
+            cols.push(  <div className = "itemsTienda" onClick={()=> this.equipar(item)}>
                             <Item item={item}/> 
-                            <button className="btnEquip" onClick={()=> this.equipar(item)}>Equipar</button>
                         </div>
                     );
         });
