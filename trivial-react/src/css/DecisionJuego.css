@@ -60,25 +60,49 @@
 
 
 
-.iconCompras{
+.DecisionJuego .iconCompras{
     height: 9vh;
     width: 5vw;
     float: left;
     margin: auto 10% auto 28%;
 }
 
-.iconRanking{
+.DecisionJuego .iconCompras:hover{
+    padding-bottom: 5px;
+    cursor: pointer;
+    border-radius: 7px;
+    -webkit-transition: border-radius 2s;
+    transition: border-radius 2s;
+}
+
+.DecisionJuego .iconRanking{
     height: 8vh;
     width: 5vw;
     float: left;
     margin: auto auto auto 4.5%;
 }
 
-.iconUsuario{
+.DecisionJuego .iconRanking:hover{
+    padding-bottom: 5px;
+    cursor: pointer;
+    border-radius: 7px;
+    -webkit-transition: border-radius 2s;
+    transition: border-radius 2s;
+}
+
+.DecisionJuego .iconUsuario{
     height: 9vh;
-    width: 5vw;
+    width: 4vw;
     float: right;
     margin: auto 28% auto 10%;
+}
+
+.DecisionJuego .iconUsuario:hover{
+    padding-bottom: 5px;
+    cursor: pointer;
+    border-radius: 7px;
+    -webkit-transition: border-radius 2s;
+    transition: border-radius 2s;
 }
 
 .Decision .btn.btn-primary{

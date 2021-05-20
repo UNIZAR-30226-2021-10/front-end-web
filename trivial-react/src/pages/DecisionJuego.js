@@ -5,7 +5,7 @@ import '../css/DecisionJuego.css';
 import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
 import "bootstrap/dist/css/bootstrap.min.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import {  faQuestionCircle, faShoppingCart, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -48,9 +48,9 @@ class Footer extends React.Component{
         const username = this.props.usuario;
         return(
             <div className="Footer">
-                <img className="iconCompras" src={compras} alt="Shop Icon" onClick={() => history.push("/Tienda", {usuario: username})}></img>
-                <img className="iconRanking" src={trofeo} alt="Ranking Icon" onClick={() => history.push("/Ranking", {usuario: username})}></img>
-                <img className="iconUsuario" src={imgUsuario} alt="User Icon" onClick={() => history.push("/PerfilUsuario", {usuario: username})}></img>
+                <FontAwesomeIcon  className="iconCompras" icon={faShoppingCart} alt="Shop Icon" onClick={() => history.push("/Tienda", {usuario: username})}/>
+                <FontAwesomeIcon  className="iconRanking" icon={faTrophy} alt="Ranking Icon" onClick={() => history.push("/Ranking", {usuario: username})}/>
+                <FontAwesomeIcon  className="iconUsuario" icon={faUser} alt="User Icon" onClick={() => history.push("/PerfilUsuario", {usuario: username})}/>
             </div>
         );
     }
