@@ -4,6 +4,9 @@ import '../css/CodigoVerificacion.css';
 import {LeftOutlined} from '@ant-design/icons';
 import {help} from './images';
 import axios from 'axios';
+import swal from 'sweetalert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.Component{
     render(){
@@ -15,7 +18,7 @@ class Header extends React.Component{
                     Atrás
                 </div>
                 <h1>Cambiar contraseña</h1>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
@@ -58,7 +61,13 @@ class FormCodigoVerificacion extends React.Component{
         axios.post("http://localhost:3050/CambiarContrasenya", {password: this.state.password, email: this.props.email})         
                         .then(response => { //Está registrado
                             
-                            alert("Se ha modificado la contraseña correctamente");
+                            swal({
+                                text: "Tu contraseña se ha modificado correctamente",
+                                icon: "success",
+                                button: "Ok"
+                            });
+
+
                             this.props.history.push("/MenuInicio");
                             
                         })
@@ -111,22 +120,22 @@ class FormCodigoVerificacion extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="email">Introduzca el email</label>
-                        <input type="email" name="email" value={this.props.email} readOnly/>
+                        <input class="form-control" type="email" name="email" value={this.props.email} readOnly/>
                     </div>
                     <div>
                         <label for="inputCode">Introduzca el codigo de verification</label>
-                        <input type="text" name="inputCode" placeholder="Enter your verification code" onChange={this.handleChange} required/>
+                        <input class="form-control" type="text" name="inputCode" placeholder="Enter your verification code" onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="password">Introduzca la nueva contraseña</label>
-                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
+                        <input class="form-control" type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="repPassword">Repetir la nueva contraseña</label>
-                        <input type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
+                        <input class="form-control" type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
-                        <button type="submit">Confirmar</button>
+                        <button class="btn btn-primary" type="submit">Confirmar</button>
                     </div>
                 </form>
             </div>

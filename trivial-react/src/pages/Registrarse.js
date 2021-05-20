@@ -4,6 +4,10 @@ import '../css/Registrarse.css';
 import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import {help} from './images';
+import "bootstrap/dist/css/bootstrap.min.css";
+import swal from 'sweetalert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
 const baseUrl='http://localhost:3050';
 
@@ -17,7 +21,7 @@ class Header extends React.Component{
                     Atrás
                 </div>
                 <h1>Registrarse</h1>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
@@ -75,7 +79,14 @@ class FormRegistro extends React.Component{
                 
                 if (response.status === 200){               //Inserción correcta
                     this.postObjetoNuevo("Naranja", this.state.email)
-                    alert("Usuario registrado correctamente: "+ username);
+                    
+                    swal({
+                        title: "Bienvenido",
+                        text: "Tu cuenta se ha creado correctamente",
+                        icon: "success",
+                        button: "Ok"
+                    });
+
                     history.push('/MenuInicio');
                 }
             })
@@ -85,15 +96,31 @@ class FormRegistro extends React.Component{
                 
                 //Insertar usuario en la bd
                 if (error.response.status === 400){         //Si el usuario ya está siendo usado o es inválido
-                    alert("Nombre de usuario no disponible.");
+
+                    swal({
+                        text: "Nombre de usuario no disponible",
+                        icon: "warning",
+                        button: "Ok"
+                    });
+
                     //Borrar nombre de usuario del input
                     this.resetCampos(['username']);
                 } else if (error.response.status === 410){  //Si el email esta repetido
-                    alert("Email ya existente.");
                     //Borrar email del input
+
+                    swal({
+                        text: "Ya existe una cuenta con ese correo",
+                        icon: "warning",
+                        button: "Ok"
+                    });
+
                     this.resetCampos(['email']);
                 }  else{                                    //Fallo de registro por otros motivos
-                    alert('Ha habido un fallo, vuelva a intentarlo.');
+                    swal({
+                        text: "Ha habido un error, por favor, vuelva a intentarlo",
+                        icon: "warning",
+                        button: "Ok"
+                    });
                 }
                     
             });
@@ -108,7 +135,7 @@ class FormRegistro extends React.Component{
 
 
         if (password !== repPassword){ //Si no coinciden las contraseñas
-            alert("No coinciden las contraseñas.");
+            alert('Las contraseñas deben coincidir')
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
             return;
@@ -131,22 +158,22 @@ class FormRegistro extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="username">Usuario </label>
-                        <input type="text" name="username" placeholder="Enter your username." onChange={this.handleChange} required/>
+                        <input class="form-control" type="text" name="username" placeholder="Enter your username." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="email">Email </label>
-                        <input type="email" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
+                        <input class="form-control" type="email" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="password">Contraseña</label>
-                        <input type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
+                        <input class="form-control" type="password" name="password" placeholder="Enter your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <label for="repPassword">Repetir Contraseña</label>
-                        <input type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
+                        <input class="form-control" type="password" name="repPassword" placeholder="Repeat your password." onChange={this.handleChange} required/>
                     </div>
                     <div>
-                        <button type="submit">Sign up</button>
+                        <button class="btn btn-primary" type="submit">Sign up</button>
                     </div>
                 </form>
             </div>

@@ -4,6 +4,8 @@ import '../css/CambiarContrasena.css';
 import {LeftOutlined} from '@ant-design/icons';
 import {help} from './images';
 import emailjs from 'emailjs-com';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.Component{
     render(){
@@ -15,7 +17,7 @@ class Header extends React.Component{
                     Atrás
                 </div>
                 <h1>Cambiar contraseña</h1>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
@@ -86,7 +88,7 @@ class FormCambiarContrasena extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="email">Introduzca el email</label>
-                        <input type="email" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
+                        <input class="form-control" type="email" name="email" placeholder="Enter your email." onChange={this.handleChange} required/>
                     </div>
                     <div>
                         <h3>Cuando pulse el boton "Enviar" recibirá un correo electrónico con un código de validación
@@ -94,7 +96,7 @@ class FormCambiarContrasena extends React.Component{
                         </h3>
                     </div>
                     <div>
-                        <button type="submit">Enviar</button>
+                        <button class="btn btn-primary" type="submit">Enviar</button>
                     </div>
                 </form>
             </div>
