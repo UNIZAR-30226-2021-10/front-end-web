@@ -7,17 +7,39 @@ import axios from 'axios';
 import {help, amarillo, azul, marron, naranja, rosa, verde} from './images';
 import Cookies from 'universal-cookie';
 import storage from '../lib/storage';
+import swal from 'sweetalert';
 
 const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
+
+    abrirAbandonar = () => {
+        swal({
+            title: "¿Estás seguro?",
+            text: "Si abandonas la partida se perderá tu progreso",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    const history = this.props.history;
+                    //Borrar estado de la partida
+                    storage(localStorage).removeData("estado");
+                    //Salir de la partida
+                    history.push('/DecisionJuego');
+                }
+        });
+        
+        
+    }
 
     render(){
         const history = this.props.history;
         return(
             <div className="Header">
                 <div className="iconAtras">
-                    <LeftOutlined onClick={() => history.push("/AbandonarPartida")}/> 
+                <LeftOutlined onClick={this.abrirAbandonar}/> 
                     Atrás
                 </div>
                 <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>

@@ -4,6 +4,9 @@ import '../css/ModoIndividual.css';
 import {LeftOutlined} from '@ant-design/icons';
 import {help} from './images';
 import storage from '../lib/storage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
+
 
 class Header extends React.Component{
     render(){
@@ -14,7 +17,7 @@ class Header extends React.Component{
                     <LeftOutlined onClick={() => history.goBack()}/> 
                     Atrás
                 </div>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }

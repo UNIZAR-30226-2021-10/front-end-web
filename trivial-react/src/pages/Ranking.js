@@ -5,7 +5,7 @@ import {LeftOutlined, CaretRightOutlined} from '@ant-design/icons';
 import {help, ranking, first, second, third} from './images';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import {  faQuestionCircle, faTrophy } from '@fortawesome/free-solid-svg-icons'
 
 const baseUrl='http://localhost:3050';
 
@@ -19,7 +19,7 @@ class Header extends React.Component{
                     Atrás
                 </div>
                 <div className="tituloRanking">
-                    <img className="imgRanking" src={ranking} alt="Ranking Icon"></img>
+                    <FontAwesomeIcon  className="imgRanking" icon={faTrophy}/>
                     <h1>Ranking</h1>
                 </div>
                 <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>

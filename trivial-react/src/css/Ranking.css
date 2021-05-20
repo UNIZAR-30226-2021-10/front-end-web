@@ -7,13 +7,14 @@
 }
 
 .Header .tituloRanking .imgRanking{
-    height: 50%;
+    width: 50%;
+    height: 40%;
     float: left;
-    margin-right: 0px;
+    margin-left: 0%;
 }
 
 .Header .tituloRanking h1{
-    margin-left: 4%;
+    margin-left: 7%;
 }
 
 .MostrarRanking{

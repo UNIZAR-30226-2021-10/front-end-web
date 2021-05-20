@@ -3,9 +3,9 @@ import {withRouter} from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import '../css/DecisionJuego.css';
 import {help, historialIcon, logo, compras, trofeo, imgUsuario} from './images';
-import "bootstrap/dist/css/bootstrap.min.css"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faQuestionCircle, faShoppingCart, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons'
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faQuestionCircle, faShoppingCart, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons';
 
 
 

@@ -12,12 +12,32 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import {chat, amarillo, azul, marron, naranja, rosa, verde} from './images';
 import storage from '../lib/storage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import swal from 'sweetalert';
 
 const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     abrirAbandonar = () => {
-        this.props.setParentsState([{clickAtras: true}]);
+        swal({
+            title: "¿Estás seguro?",
+            text: "Si abandonas la partida no podrás volver a entrar",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    const history = this.props.history;
+                    //Borrar estado de la partida
+                    storage(localStorage).removeData("estado");
+                    //Salir de la partida
+                    history.push('/DecisionJuego');
+                }
+        });
+        
+        
     }
 
     render(){
@@ -179,9 +199,7 @@ class FooterChat extends React.Component{
     render(){
         return(
             <div className="FooterChat">
-                <img className="imgChat" src={chat} alt="Chat Icon" 
-                    onClick={this.abrirChat}>
-                </img>
+                <FontAwesomeIcon  className="imgChat" alt="Chat Icon" icon={faCommentDots} onClick={this.abrirChat}/>
             </div>
         );
     }
