@@ -4,14 +4,14 @@ import '../css/IndividualPartida.css'
 import {LeftOutlined} from '@ant-design/icons';
 import Dado from '../components/Dado';
 import axios from 'axios';
-import {help, amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
+import {amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
 import Cookies from 'universal-cookie';
 import storage from '../lib/storage';
 import swal from 'sweetalert';
-
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.Component{
-
     abrirAbandonar = () => {
         swal({
             title: "¿Estás seguro?",
@@ -28,9 +28,7 @@ class Header extends React.Component{
                     //Salir de la partida
                     history.push('/DecisionJuego');
                 }
-        });
-        
-        
+        });  
     }
 
     render(){
@@ -41,18 +39,13 @@ class Header extends React.Component{
                 <LeftOutlined onClick={this.abrirAbandonar}/> 
                     Atrás
                 </div>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
 }
 
 class Juego extends React.Component{
-
-    tirarDado = () => {
-        this.props.tirarDado();
-    }
-
     render(){
         const {ronda,jugador,dado} = this.props;
         return(
@@ -67,7 +60,7 @@ class Juego extends React.Component{
                             <p>{jugador.puntos}</p>
                         </div>
                     </div>
-                <div className="dado" onClick={this.tirarDado}>
+                <div className="dado">
                         <Dado dado={dado}/>
                 </div>
             </div>
@@ -87,12 +80,11 @@ class Pregunta extends React.Component{
     }
 
     render(){
-        const {pregunta,colorBtnA,colorBtnB,colorBtnC,colorBtnD,hasRespondido,hasTiradoDado} = this.props;
+        const {pregunta,colorBtnA,colorBtnB,colorBtnC,colorBtnD,hasRespondido} = this.props;
         const disabled=hasRespondido;
         const diabledNext=!hasRespondido;
         return(
             <div className="Pregunta"> 
-            {hasTiradoDado ? (
                 <div>
                     <p>{pregunta.ask}</p>
                     <div className="respuesta">
@@ -119,7 +111,6 @@ class Pregunta extends React.Component{
                     </div>
                     <button name="next" onClick={this.handleNext} disabled={diabledNext}>Next</button>
                 </div>
-            ):( <h1 className="tuTurno">¡Tira el dado!</h1>)}
             </div>
         );
     }
@@ -129,6 +120,10 @@ class IndividualPartida extends React.Component{
     constructor(props) {
         super(props);
         this.state = this.cargarEstado();
+        var estado = storage(localStorage).getData("estado");
+        if (estado === null){  //Si no hay datos guardados como estado
+            this.tirarDado();
+        }
         this.handleClick = this.handleClick.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.tirarDado = this.tirarDado.bind(this);
@@ -145,7 +140,6 @@ class IndividualPartida extends React.Component{
                 ronda: '1',
                 jugador: {username: usuario, avatar: avatar, puntos:'0'},
                 dado: {img: marron, category:"", color:'black'},
-                hasTiradoDado: false,
                 pregunta: '',
                 colorBtnA: 'white',
                 colorBtnB: 'white',
@@ -180,8 +174,8 @@ class IndividualPartida extends React.Component{
 
     render(){
         const history = this.props.history;
-        const { ronda, jugador, dado, hasTiradoDado, pregunta,
-                colorBtnA, colorBtnB, colorBtnC, colorBtnD, hasRespondido} = this.state;
+        const { ronda, jugador, dado, pregunta, hasRespondido,
+                colorBtnA, colorBtnB, colorBtnC, colorBtnD} = this.state;
         return(
             <div className="IndividualPartida">
                 <Header history={history}/>
@@ -197,7 +191,6 @@ class IndividualPartida extends React.Component{
                             colorBtnC={colorBtnC}
                             colorBtnD={colorBtnD}
                             hasRespondido={hasRespondido}
-                            hasTiradoDado={hasTiradoDado}
                             handleClick={this.handleClick}
                             handleNext={this.handleNext}
                 />
@@ -285,6 +278,7 @@ class IndividualPartida extends React.Component{
         } else {  //Se sigue jugando
             this.setState({ronda: (Number(ronda)+1)%(Number(maxRondas)+1)});
         }
+        this.tirarDado();
         this.setState({ hasRespondido: false,
                         hasTiradoDado: false,
                         colorBtnA: 'white',
@@ -302,58 +296,69 @@ class IndividualPartida extends React.Component{
 
     // Petición get a la db: coge una pregunta de categoria "categoria"
     // y construcción de la pregunta.
-    async getPregunta(dado){
-        await axios.get(baseURL+'/ModoIndividual?category='+ dado.category)
-            .then(response=>{
-                const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
-                const opcionCorrecta = this.rand(1,4);
-                let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
-                switch (opcionCorrecta){
-                    case 1: //Opción correcta: opcionA
-                        pregunta.opcionA=correcta;
-                        pregunta.opcionB=incorrecta1;
-                        pregunta.opcionC=incorrecta2;
-                        pregunta.opcionD=incorrecta3;
-                        pregunta.answer='opcionA';
-                        break;
-                    case 2: //Opción correcta: opcionB
-                        pregunta.opcionA=incorrecta1;
-                        pregunta.opcionB=correcta;
-                        pregunta.opcionC=incorrecta2;
-                        pregunta.opcionD=incorrecta3;
-                        pregunta.answer='opcionB';
-                        break;
-                    case 3: //Opción correcta: opcionC
-                        pregunta.opcionA=incorrecta1;
-                        pregunta.opcionB=incorrecta2;
-                        pregunta.opcionC=correcta;
-                        pregunta.opcionD=incorrecta3;
-                        pregunta.answer='opcionC';
-                        break;
-                    case 4: //Opción correcta: opcionD
-                        pregunta.opcionA=incorrecta1;
-                        pregunta.opcionB=incorrecta2;
-                        pregunta.opcionC=incorrecta3;
-                        pregunta.opcionD=correcta;
-                        pregunta.answer='opcionD';
-                        break;
-                    default:
-                        break;
+    getPregunta(dado){
+        return new Promise((resolve, reject) => {
+            fetch(baseURL+'/ModoIndividual?category='+ dado.category)
+            .then(response=>{   //Existe una partida con ese código
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
                 }
-                this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});
             })
+        });
     }
 
     tirarDado(){
-        const {hasTiradoDado} = this.state;
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
         const imagenes = [  marron, azul, amarillo, rosa, verde, naranja];
         const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
-        if (!hasTiradoDado){
-            const valor = this.rand(0,5);
-            const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
-            this.getPregunta(dado);
-        }
+        const valor = this.rand(0,5);
+        const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
+        let pregunta = "";
+        this.getPregunta(dado)
+        .then((res) =>{  
+            const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = res.idpregunta;
+            const opcionCorrecta = this.rand(1,4);
+            pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
+            switch (opcionCorrecta){
+                case 1: //Opción correcta: opcionA
+                    pregunta.opcionA=correcta;
+                    pregunta.opcionB=incorrecta1;
+                    pregunta.opcionC=incorrecta2;
+                    pregunta.opcionD=incorrecta3;
+                    pregunta.answer='opcionA';
+                    break;
+                case 2: //Opción correcta: opcionB
+                    pregunta.opcionA=incorrecta1;
+                    pregunta.opcionB=correcta;
+                    pregunta.opcionC=incorrecta2;
+                    pregunta.opcionD=incorrecta3;
+                    pregunta.answer='opcionB';
+                    break;
+                case 3: //Opción correcta: opcionC
+                    pregunta.opcionA=incorrecta1;
+                    pregunta.opcionB=incorrecta2;
+                    pregunta.opcionC=correcta;
+                    pregunta.opcionD=incorrecta3;
+                    pregunta.answer='opcionC';
+                    break;
+                case 4: //Opción correcta: opcionD
+                    pregunta.opcionA=incorrecta1;
+                    pregunta.opcionB=incorrecta2;
+                    pregunta.opcionC=incorrecta3;
+                    pregunta.opcionD=correcta;
+                    pregunta.answer='opcionD';
+                    break;
+                default:
+                    break;
+            }
+            this.setState({pregunta: pregunta, dado: dado});
+        })
+        .catch((err) =>{
+            console.log("Error busqueda pregunta: "+err);
+            alert("Ha habido un error, vuelva a intentarlo otra vez.");
+        })
     }
 }
 
