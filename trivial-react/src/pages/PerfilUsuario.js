@@ -5,9 +5,8 @@ import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import {baseURL, imagesURL} from './images'
 
-const baseUrl='http://localhost:3050';
-const urlImage= 'https://trivial-images.herokuapp.com'
 
 const style = {
     position: "absolute",
@@ -169,7 +168,7 @@ class InfoPerfilUsuario extends React.Component{
             }
         })
         console.log(imagenes);
-        axios.post(baseUrl+'/UpdateItemsUsuario', {equipados, nombre, email: email})
+        axios.post(baseURL+'/UpdateItemsUsuario', {equipados, nombre, email: email})
             .then(response=>{   
                 if (response.status == 200) { 
                     console.log("datos guardados");
@@ -180,10 +179,10 @@ class InfoPerfilUsuario extends React.Component{
             .catch(err=>{
                 console.log(err);
             })
-        axios.post(baseUrl+'/construirAvatar', {imagenes:imagenes})
+        axios.post(baseURL+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
                 avatar = response.data;
-                axios.post(urlImage+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
+                axios.post(imagesURL+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
                 .then(response =>{
                     console.log(response.data.imagenAv);
                     cookies.set('avatar', response.data.imagenAv, {path: '/'});
@@ -251,7 +250,7 @@ class PerfilUsuario extends React.Component{
     // Petición get a la db: busca los items que tiene el usuario.
     buscarItems(email){
         return new Promise((resolve, reject) => {
-            axios.post(baseUrl+'/PerfilUsuario', {email: email})
+            axios.post(baseURL+'/PerfilUsuario', {email: email})
             .then(response=>{   //Encuentra los items
                 if (response.status === 200) { 
                     resolve(response.data); 

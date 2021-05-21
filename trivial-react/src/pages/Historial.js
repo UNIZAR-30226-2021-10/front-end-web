@@ -2,13 +2,11 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Historial.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {help, historial} from './images';
+import {help, historial, baseURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
-
-const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
@@ -44,7 +42,7 @@ class MostrarHistorial extends React.Component{
     // Petición get a la db: busca el historial del usuario.
     buscarHistorial(email){
         return new Promise((resolve, reject) => {
-            axios.get(baseUrl+'/Historial_Completo?email='+email)
+            axios.get(baseURL+'/Historial_Completo?email='+email)
             .then(response=>{   //Encuentra el historial
                 if (response.status === 200) {
                     resolve(response.data); 

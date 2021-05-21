@@ -1,10 +1,11 @@
 import io from 'socket.io-client';
+import {socketURL} from './images';
 let socket;
 
 //Iniciar socket del cliente
 export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
 
-    socket = io('localhost:5000', {
+    socket = io(socketURL, {
         transports: [ 'websocket' ],
         upgrade: false
     });

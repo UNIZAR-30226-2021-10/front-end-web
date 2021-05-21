@@ -10,13 +10,11 @@ import Chat from '../components/Chat';
 import AbandonarPartida from '../components/AbandonarPartida';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {chat, amarillo, azul, marron, naranja, rosa, verde} from './images';
+import {chat, amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
 import storage from '../lib/storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import swal from 'sweetalert';
-
-const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     abrirAbandonar = () => {
@@ -455,7 +453,7 @@ class MultijugadorUnirse extends React.Component{
         //Actualiza la tabla partida.
         if (ganador == 1){  //Si eres el ganador
             //Actualizar la partida de codigo "code" con el ganador en la tabla partida.    
-            axios.post(baseUrl+'/FinalMultijugador_Partida', 
+            axios.post(baseURL+'/FinalMultijugador_Partida', 
                 { codigo: code, ganador: jugador.username})
             .then(response => { //Respuesta del servidor
                 console.log("FINAL MULTIJUGADOR PARTIDA")
@@ -470,7 +468,7 @@ class MultijugadorUnirse extends React.Component{
         console.log(code)
         console.log(jugador.puntos)
         console.log(email)
-        axios.post(baseUrl+'/FinalMultijugador_Juega2', 
+        axios.post(baseURL+'/FinalMultijugador_Juega2', 
             { codigo: code, puntos: jugador.puntos, email:email})
         .then(response => { //Respuesta del servidor
             console.log("FINAL MULTIJUGADOR JUEGA")
@@ -481,7 +479,7 @@ class MultijugadorUnirse extends React.Component{
         });
         
         //Guarda los resultados en la tabla usuario.
-        axios.post(baseUrl+'/FinalIndividual_Usuario', 
+        axios.post(baseURL+'/FinalIndividual_Usuario', 
             { email: email, monedas: monedas, puntos: jugador.puntos })
         .then(response => { //Respuesta del servidor
             console.log("FINAL INDIVIDUAL USUARIO")
@@ -579,7 +577,7 @@ class MultijugadorUnirse extends React.Component{
     // Petición get a la db: coge una pregunta de categoria "categoria"
     // y construcción de la pregunta.
     async getPregunta(dado){
-        await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
+        await axios.get(baseURL+'/ModoIndividual?category='+ dado.category)
             .then(response=>{
                 const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
 

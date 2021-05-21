@@ -3,13 +3,12 @@ import {withRouter} from 'react-router-dom';
 import '../css/Registrarse.css';
 import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
-import {help} from './images';
+import {help, baseURL, imagesURL} from './images';
 import "bootstrap/dist/css/bootstrap.min.css";
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
-const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
@@ -62,7 +61,7 @@ class FormRegistro extends React.Component{
 
     postObjetoNuevo(nombreItem, email){
         //Guarda los resultados en la tabla juega.
-        axios.post(baseUrl+'/ObjetoTienda', 
+        axios.post(baseURL+'/ObjetoTienda', 
             { nombreObjeto: nombreItem, email: email})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
@@ -73,7 +72,7 @@ class FormRegistro extends React.Component{
 
     guardarRegistro = (username, history, urlItem) => { 
  
-        axios.post("http://localhost:3050/Registrarse", {nickname:this.state.username,email:this.state.email,password:this.state.password,imagen:urlItem})
+        axios.post(baseURL+"/Registrarse", {nickname:this.state.username,email:this.state.email,password:this.state.password,imagen:urlItem})
                         
             .then(response => {console.log(response.data);
                 
@@ -142,14 +141,14 @@ class FormRegistro extends React.Component{
         }
         
         //Insertar usuario en la bd
-        const urlItem = "http://localhost:3060/tienda/color_naranja.png";
+        const urlItem = imagesURL+"/tienda/color_naranja.png";
         this.guardarRegistro(username, history,urlItem);
         
         e.preventDefault();
     }
 
     render(){
-        const urlItem = "http://localhost:3060/tienda/color_naranja.png";
+        const urlItem = imagesURL+"/tienda/color_naranja.png";
         return(
             <div className="FormRegistro">
                 <div className="imgAvatar">

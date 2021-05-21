@@ -4,9 +4,7 @@ import '../css/MultijugadorCrear.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {help} from './images';
-
-const baseUrl='http://localhost:3050';
+import {help, baseURL} from './images';
 
 class Header extends React.Component{
     render(){
@@ -65,7 +63,7 @@ class FormCrearMultijugador extends React.Component{
     buscarCodigo(codigo){
         //Mirar si existe una partida con ese código
         return new Promise((resolve, reject) => {
-            fetch(baseUrl+'/Multijugador_PartidaCode?codigo='+ codigo)
+            fetch(baseURL+'/Multijugador_PartidaCode?codigo='+ codigo)
             .then(response=>{   //Existe una partida con ese código
                 if (response.ok) {
                     resolve(response.json());
@@ -114,12 +112,12 @@ class FormCrearMultijugador extends React.Component{
                     "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
         
         //Guarda los resultados en la tabla partida.
-        axios.post(baseUrl+'/CrearMultijugador_Partida', 
+        axios.post(baseURL+'/CrearMultijugador_Partida', 
             { fecha: fecha, numJugadores: selectJugadores, rondas: selectRondas, ganador: jugador.username, codigo: codigo})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
             //Guarda los resultados en la tabla juega.
-            axios.post(baseUrl+'/UnirseMultijugador_Juega', 
+            axios.post(baseURL+'/UnirseMultijugador_Juega', 
                 { codigo: codigo, email: email, puntos: jugador.puntos})
             .then(response => { //Respuesta del servidor
                 console.log(response.data.message);  

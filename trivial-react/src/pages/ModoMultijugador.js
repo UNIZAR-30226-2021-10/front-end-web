@@ -4,11 +4,10 @@ import '../css/ModoMultijugador.css'
 import {LeftOutlined} from '@ant-design/icons';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {help} from './images';
+import {help, baseURL} from './images';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
-const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
@@ -58,7 +57,7 @@ class UnirseAPartida extends React.Component{
     buscarCodigo(codigo){
         //Mirar si existe una partida con ese código
         return new Promise((resolve, reject) => {
-            fetch(baseUrl+'/Multijugador_PartidaCode?codigo='+ codigo)
+            fetch(baseURL+'/Multijugador_PartidaCode?codigo='+ codigo)
             .then(response=>{   //Existe una partida con ese código
                 if (response.ok) {
                     resolve(response.json());
@@ -73,7 +72,7 @@ class UnirseAPartida extends React.Component{
     buscarJugadoresUsuario(idpartida){
         //Buscar jugadores y sus usuarios de la partida de id "idpartida"
         return new Promise((resolve, reject) => {
-            fetch(baseUrl+'/Multijugador_PartidaJugadoresUsuario?idpartida='+ idpartida)
+            fetch(baseURL+'/Multijugador_PartidaJugadoresUsuario?idpartida='+ idpartida)
             .then(response=>{   //Hay jugadores en esa partida
                 if (response.ok) {
                     console.log(response)
@@ -120,7 +119,7 @@ class UnirseAPartida extends React.Component{
         const email = cookies.get('email');
         
         //Guarda los resultados en la tabla juega.
-        axios.post(baseUrl+'/UnirseMultijugador_Juega', 
+        axios.post(baseURL+'/UnirseMultijugador_Juega', 
             { codigo: codigo, email: email, puntos: jugador.puntos})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  

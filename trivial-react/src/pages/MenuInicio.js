@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/MenuInicio.css';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import {help, logo} from './images';
+import {help, logo, baseURL} from './images';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
@@ -52,7 +52,7 @@ class FormInicio extends React.Component{
     guardarLogin = () => {
         const history = this.props.history;
         const {username,password} = this.state; //Datos introducidos por el usuario
-        axios.post("http://localhost:3050/MenuInicio", {nickname: username,password: password})         
+        axios.post(baseURL+"/MenuInicio", {nickname: username,password: password})         
                         .then(response => { //Está registrado
                             console.log(response.data);
                             if (username === "admin"){

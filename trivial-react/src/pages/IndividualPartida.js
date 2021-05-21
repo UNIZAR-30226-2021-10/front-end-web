@@ -4,12 +4,11 @@ import '../css/IndividualPartida.css'
 import {LeftOutlined} from '@ant-design/icons';
 import Dado from '../components/Dado';
 import axios from 'axios';
-import {help, amarillo, azul, marron, naranja, rosa, verde} from './images';
+import {help, amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
 import Cookies from 'universal-cookie';
 import storage from '../lib/storage';
 import swal from 'sweetalert';
 
-const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
 
@@ -249,7 +248,7 @@ class IndividualPartida extends React.Component{
         const monedas = jugador.puntos*0.5;
 
         //Guarda los resultados en las tablas partida y juega.
-        axios.post(baseUrl+'/FinalIndividual', 
+        axios.post(baseURL+'/FinalIndividual', 
             { fecha: fecha, numJugadores: 1, rondas: maxRondas, ganador: jugador.username, email: email, puntos: jugador.puntos})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
@@ -258,7 +257,7 @@ class IndividualPartida extends React.Component{
         });
 
         //Guarda los resultados en la tabla usuario.
-        axios.post(baseUrl+'/FinalIndividual_Usuario', 
+        axios.post(baseURL+'/FinalIndividual_Usuario', 
             { email: email, monedas: monedas, puntos: jugador.puntos })
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
@@ -304,7 +303,7 @@ class IndividualPartida extends React.Component{
     // Petición get a la db: coge una pregunta de categoria "categoria"
     // y construcción de la pregunta.
     async getPregunta(dado){
-        await axios.get(baseUrl+'/ModoIndividual?category='+ dado.category)
+        await axios.get(baseURL+'/ModoIndividual?category='+ dado.category)
             .then(response=>{
                 const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
                 const opcionCorrecta = this.rand(1,4);

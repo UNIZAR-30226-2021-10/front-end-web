@@ -3,11 +3,10 @@ import {withRouter} from 'react-router-dom';
 import '../css/ItemTienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
-import {help} from './images';
+import {help, baseURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 
-const baseUrl='http://localhost:3050';
 
 const style = {
     position: "absolute",
@@ -49,7 +48,7 @@ class ComprarItem extends React.Component{
         const item = this.props.item;
 
         //Guarda los resultados en la tabla juega.
-        axios.post(baseUrl+'/ObjetoTienda_RestarMonedas', 
+        axios.post(baseURL+'/ObjetoTienda_RestarMonedas', 
             { precioObjeto: item.Precio, email: email})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  
@@ -64,7 +63,7 @@ class ComprarItem extends React.Component{
         const item = this.props.item;
 
         //Guarda los resultados en la tabla juega.
-        axios.post(baseUrl+'/ObjetoTienda', 
+        axios.post(baseURL+'/ObjetoTienda', 
             { nombreObjeto: item.Nombre, email: email})
         .then(response => { //Respuesta del servidor
             console.log(response.data.message);  

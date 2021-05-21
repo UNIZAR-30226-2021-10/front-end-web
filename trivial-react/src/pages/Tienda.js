@@ -3,13 +3,12 @@ import {withRouter} from 'react-router-dom';
 import '../css/Tienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
-import {help, tienda} from './images';
+import {help, tienda, baseURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
-const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
@@ -82,7 +81,7 @@ class Tienda extends React.Component{
     // Petición get a la db: busca los items de la tienda.
     buscarItems(email){
         return new Promise((resolve, reject) => {
-            axios.post(baseUrl+'/PantallaTienda', {email: email})
+            axios.post(baseURL+'/PantallaTienda', {email: email})
             .then(response=>{   //Encuentra los items
                 if (response.status === 200) { 
                     resolve(response.data); 

@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/CodigoVerificacion.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {help} from './images';
+import {help, baseURL} from './images';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -58,7 +58,7 @@ class FormCodigoVerificacion extends React.Component{
 
     changePassword() {
 
-        axios.post("http://localhost:3050/CambiarContrasenya", {password: this.state.password, email: this.props.email})         
+        axios.post(baseURL+"/CambiarContrasenya", {password: this.state.password, email: this.props.email})         
                         .then(response => { //Está registrado
                             
                             swal({

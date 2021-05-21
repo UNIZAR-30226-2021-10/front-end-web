@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/CambiarContrasena.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {help} from './images';
+import {help, baseURL} from './images';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 const correoWonder = "trivial@gmail.com";
@@ -55,7 +55,7 @@ exports.sendEmail = function(req, res){
 
 
 
-axios.post("http://localhost:3050/CambiarConstrasenya", {email: email,password: password})
+axios.post(baseURL+"/CambiarConstrasenya", {email: email,password: password})
 .then(response => {
     console.log(response.data);
     alert("Password cambiada correctamente: "+ email);

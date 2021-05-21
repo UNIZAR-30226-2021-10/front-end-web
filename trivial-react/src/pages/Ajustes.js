@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Ajustes.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {ajustes} from './images';
+import {baseURL} from './images';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import swal from 'sweetalert';
@@ -75,7 +75,7 @@ class FormAjustes extends React.Component{
         }
 
 
-        axios.post("http://localhost:3050/AjustesUsuario", {nickname: username,password: password, email: email})         
+        axios.post(baseURL+"/AjustesUsuario", {nickname: username,password: password, email: email})         
                         .then(response => { //Está registrado
                             console.log(response.data);
                             
@@ -112,7 +112,7 @@ class FormAjustes extends React.Component{
         const email = cookies.get('email');
         
         //Eliminar cuenta de BBDD
-        axios.post("http://localhost:3050/EliminarCuenta", {email: email})         
+        axios.post(baseURL+"/EliminarCuenta", {email: email})         
                         .then(response => { //Está registrado
 
                             //Borrar cookies

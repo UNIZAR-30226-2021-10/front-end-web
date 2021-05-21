@@ -5,9 +5,7 @@ import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-
-const baseUrl='http://localhost:3050';
-const urlImage= 'https://trivial-images.herokuapp.com'
+import {baseURL, imagesURL} from './images'
   
 
 class Header extends React.Component{
@@ -167,7 +165,7 @@ class InfoPerfilUsuario extends React.Component{
             itemsComprados[0].equipado = 1;
         }
         console.log(imagenes);
-        axios.post(baseUrl+'/UpdateItemsUsuario', {equipados, nombre, email: email})
+        axios.post(baseURL+'/UpdateItemsUsuario', {equipados, nombre, email: email})
             .then(response=>{   
                 if (response.status == 200) { 
                     console.log("datos guardados");
@@ -195,11 +193,11 @@ class InfoPerfilUsuario extends React.Component{
                 window.location.reload(true);
               };
 
-        axios.post(baseUrl+'/construirAvatar', {imagenes:imagenes})
+        axios.post(baseURL+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
                 avatar = response.data;
                 console.log("hola");
-                axios.post(urlImage+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
+                axios.post(imagesURL+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
                 .then(response =>{
                     console.log(response.data.imagenAv);
                     cookies.set('avatar', response.data.imagenAv, {path: '/'});
@@ -265,7 +263,7 @@ class PerfilUsuario extends React.Component{
     // Petición get a la db: busca los items que tiene el usuario.
     buscarItems(email){
         return new Promise((resolve, reject) => {
-            axios.post(baseUrl+'/PerfilUsuario', {email: email})
+            axios.post(baseURL+'/PerfilUsuario', {email: email})
             .then(response=>{   //Encuentra los items
                 if (response.status == 200) { //response.ok
                     resolve(response.data); //response.json()

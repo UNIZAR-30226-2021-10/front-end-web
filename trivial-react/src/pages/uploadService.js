@@ -1,20 +1,19 @@
 import axios from 'axios';
-
-const baseUrl = 'http://localhost:3060';
+import {baseURL} from './images';
 
 class UploadService{
     /*getImages(){
         console.log("Get images cliente");
-        return axios.get(baseUrl+'/download');
+        return axios.get(baseURL+'/download');
     }*/
 
     async getHistorial(){
         console.log("Get images cliente");
-        return await axios.get(baseUrl+'/historial');
+        return await axios.get(baseURL+'/historial');
     }
 
     async getNumberOfUsers(){
-        return await axios.get(baseUrl+'/numberUsers')
+        return await axios.get(baseURL+'/numberUsers')
     }
 
     sendImages(data, file){
@@ -27,7 +26,7 @@ class UploadService{
         form.append('productPrice', data.productPrice);
         form.append('productColor', data.productColor);
         form.append('file', file);
-        return axios.post(baseUrl+'/upload',form);
+        return axios.post(baseURL+'/upload',form);
     }
 }
 

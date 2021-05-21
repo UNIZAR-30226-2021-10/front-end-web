@@ -2,12 +2,11 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Ranking.css';
 import {LeftOutlined, CaretRightOutlined} from '@ant-design/icons';
-import {help, ranking, first, second, third} from './images';
+import {help, ranking, first, second, third, baseURL} from './images';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faQuestionCircle, faTrophy } from '@fortawesome/free-solid-svg-icons'
 
-const baseUrl='http://localhost:3050';
 
 class Header extends React.Component{
     render(){
@@ -40,7 +39,7 @@ class MostrarRanking extends React.Component{
     // Petición get a la db: busca la información de los usuarios registrados.
     buscarUsuarios(){
         return new Promise((resolve, reject) => {
-            axios.post(baseUrl+'/Ranking')
+            axios.post(baseURL+'/Ranking')
             .then(response=>{   //Encuentra los items
                 if (response.status === 200) {
                     resolve(response.data); 
