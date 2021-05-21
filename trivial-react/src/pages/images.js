@@ -30,9 +30,9 @@ const verde = imagesURL+"/appImages/dado/verde.jpeg";
 
 //Ranking: imágenes de ventana "Ranking".
 const ranking = imagesURL+"/appImages/ranking/ranking.png";
-const first = imagesURL+"/appImages/ranking/first.png";
-const second = imagesURL+"/appImages/ranking/second.png";
-const third = imagesURL+"/appImages/ranking/third.png";
+const first = "../imagenes/first.PNG";
+const second = "../imagenes/first.PNG";
+const third = "../imagenes/first.PNG";
 
 //Upload: imágenes de ventana "Upload".
 const insertarFile = imagesURL+"/appImages/upload/insertarFile.png";

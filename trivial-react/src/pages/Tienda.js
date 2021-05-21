@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/Tienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
-import {help, tienda, baseURL} from './images';
+import {help, tienda, baseURL, imagesURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -84,6 +84,7 @@ class Tienda extends React.Component{
             axios.post(baseURL+'/PantallaTienda', {email: email})
             .then(response=>{   //Encuentra los items
                 if (response.status === 200) { 
+                    console.log(response.data);
                     resolve(response.data); 
                 }else{
                     reject(response.status);
@@ -97,6 +98,12 @@ class Tienda extends React.Component{
         const email = cookies.get('email');
         this.buscarItems(email)
         .then((response) => {
+
+            response.forEach( item =>{
+                var r = item.Imagen.replace('http://localhost:3060', imagesURL)
+                item.Imagen = r;
+            })
+            
             this.setState({itemsNoComprados: response});
         })
         .catch((err) => {

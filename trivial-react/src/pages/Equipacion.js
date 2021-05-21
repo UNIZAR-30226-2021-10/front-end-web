@@ -46,7 +46,7 @@ class InfoPerfilUsuario extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-          refresh: false
+           itemsC: []
           }
     }
     borrarCookies = () =>{
@@ -128,6 +128,7 @@ class InfoPerfilUsuario extends React.Component{
             })
         
         }
+        this.setState({itemsC: itemsComprados})
     }
     actualizarBD = () =>{
         const history = this.props.history;
@@ -220,10 +221,13 @@ class InfoPerfilUsuario extends React.Component{
 
         const cols=[];
         itemsComprados.forEach((item) => {
-            cols.push(  <div className = "itemsTienda" onClick={()=> this.equipar(item)}>
-                            <Item item={item}/> 
-                        </div>
-                    );
+            
+                cols.push(  
+                            <div className = "itemsTienda" onClick={()=> this.equipar(item)}>
+                                <Item item={item} equipado={item.equipado} /> 
+                            </div>
+                );
+            
         });
 
         return(
@@ -245,7 +249,10 @@ class InfoPerfilUsuario extends React.Component{
                         <th>Items: </th>
                     </tr>
                 </tbody>
-                <div className="itemsComprados">{cols}</div>
+                
+                <div className="itemsComprados">
+                    {cols}
+                </div>
                 <div className="guardar"> <button className="btnGuardar" onClick={() => this.actualizarBD()} > Guardar </button> </div>
             </div>
         );
@@ -279,6 +286,10 @@ class PerfilUsuario extends React.Component{
         const email = cookies.get('email');
         this.buscarItems(email)
         .then((response) => {
+            response.forEach( item =>{
+                var r = item.Imagen.replace('http://localhost:3060', imagesURL)
+                item.Imagen = r;
+            })
             this.setState({itemsComprados: response});
         })
         .catch((err) => {

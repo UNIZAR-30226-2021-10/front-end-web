@@ -2,8 +2,11 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Ranking.css';
 import {LeftOutlined, CaretRightOutlined} from '@ant-design/icons';
-import {help, ranking, first, second, third, baseURL} from './images';
+import {help, ranking, baseURL, imagesURL} from './images';
 import axios from 'axios';
+import first from '../imagenes/first.PNG';
+import second from '../imagenes/second.PNG';
+import third from '../imagenes/third.PNG';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faQuestionCircle, faTrophy } from '@fortawesome/free-solid-svg-icons'
 
@@ -54,6 +57,10 @@ class MostrarRanking extends React.Component{
         this.buscarUsuarios()
         .then((response) => {
             console.log(response);
+            response.forEach( item =>{
+                var r = item.imagen.replace('http://localhost:3060', imagesURL)
+                item.imagen = r;
+            })
             this.setState({usuariosDesc: response});
         })
         .catch((err) => {
