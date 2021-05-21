@@ -142,7 +142,6 @@ class Pregunta extends React.Component{
         //const disabled=(hasRespondido | turno!=usuario);
         console.log(jugadores.length);
         console.log(maxJugadores);
-        console.log("ME CAGO EN MI PUTA MADRE");
 
         return(
             <div className="Pregunta"> 
@@ -557,7 +556,7 @@ class MultijugadorUnirse extends React.Component{
 
         //Enviar al resto de jugadores el nuevo turno y ronda
         console.log(usuario + " pasa turno al usuario " + nuevoTurno);
-        pasarTurno(nuevoTurno, nuevaRonda,  jugadores[usuario].puntos);
+        pasarTurno(Number(nuevoTurno), Number(nuevaRonda),  Number(jugadores[usuario].puntos));
 
         this.setState({ hasRespondido: false,
                         hasTiradoDado: false,

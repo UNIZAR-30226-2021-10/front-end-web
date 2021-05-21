@@ -107,12 +107,16 @@ class Messages extends React.Component {
                             nombre = "admin";
                             color = "#dcb4e9";
                         } else{
-                            nombre = jugadores[message.sender].username;
-                            color = colores[message.sender];
+                            
+                            //nombre = jugadores[message.sender].username;
+                            nombre=message.sender;
+
+                            const indice = jugadores.find((index) => index.username===message.sender);
+                            color = colores[indice];
                         }
                         return (
                             <div>
-                                { message.sender !== usuario ? (
+                                { message.sender !== jugadores[usuario].username ? (
                                 <li key={message.id} className="izquierda">
                                     <div className="sender" style={{ color: color}}>{nombre}</div>
                                     <div className="messageConFlecha">
