@@ -161,10 +161,16 @@ class MostrarHistorial extends React.Component{
         const {historial} = this.state;
         return(
             <div className="MostrarHistorial">
-                <div className="filtros">
-                    <button onClick={this.historialGeneral}>General</button>
-                    <button onClick={this.historialIndividual}>Individual</button>
-                    <button onClick={this.historialMultijugador}>Multijugador</button>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" margin="14px">
+                    <label class="btn btn-secondary"> 
+                        <input type="radio" name="options" id="option1" autocomplete="off" onClick={this.historialGeneral}/> General
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="option2" autocomplete="off" onClick={this.historialIndividual}/> Individual
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="option3" autocomplete="off" onClick={this.historialMultijugador}/> Multijugador
+                    </label>
                 </div>
                 <ul className="historial">
                     {historial}
