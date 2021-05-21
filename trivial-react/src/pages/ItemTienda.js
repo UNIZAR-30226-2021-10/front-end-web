@@ -6,6 +6,7 @@ import Item from '../components/Item';
 import {help, baseURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 
 const style = {
@@ -86,11 +87,20 @@ class ComprarItem extends React.Component{
             this.restarMonedas();
             //Insertar elemento comprado en la db
             this.postObjetoNuevo();
-            alert("Comprado: "+ item.Nombre);
-            history.goBack();
+            swal({
+                text:"Comprado: "+ item.Nombre, 
+                icon: "success",
+                buttons: true
+            })
+            .then((ok) => {
+                if(ok){
+                    console.log ('item comprado');
+                    history.push("/Tienda");
+                }
+            })
+            
         } else{ //Si no tienes monedas suficientes
-            alert("Tienes "+ monedas +" monedas y el item "+ 
-            item.Nombre+" cuesta "+item.Precio+" monedas.");
+            swal({text:"No tienes suficientes monedas para comprar este item", icon: "warning"});
         }
         e.preventDefault();
     }
