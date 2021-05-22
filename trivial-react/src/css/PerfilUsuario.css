@@ -9,6 +9,21 @@
     width: 100%;
 }
 
+.imgAvatar{
+    display: block;
+    width:140px;
+    height: 300px;
+    float: right;
+    margin-right: 300px;
+}
+
+.imgAvatar .btn-danger{
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    margin : 12px;
+}
+
 .itemsComprados{
     width: 80%;
     float: left;

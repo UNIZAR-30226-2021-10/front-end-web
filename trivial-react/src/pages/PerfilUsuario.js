@@ -213,8 +213,8 @@ class InfoPerfilUsuario extends React.Component{
             <div className="InfoPerfilUsuario">
                 <div className="imgAvatar">
                     {<img src={cookies.get('avatar')} alt="Avatar"></img>}
-                    <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
-                    <button className="btnEquipar" onClick={() => history.push("/Equipacion")}>Equiparse</button>
+                    <button type="button" class="btn btn-danger" onClick={() => this.borrarCookies()}>Log out</button>
+                    <button type="button" class="btn btn-primary" onClick={() => history.push("/Equipacion")}>Equiparse</button>
                 </div>
                 <tbody>
                     <tr>
