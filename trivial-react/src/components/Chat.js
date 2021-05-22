@@ -94,8 +94,6 @@ class Messages extends React.Component {
         const colores = ["#e9a6a1", "#e9dea1", "#b2e9a1", "#a1e4e9"];
         const messages = this.props.messages;
         const usuario = this.props.usuario;
-        // const cookies = new Cookies();
-        // const usuario = cookies.get('user');
         const jugadores = this.props.jugadores;
         return (
             <div className="Messages">
@@ -106,11 +104,10 @@ class Messages extends React.Component {
                             nombre = "admin";
                             color = "#dcb4e9";
                         } else{
-                            //nombre = jugadores[message.sender].username;
                             nombre=message.sender;
-
-                            const indice = jugadores.findIndex((user) => user.username===message.sender);
-                            color = colores[indice];
+                            //Buscar index en el array del que envia
+                            const index = jugadores.findIndex(jugador =>  jugador.username===nombre);
+                            color = colores[index];
                         }
                         return (
                             <div>

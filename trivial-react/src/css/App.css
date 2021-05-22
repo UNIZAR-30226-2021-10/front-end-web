@@ -123,7 +123,10 @@ tbody th {
 }
 
 p, h1, li, th, td{
-  font-family: cursive;
+  font-weight: 460 !important;
+  font-variant: small-caps !important;
+  font-family: 'Vazir', Lato !important;
+
 }
 
 

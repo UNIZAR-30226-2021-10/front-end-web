@@ -5,6 +5,15 @@
     float: left;
     margin: auto 3% 2%;
 }
+.ItemEquipado{
+    height: 12vw;
+    width: 12vw;
+    float: left;
+    margin: auto 3% 2%;
+    border: 4px solid;
+    border-color: chartreuse;
+    border-radius: 2em;
+}
 
 .infoItem {
     font-size: calc(1px + 2vmin);

@@ -8,12 +8,21 @@
     width: 100%;
 }
 
+.btn-success {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+    margin: 12px;
+}
+
 .itemsComprados{
     width: 80%;
     display: inline-table;
     float: left;
     margin: 1% auto 1% 15%;
 }
+
+
 
 .btnLogOut{
     display: flex;

@@ -342,13 +342,15 @@ class MultijugadorUnirse extends React.Component{
     sendMessage(messageInput) {
         const {usuario} = this.props.location.state;
         const {jugadores} = this.state;
+        const cookies = new Cookies(); 
+        const username = cookies.get('user');
         if (messageInput){   //Envio del mensaje a todos los usuarios
             //Construcción del formato de fecha
             var d = new Date();
             const meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
             const fecha = d.getFullYear() + "--" + meses[d.getMonth()] + "--" + d.getDate() + 
                         "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
-            const message = {sender: jugadores[usuario].username, avatar: jugadores[usuario].avatar, text: messageInput, date: fecha };
+            const message = {sender: username, avatar: jugadores[usuario].avatar, text: messageInput, date: fecha };
             enviarMensaje(message);
         }
     }
@@ -427,7 +429,7 @@ class MultijugadorUnirse extends React.Component{
         //Construcción de monedas y email
         const monedas = jugador.puntos*0.5;
         cookies.set('monedas', parseInt(cookies.get('monedas'),10) + monedas,  {path: '/'}); 
-        cookies.set('puntos', parseInt(cookies.get('puntos'),10) + jugador.puntos,  {path: '/'});
+        cookies.set('puntos', parseInt(cookies.get('puntos'),10) + Number(jugador.puntos),  {path: '/'});
 
         //Actualiza la tabla partida.
         if (ganador === 1){  //Si eres el ganador
@@ -562,7 +564,7 @@ class MultijugadorUnirse extends React.Component{
 
                 //Coloca aleatoriamente respuesta correcta
                 const opcionCorrecta = this.rand(1,4);
-                let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
+                let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos: dado.puntos}
                 switch (opcionCorrecta){
                     case 1: //Opción correcta: opcionA
                         pregunta.opcionA=correcta;
@@ -605,6 +607,7 @@ class MultijugadorUnirse extends React.Component{
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
         const imagenes = [  marron, azul, amarillo, rosa, verde, naranja ];
         const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
+        const puntos_categoria= [20, 30, 25, 15, 5, 10];
         const {usuario}=this.props.location.state;
         const {turno}=this.state;
 
@@ -612,7 +615,7 @@ class MultijugadorUnirse extends React.Component{
         //Si se cumple la condición puedes tirar el dado
         if (!hasTiradoDado && jugadores.length === maxJugadores && usuario === turno){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);
-            const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
+            const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor], puntos:puntos_categoria[valor]};
             this.getPregunta(dado);
         }
     }
