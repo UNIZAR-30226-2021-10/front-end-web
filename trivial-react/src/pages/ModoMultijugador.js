@@ -4,9 +4,9 @@ import '../css/ModoMultijugador.css'
 import {LeftOutlined} from '@ant-design/icons';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {help, baseURL} from './images';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
+import {baseURL} from './images';
+import {FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
 
 class Header extends React.Component{

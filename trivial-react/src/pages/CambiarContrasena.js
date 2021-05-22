@@ -2,10 +2,9 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/CambiarContrasena.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {help} from './images';
 import emailjs from 'emailjs-com';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.Component{
     render(){

@@ -4,7 +4,9 @@ import '../css/MultijugadorCrear.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {help, baseURL} from './images';
+import {baseURL} from './images';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.Component{
     render(){
@@ -16,7 +18,7 @@ class Header extends React.Component{
                     Atrás
                 </div>
                 <h1>Crear partida nueva</h1>
-                <img className="iconHelp" src={help} alt="Help Icon" onClick={() => history.push("/AyudaJuego")}></img>
+                <FontAwesomeIcon  className="iconHelp" icon={faQuestionCircle} onClick={() => history.push("/AyudaJuego")}/>
             </div>
         );
     }
@@ -138,7 +140,6 @@ class FormCrearMultijugador extends React.Component{
         const selectRondas = this.state.selectRondas;
         //Construir jugador
         const avatar = cookies.get('avatar');
-        const email = cookies.get('email');
         const jugador = {username: usuario, avatar: avatar, puntos:'0', conectado:true};
         //Crear partida
         this.generarCodigoPartida()

@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Ranking.css';
 import {LeftOutlined, CaretRightOutlined} from '@ant-design/icons';
-import {help, ranking, first, second, third, baseURL} from './images';
+import {first, second, third, baseURL} from './images';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faQuestionCircle, faTrophy } from '@fortawesome/free-solid-svg-icons'

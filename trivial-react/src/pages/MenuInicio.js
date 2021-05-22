@@ -3,9 +3,9 @@ import {withRouter} from 'react-router-dom';
 import '../css/MenuInicio.css';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import {help, logo, baseURL} from './images';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import {logo, baseURL} from './images';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
 
 class Header extends React.Component{
     render(){

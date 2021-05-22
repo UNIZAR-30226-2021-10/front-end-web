@@ -8,7 +8,7 @@ import axios from 'axios';
 import {baseURL, imagesURL} from './images'
 
 
-const style = {
+/*const style = {
     position: "absolute",
     top: 0,
     right: 0,
@@ -17,7 +17,7 @@ const style = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  };
+  };*/
   
 
 class Header extends React.Component{
@@ -67,12 +67,11 @@ class InfoPerfilUsuario extends React.Component{
     }
     equipar = (thisItem) =>{
         const itemsComprados = this.props.itemsComprados;
-        const history = this.props.history;
-        if (thisItem.Tipo == 'color'){
+        if (thisItem.Tipo === 'color'){
             itemsComprados.forEach((item) => {
-                if(item.Tipo == 'color'){
-                    if (item.Nombre == thisItem.Nombre){
-                        if (item.equipado == 1){
+                if(item.Tipo === 'color'){
+                    if (item.Nombre === thisItem.Nombre){
+                        if (item.equipado === 1){
                             item.equipado=0;
                         } else {
                             item.equipado=1;
@@ -84,28 +83,11 @@ class InfoPerfilUsuario extends React.Component{
                 }
             })
         }
-        else if (thisItem.Tipo == 'cuerpo'){
+        else if (thisItem.Tipo === 'cuerpo'){
             itemsComprados.forEach((item) => {
-                if(item.Tipo == 'cuerpo'){
-                    if (item.Nombre == thisItem.Nombre){
-                        if (item.equipado == 1){
-                            item.equipado=0;
-                        } else {
-                            item.equipado=1;
-                        }
-                    }
-                    else{
-                        item.equipado=0;
-                    }
-                }
-            })
-        
-        }
-        else if (thisItem.Tipo == 'cara'){
-            itemsComprados.forEach((item) => {
-                if(item.Tipo == 'cara'){
-                    if (item.Nombre == thisItem.Nombre){
-                        if (item.equipado == 1){
+                if(item.Tipo === 'cuerpo'){
+                    if (item.Nombre === thisItem.Nombre){
+                        if (item.equipado === 1){
                             item.equipado=0;
                         } else {
                             item.equipado=1;
@@ -118,11 +100,28 @@ class InfoPerfilUsuario extends React.Component{
             })
         
         }
-        else if (thisItem.Tipo == 'cabeza'){
+        else if (thisItem.Tipo === 'cara'){
             itemsComprados.forEach((item) => {
-                if(item.Tipo == 'cabeza'){
-                    if (item.Nombre == thisItem.Nombre){
-                        if (item.equipado == 1){
+                if(item.Tipo === 'cara'){
+                    if (item.Nombre === thisItem.Nombre){
+                        if (item.equipado === 1){
+                            item.equipado=0;
+                        } else {
+                            item.equipado=1;
+                        }
+                    }
+                    else{
+                        item.equipado=0;
+                    }
+                }
+            })
+        
+        }
+        else if (thisItem.Tipo === 'cabeza'){
+            itemsComprados.forEach((item) => {
+                if(item.Tipo === 'cabeza'){
+                    if (item.Nombre === thisItem.Nombre){
+                        if (item.equipado === 1){
                             item.equipado=0;
                         } else {
                             item.equipado=1;
@@ -137,10 +136,8 @@ class InfoPerfilUsuario extends React.Component{
         }
     }
     actualizarBD = () =>{
-        const history = this.props.history;
         const cookies = new Cookies();
         const itemsComprados = this.props.itemsComprados;
-        const usuario = this.props.usuario;
         const equipados=[];
         const nombre=[];
         const imagenes=[];
@@ -149,9 +146,9 @@ class InfoPerfilUsuario extends React.Component{
         itemsComprados.forEach((item) => {
             equipados.push(item.equipado);
             nombre.push(item.iditem);
-            if(item.equipado == 1){
+            if(item.equipado === 1){
                 if (imagenes.length>4){
-                    if (item.Tipo == 'color'){
+                    if (item.Tipo === 'color'){
                         imagenes.shift();
                         imagenes.unshift(item.Imagen);
                     }else{
@@ -159,7 +156,7 @@ class InfoPerfilUsuario extends React.Component{
                         imagenes.push(item.Imagen)
                     }
                 }else {
-                    if (item.Tipo == 'color'){
+                    if (item.Tipo === 'color'){
                         imagenes.unshift(item.Imagen);
                     } else{
                     imagenes.push(item.Imagen);
@@ -170,7 +167,7 @@ class InfoPerfilUsuario extends React.Component{
         console.log(imagenes);
         axios.post(baseURL+'/UpdateItemsUsuario', {equipados, nombre, email: email})
             .then(response=>{   
-                if (response.status == 200) { 
+                if (response.status === 200) { 
                     console.log("datos guardados");
                 }else{
                     console.log("error al guardar los datos");

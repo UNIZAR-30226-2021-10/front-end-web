@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/Historial.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {help, historial, baseURL} from './images';
+import {historial, baseURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

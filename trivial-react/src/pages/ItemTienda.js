@@ -3,12 +3,12 @@ import {withRouter} from 'react-router-dom';
 import '../css/ItemTienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
-import {help, baseURL} from './images';
+import {baseURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 
 
-const style = {
+/*const style = {
     position: "absolute",
     top: 0,
     right: 0,
@@ -17,7 +17,7 @@ const style = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-};
+};*/
 
 
 class Header extends React.Component{

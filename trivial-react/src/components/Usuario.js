@@ -6,7 +6,7 @@ class Usuario extends React.Component {
     const usuario = this.props.usuario;
     console.log(usuario);
     var estado="";
-    if(usuario.conectado==false){
+    if(usuario.conectado === false){
       estado=" (DESCONECTADO)"
     }
     return (

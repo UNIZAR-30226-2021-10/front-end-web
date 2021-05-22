@@ -93,6 +93,7 @@
     box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
     font-size: calc(3px + 2vmin);
     border: 2px solid black;
+    word-wrap: break-word;
 }
 
 .Messages .izquierda .date{

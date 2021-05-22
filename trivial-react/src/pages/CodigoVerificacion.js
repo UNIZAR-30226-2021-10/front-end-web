@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/CodigoVerificacion.css';
 import {LeftOutlined} from '@ant-design/icons';
-import {help, baseURL} from './images';
+import {baseURL} from './images';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -101,7 +101,7 @@ class FormCodigoVerificacion extends React.Component{
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
 
-        } else if (generatedCode != inputCode){  //Código de verificación incorrecto
+        } else if (generatedCode !== inputCode){  //Código de verificación incorrecto
             alert("Código de verificación incorrecto");
 
             //Borrar datos del imput del código

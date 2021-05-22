@@ -1,10 +1,9 @@
 import React from 'react';
 import '../css/Chat.css';
 import {LeftOutlined} from '@ant-design/icons';
-import Cookies from 'universal-cookie';
 
 class Header extends React.Component{
-    cerrarChat = () => {
+    cerrarChat = () => { 
         this.props.setParentsState([{clickChat: false}]);
     }
 
@@ -107,11 +106,10 @@ class Messages extends React.Component {
                             nombre = "admin";
                             color = "#dcb4e9";
                         } else{
-                            
                             //nombre = jugadores[message.sender].username;
                             nombre=message.sender;
 
-                            const indice = jugadores.find((index) => index.username===message.sender);
+                            const indice = jugadores.findIndex((user) => user.username===message.sender);
                             color = colores[indice];
                         }
                         return (

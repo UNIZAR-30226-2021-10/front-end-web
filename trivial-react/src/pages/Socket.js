@@ -4,7 +4,6 @@ let socket;
 
 //Iniciar socket del cliente
 export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
-
     socket = io(socketURL, {
         transports: [ 'websocket' ],
         upgrade: false
@@ -22,6 +21,20 @@ export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
 export const disconnectSocket = () => {
     socket.emit('disconnection');
     socket.off();
+}
+
+//Recargar página 
+export const refreshPage = (username, code, history) => {
+    socket = io(socketURL, {
+        transports: [ 'websocket' ],
+        upgrade: false
+    });
+    socket.emit('refresh', {username: username, code: code}, (error) =>{
+        if (error){
+            alert(error);
+            history.goBack();
+        }
+    });
 }
 
 //Metodo para recibir eventos (mensajes, union al chat, cambio de turno)
@@ -77,7 +90,7 @@ export const actualizarEventos = (setParentsState, endGame, history, usuario, co
 
         for(i=1; i<=maxJugadores; i++){
             let index=(nuevoTurno+maxJugadores-i)%maxJugadores;
-            if(jugadores[index].conectado==true){
+            if(jugadores[index].conectado === true){
                 anterior=index;
                 break;
             }

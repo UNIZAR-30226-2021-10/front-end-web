@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import '../css/Registrarse.css';
 import {LeftOutlined} from '@ant-design/icons';
 import axios from 'axios';
-import {help, baseURL, imagesURL} from './images';
+import {baseURL, imagesURL} from './images';
 import "bootstrap/dist/css/bootstrap.min.css";
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
