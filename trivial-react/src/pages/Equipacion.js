@@ -234,7 +234,7 @@ class InfoPerfilUsuario extends React.Component{
             <div className="InfoPerfilUsuario">
                 <div className="imgAvatar">
                     {<img src={cookies.get('avatar')} alt="Avatar"></img>}
-                    <button className="btnLogOut" onClick={() => this.borrarCookies()}>Log out</button>
+                    <button type="button" class="btn btn-success" onClick={() => this.actualizarBD()}>Guardar</button>
                 </div>
                 <tbody>
                     <tr>
@@ -253,7 +253,6 @@ class InfoPerfilUsuario extends React.Component{
                 <div className="itemsComprados">
                     {cols}
                 </div>
-                <div className="guardar"> <button className="btnGuardar" onClick={() => this.actualizarBD()} > Guardar </button> </div>
             </div>
         );
     }
