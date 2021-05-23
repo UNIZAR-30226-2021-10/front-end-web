@@ -2,15 +2,15 @@
 
 //URL del servidor de imágenes
 export const imagesURL = 'http://localhost:3060';
-//'https://trivial-images.herokuapp.com';
+//export const imagesURL = 'https://trivial-images.herokuapp.com';
 
 //URL BBDD
 export const baseURL = 'http://localhost:3050';
-//'https://trivial-db.herokuapp.com';
+//export const baseURL = 'https://trivial-db.herokuapp.com';
 
 //URL websockets
 export const socketURL = 'http://localhost:5000';
-//'https://websocketstrivial.herokuapp.com';
+//export const socketURL = 'https://websocketstrivial.herokuapp.com';
 
 
 //Menu: iconos de ventana "Decision Juego".

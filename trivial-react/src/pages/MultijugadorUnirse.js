@@ -145,7 +145,7 @@ class Pregunta extends React.Component{
 
         return(
             <div className="Pregunta"> 
-            { jugadores.length === maxJugadores ? (    //Si están todos los jugadores
+            { jugadores.length === Number(maxJugadores) ? (    //Si están todos los jugadores
                 hasTiradoDado ? (  //Si has tirado ya el dado, te sale la pregunta
                     <div>
                         <p>{pregunta.ask}</p>
@@ -173,7 +173,7 @@ class Pregunta extends React.Component{
                         </div>
                         <button name="next" onClick={this.handleTurno} disabled={diabledNext}>Next</button>
                     </div>
-                ):( turno === usuario ? ( //Si no has tirado el dado y es tu turno, tienes que tirar el dado
+                ):( turno == usuario ? ( //Si no has tirado el dado y es tu turno, tienes que tirar el dado
                         <h1 className="tuTurno">¡Es tu turno, tira el dado!</h1>
                     ):(     //Si no es tu turno, tienes que esperar tu turno
                         <h1 className="esperaTurno">¡Espera tu turno!</h1>
@@ -271,6 +271,10 @@ class MultijugadorUnirse extends React.Component{
 
     componentDidUpdate(){
         this.onUnloadPage();
+    }
+
+    componentWillUnmount(){
+        disconnectSocket();
     }
 
     onUnloadPage(){ //Al recargar/salir de la página -> Guardar estado de la partida 
@@ -611,9 +615,9 @@ class MultijugadorUnirse extends React.Component{
         const {usuario}=this.props.location.state;
         const {turno}=this.state;
 
-
+        
         //Si se cumple la condición puedes tirar el dado
-        if (!hasTiradoDado && jugadores.length === maxJugadores && usuario === turno){ //true = Es tu turno = turno==usuario
+        if (!hasTiradoDado && jugadores.length == maxJugadores && usuario == turno){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);
             const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor], puntos:puntos_categoria[valor]};
             this.getPregunta(dado);
