@@ -134,15 +134,18 @@ class FormRegistro extends React.Component{
 
 
         if (password !== repPassword){ //Si no coinciden las contraseñas
-            alert('Las contraseñas deben coincidir')
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
-            return;
+            swal({
+                text: "Las contraseñas deben coincidir.",
+                icon: "warning",
+                button: "Ok"
+            });
+        } else{
+            //Insertar usuario en la bd
+            const urlItem = imagesURL+"/tienda/color_naranja.png";
+            this.guardarRegistro(username, history,urlItem);
         }
-        
-        //Insertar usuario en la bd
-        const urlItem = imagesURL+"/tienda/color_naranja.png";
-        this.guardarRegistro(username, history,urlItem);
         
         e.preventDefault();
     }

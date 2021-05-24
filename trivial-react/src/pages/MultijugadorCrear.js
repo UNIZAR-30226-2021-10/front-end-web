@@ -7,6 +7,7 @@ import axios from 'axios';
 import {baseURL} from './images';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
+import swal from 'sweetalert';
 
 class Header extends React.Component{
     render(){
@@ -148,7 +149,6 @@ class FormCrearMultijugador extends React.Component{
             if(code){  //Si se genera un código válido
                 // Introducir en bd la partida y el jugador.
                 this.postPartida(code, jugador);
-                alert("Has creado una partida nueva. Código: "+ code);
                 history.push("/MultijugadorUnirse?username="+usuario+"&code="+code, 
                     {   usuario: '0',
                         maxRondas: selectRondas,
@@ -158,7 +158,11 @@ class FormCrearMultijugador extends React.Component{
                         firstJoin: true
                     });
             } else{     //Fallo de creación de partida por otros motivos
-                alert('Ha habido un fallo, vuelva a intentarlo.');
+                swal({
+                    text: "Ha habido un fallo, vuelva a intentarlo.",
+                    icon: "warning",
+                    button: "Ok"
+                });
             } 
         })
         .catch((err) => console.log(err));

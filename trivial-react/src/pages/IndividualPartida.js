@@ -358,7 +358,11 @@ class IndividualPartida extends React.Component{
         })
         .catch((err) =>{
             console.log("Error busqueda pregunta: "+err);
-            alert("Ha habido un error, vuelva a intentarlo otra vez.");
+            swal({
+                text: "Ha habido un error, vuelva a intentarlo otra vez.",
+                icon: "warning",
+                button: "Ok"
+            });
         })
     }
 }

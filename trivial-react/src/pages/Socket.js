@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import {socketURL} from './images';
+import swal from 'sweetalert';
 let socket;
 
 //Iniciar socket del cliente
@@ -10,7 +11,11 @@ export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
     });
     socket.emit('join', {username: username, code: code, avatar:avatar, firstJoin: firstJoin}, (error) =>{
         if (error!=="ok"){
-            alert(error);
+            swal({
+                text: "No se ha podido entrar.",
+                icon: "warning",
+                button: "Ok"
+            });
             history.goBack();
         }
     });

@@ -4,8 +4,9 @@ import '../css/MenuInicio.css';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {logo, baseURL} from './images';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
+import swal from 'sweetalert';
 
 class Header extends React.Component{
     render(){
@@ -72,15 +73,23 @@ class FormInicio extends React.Component{
                         })
                         .catch(error => {
                             console.log(error);
+                            //Borrar nombre de usuario del input
+                            this.resetCampos(['username']);
+                            this.resetCampos(['password']);
                             if (error.response.status === 400){  //Si el usuario ya está siendo usado o es inválido
-                                alert("Nombre de usuario o contrasena incorrectos");
-                                //Borrar nombre de usuario del input
-                                this.resetCampos(['username']);
-                                this.resetCampos(['password']);
+                                swal({
+                                    text: "Nombre de usuario o contrasena incorrectos",
+                                    icon: "warning",
+                                    button: "Ok"
+                                });
                             }else{     //Fallo de registro por otros motivos
-                                alert('Ha habido un fallo, vuelva a intentarlo.');
                                 this.resetCampos(['username']);
                                 this.resetCampos(['password']);
+                                swal({
+                                    text: "Ha habido un fallo, vuelva a intentarlo.",
+                                    icon: "warning",
+                                    button: "Ok"
+                                });
                             }
                                 
                         });

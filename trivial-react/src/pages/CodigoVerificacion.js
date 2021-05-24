@@ -76,11 +76,18 @@ class FormCodigoVerificacion extends React.Component{
                             
                             //Insertar usuario en la bd
                             if (error.response.status === 400){         //Usuario no registrado
-                                alert("No existe ningún usuario registrado con este email.");
+                                swal({
+                                    text: "No existe ningún usuario registrado con este email.",
+                                    icon: "warning",
+                                    button: "Ok"
+                                });
                             } else{                                    //Fallo de registro por otros motivos
-                                alert('Ha habido un fallo, vuelva a intentarlo.');
-                            }
-                                
+                                swal({
+                                    text: "Ha habido un fallo, vuelva a intentarlo.",
+                                    icon: "warning",
+                                    button: "Ok"
+                                });
+                            }     
                         });
     }
 
@@ -96,13 +103,21 @@ class FormCodigoVerificacion extends React.Component{
         const repPassword = this.state.repPassword;
         
         if (password !== repPassword){  //Si no coinciden las contraseñas
-            alert("No coinciden las contraseñas.");
-
+            swal({
+                text: "No coinciden las contraseñas.",
+                icon: "warning",
+                button: "Ok"
+            });
+            
             //Borrar datos de los inputs de las contraseñas
             this.resetCampos(['password','repPassword']);
 
         } else if (generatedCode != inputCode){  //Código de verificación incorrecto
-            alert("Código de verificación incorrecto");
+            swal({
+                text: "Código de verificación incorrecto",
+                icon: "warning",
+                button: "Ok"
+            });
 
             //Borrar datos del imput del código
             this.resetCampos(['inputCode']);

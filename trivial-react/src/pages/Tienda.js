@@ -3,12 +3,12 @@ import {withRouter} from 'react-router-dom';
 import '../css/Tienda.css';
 import {LeftOutlined} from '@ant-design/icons';
 import Item from '../components/Item';
-import {tienda, baseURL, imagesURL} from './images';
+import {baseURL, imagesURL} from './images';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
-
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
+import tienda from '../imagenes/tienda.png';
 
 class Header extends React.Component{
     render(){

@@ -1,7 +1,8 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/FinalIndividual.css';
-import {trofeo} from './images';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faTrophy} from '@fortawesome/free-solid-svg-icons';
 
 class FinalIndividual extends React.Component {
 
@@ -15,7 +16,7 @@ class FinalIndividual extends React.Component {
                     <h1>Fin de la partida</h1>
                 </div>
                 <div className="infoGanadores">
-                    <img className="imgVictoria" src={trofeo} alt={"Imagen Trofeo"}></img>
+                    <FontAwesomeIcon className="imgVictoria" icon={faTrophy} alt="Imagen Trofeo"/>
                     <div>
                         <h1>Puntos totales</h1>
                         <h1>{jugador.puntos}</h1>

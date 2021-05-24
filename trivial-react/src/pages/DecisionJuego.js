@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faQuestionCircle, faShoppingCart, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons';
 
 
-
 class Header extends React.Component{
     render(){
         const history = this.props.history;

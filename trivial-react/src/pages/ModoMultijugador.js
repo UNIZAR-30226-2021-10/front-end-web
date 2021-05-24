@@ -7,7 +7,7 @@ import axios from 'axios';
 import {baseURL} from './images';
 import {FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
-
+import swal from 'sweetalert';
 
 class Header extends React.Component{
     render(){
@@ -156,11 +156,14 @@ class UnirseAPartida extends React.Component{
                     jugadoresUnirse.push({username: jugador.nickname, avatar: jugador.imagen, puntos: jugador.puntuacion, conectado:true});
                 });
                 if(jugadores.length === partida.numJugadores && user === "-1"){   //Si la partida está llena y no estas entre los jugadores
-                    alert("La partida está completa.");
+                    swal({
+                        text: "La partida está completa.",
+                        icon: "warning",
+                        button: "Ok"
+                    });
                     //Borrar el campo del código
                     this.resetCampos(['code']);
                 }else { //Si hay hueco en la partida o estás entre los jugadores
-                    alert("Bienvenido a la partida "+ usuario);
                     if(user !== "-1"){ //Si estas entre los jugadores -> unirse
                         console.log("Estoy entre los jugadores: "+user);
 
@@ -194,12 +197,20 @@ class UnirseAPartida extends React.Component{
         .catch((err) =>{
             if (err === 400){ 
                 console.log("No existe la partida con codigo: "+ code);
-                alert("El código no coincide con ninguna partida existente.");
+                swal({
+                    text: "El código no coincide con ninguna partida existente.",
+                    icon: "warning",
+                    button: "Ok"
+                });
                 //Borrar el campo del código
                 this.resetCampos(['code']);
             }else{
                 console.log("Error busqueda partida: "+err);
-                alert("Ha habido un error, vuelva a intentarlo otra vez.");
+                swal({
+                    text: "Ha habido un error, vuelva a intentarlo otra vez.",
+                    icon: "warning",
+                    button: "Ok"
+                });
             }
         })
         e.preventDefault();
@@ -231,11 +242,7 @@ class CrearPartida extends React.Component{
         const history = this.props.history;
         const username = this.props.usuario;
         //Crear partida
-        if (true){  //Se ha podido crear partida nueva
-            history.push('/MultijugadorCrear', {usuario: username});
-        } else{     //Fallo de creación por otros motivos
-            alert('Ha habido un fallo, vuelva a intentarlo.');
-        }
+        history.push('/MultijugadorCrear', {usuario: username});
         e.preventDefault();
     }
 

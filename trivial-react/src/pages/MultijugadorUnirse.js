@@ -10,7 +10,7 @@ import Chat from '../components/Chat';
 import AbandonarPartida from '../components/AbandonarPartida';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {chat, amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
+import {amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
 import storage from '../lib/storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
@@ -30,8 +30,6 @@ class Header extends React.Component{
                     const history = this.props.history;
                     //Borrar estado de la partida
                     storage(localStorage).removeData("estadoMulti");
-                    //Desconectar el socket
-                    disconnectSocket();
                     //Salir de la partida
                     history.push('/DecisionJuego');
                 }
@@ -651,7 +649,11 @@ class MultijugadorUnirse extends React.Component{
             })
             .catch((err) =>{
                 console.log("Error busqueda pregunta: "+err);
-                alert("Ha habido un error, vuelva a intentarlo otra vez.");
+                swal({
+                    text: "Ha habido un error, vuelva a intentarlo otra vez.",
+                    icon: "warning",
+                    button: "Ok"
+                });
             })
         }
     }

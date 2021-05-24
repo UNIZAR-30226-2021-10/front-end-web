@@ -1,7 +1,8 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import '../css/FinalMultijugador.css';
-import {trofeo} from './images';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faTrophy} from '@fortawesome/free-solid-svg-icons';
 
 class FinalMultijugador extends React.Component {
 
@@ -39,7 +40,7 @@ class FinalMultijugador extends React.Component {
                     <h1>Fin de la partida</h1>
                 </div>
                 <div className="infoGanadores">
-                    <img className="imgVictoria" src={trofeo} alt={"Imagen Trofeo"}></img> 
+                    <FontAwesomeIcon className="imgVictoria" icon={faTrophy} alt="Imagen Trofeo"/>
                     <div>
                         {ganadores.length === 1 ? (
                             <h1>El ganador de la partida es <div className="negr">{ganadores[0]}</div></h1>
