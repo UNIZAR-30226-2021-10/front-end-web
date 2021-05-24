@@ -5,8 +5,8 @@
 export const imagesURL = 'https://trivial-images.herokuapp.com';
 
 //URL BBDD
-export const baseURL = 'http://localhost:3050';
-//export const baseURL = 'https://trivial-db.herokuapp.com';
+//export const baseURL = 'http://localhost:3050';
+export const baseURL = 'https://trivial-db.herokuapp.com';
 
 //URL websockets
 export const socketURL = 'http://localhost:5000';

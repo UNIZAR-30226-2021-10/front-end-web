@@ -9,7 +9,7 @@ export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
         upgrade: false
     });
     socket.emit('join', {username: username, code: code, avatar:avatar, firstJoin: firstJoin}, (error) =>{
-        if (error){
+        if (error!=="ok"){
             alert(error);
             history.goBack();
         }
@@ -38,7 +38,7 @@ export const refreshPage = (username, code, history) => {
 }
 
 //Metodo para recibir eventos (mensajes, union al chat, cambio de turno)
-export const actualizarMensajes = (messages, jugadores, setParentsState) => {
+export const actualizarMensajes = (messages, jugadores, setParentsState, maxRondas, usuario, handleTurno) => {
 
     //Nuevo mensaje en el chat
     socket.on('message', (message) =>{
@@ -62,14 +62,31 @@ export const actualizarMensajes = (messages, jugadores, setParentsState) => {
     //Jugador de nombre username se desconecta
     socket.on('desconexion', (jugadorDesconectado) =>{
         var jugadoresActuales = jugadores;
+        var num_conectados=0;
         
         jugadoresActuales.forEach(j => {
             if(j.username===jugadorDesconectado){
                 j.conectado=false;
                 j.puntos=0;
+                
+                
+            }
+
+            if(j.conectado==true){
+                num_conectados++;
             }
         })
+
+        console.log("DESCONEXION");
+        console.log(num_conectados)
+
         setParentsState([{jugadores: jugadoresActuales}]);
+
+        if(num_conectados==1){
+            console.log("UN CONECTADO")
+            setParentsState([{ronda:maxRondas, turno:usuario}]);
+            handleTurno();
+        }
     });
 
 }
@@ -95,23 +112,6 @@ export const actualizarEventos = (setParentsState, endGame, history, usuario, co
                 break;
             }
         }
-        // jugadores.forEach(jugador => {
-        //     console.log(jugador);
-        //     if((i+1)%maxJugadores === nuevoTurno){
-        //         if(jugadores[i].conectado==true){
-        //             anterior=i;
-        //         } else if(jugadores[(i+maxJugadores-1)%maxJugadores]==true){
-        //             anterior = ((i+maxJugadores-1)%maxJugadores)
-        //         } else {
-        //             anterior = ((i+maxJugadores-2)%maxJugadores)
-        //         }
-                
-        //         anterior=i;
-
-
-        //     }
-        //     i=i+1;
-        // });
         console.log(anterior)
         console.log(puntos)
         jugadores[anterior].puntos=puntos;
