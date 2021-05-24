@@ -115,7 +115,6 @@ export const actualizarEventos = (setParentsState, endGame, history, usuario, co
         console.log(anterior)
         console.log(puntos)
         jugadores[anterior].puntos=puntos;
-        
 
         setParentsState([{turno:nuevoTurno, ronda:nuevaRonda, jugadores:jugadores}]);
         console.log("Turno del jugador " + nuevoTurno);

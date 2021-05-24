@@ -274,6 +274,7 @@ class IndividualPartida extends React.Component{
             const puntos = Number(cookies.get('puntos')) + jugador.puntos;
             cookies.set('monedas', monedas, {path: '/'});
             cookies.set('puntos', puntos, {path: '/'});
+            //Ir a la ventana final
             history.push('/FinalIndividual', {jugador: jugador});
         } else {  //Se sigue jugando
             this.setState({ronda: (Number(ronda)+1)%(Number(maxRondas)+1)});

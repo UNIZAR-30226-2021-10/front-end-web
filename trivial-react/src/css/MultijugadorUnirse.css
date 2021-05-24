@@ -28,7 +28,7 @@
 }
 
 .Jugadores{
-    height: 30%;
+    height: 28%;
     width: 100%;
 }
 
@@ -48,13 +48,17 @@
 }
 
 .Pregunta{
-    height: 35%;
+    height: 37%;
     width: 100%;
 }
 
 .Pregunta p{
-    font-size: calc(10px + 2vmin);
+    font-size: calc(7px + 2vmin);
     margin: 2% 10%;
+}
+
+.respuesta{
+    height: 60%;
 }
 
 .respuesta tr{
@@ -62,15 +66,15 @@
     flex-direction: row;
     width: 80%;
     float: left;
-    margin: 1% 5% 1% 15%;
+    margin: 0% 5% 1% 15%;
 }
 
 .respuesta tr div{
-    margin-left: 13%;
+    margin-left: 8%;
 }
 
 .respuesta button {
-    width: 20vw;
+    width: 25vw;
     color: black;
 }
 

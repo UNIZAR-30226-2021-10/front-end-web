@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import queryString from 'query-string';
-import {iniciarSocket,disconnectSocket, actualizarMensajes, enviarMensaje, pasarTurno, actualizarEventos, sendFinPartida} from './Socket';
+import {iniciarSocket, disconnectSocket, actualizarMensajes, enviarMensaje, pasarTurno, actualizarEventos, sendFinPartida, refreshPage} from './Socket';
 import '../css/MultijugadorUnirse.css'
 import {LeftOutlined, LoadingOutlined} from '@ant-design/icons';
 import Dado from '../components/Dado';
@@ -29,7 +29,9 @@ class Header extends React.Component{
                 if (willDelete) {
                     const history = this.props.history;
                     //Borrar estado de la partida
-                    storage(localStorage).removeData("estado");
+                    storage(localStorage).removeData("estadoMulti");
+                    //Desconectar el socket
+                    disconnectSocket();
                     //Salir de la partida
                     history.push('/DecisionJuego');
                 }
@@ -75,10 +77,6 @@ class Header extends React.Component{
 
 class Jugadores extends React.Component{
 
-    tirarDado = () => {
-        this.props.tirarDado();
-    }
-
     mostrarJugadores(){
         const {jugadores,maxJugadores,dado} = this.props;
         const array = [];
@@ -99,7 +97,7 @@ class Jugadores extends React.Component{
             }
             if (i === 1){
                 array.push(
-                    <div onClick={this.tirarDado}>
+                    <div>
                         <Dado dado={dado}/>
                     </div>
                 );
@@ -134,7 +132,7 @@ class Pregunta extends React.Component{
     render(){
         const { pregunta, usuario, turno, jugadores, maxJugadores,
                 colorBtnA, colorBtnB, colorBtnC, colorBtnD,
-                hasRespondido,hasTiradoDado} = this.props;
+                hasRespondido} = this.props;
 
         const disabled=hasRespondido;
         
@@ -146,8 +144,8 @@ class Pregunta extends React.Component{
         return(
             <div className="Pregunta"> 
             { jugadores.length == maxJugadores ? (    //Si están todos los jugadores
-                hasTiradoDado ? (  //Si has tirado ya el dado, te sale la pregunta
-                    <div>
+                turno == usuario ? ( //Si es tu turno
+                    <div className="preg">
                         <p>{pregunta.ask}</p>
                         <div className="respuesta">
                             <tr>
@@ -173,11 +171,8 @@ class Pregunta extends React.Component{
                         </div>
                         <button name="next" onClick={this.handleTurno} disabled={diabledNext}>Next</button>
                     </div>
-                ):( turno == usuario ? ( //Si no has tirado el dado y es tu turno, tienes que tirar el dado
-                        <h1 className="tuTurno">¡Es tu turno, tira el dado!</h1>
-                    ):(     //Si no es tu turno, tienes que esperar tu turno
-                        <h1 className="esperaTurno">¡Espera tu turno!</h1>
-                    )
+                ):( 
+                    <h1 className="esperaTurno">¡Espera tu turno!</h1>
                 )
             ):(
                 <h1 className="esperaJugadores">¡Espera al resto de jugadores!</h1>
@@ -202,54 +197,35 @@ class FooterChat extends React.Component{
     }
 }
 
-const MESSAGES_DATA = [];
-
 class MultijugadorUnirse extends React.Component{
     constructor(props) {
         super(props);
-
-        this.state = {
-            ronda: '1',
-            turno: '0',
-            jugadores: this.props.location.state.jugadores,
-            dado: {img: marron, category:"", color:'black'},
-            hasTiradoDado: false,
-            pregunta: '',
-            colorBtnA: 'white',
-            colorBtnB: 'white',
-            colorBtnC: 'white',
-            colorBtnD: 'white',
-            hasRespondido: false,
-            clickAtras: false,
-            clickChat: false,
-            messages: MESSAGES_DATA
-        };
+        this.state = this.cargarEstado();
         this.sendMessage = this.sendMessage.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleTurno = this.handleTurno.bind(this);
-        this.tirarDado = this.tirarDado.bind(this);
     }
 
     cargarEstado() { //Carga el estado
         var estado = storage(localStorage).getData("estadoMulti");
-        //if (estado === null){  //Si no hay datos guardados como estado
+        if (estado === null){  //Si no hay datos guardados como estado
             estado = {
                 ronda: '1',
                 turno: '0',
                 jugadores: this.props.location.state.jugadores,
                 dado: {img: marron, category:"", color:'black'},
-                hasTiradoDado: false,
                 pregunta: '',
                 colorBtnA: 'white',
                 colorBtnB: 'white',
                 colorBtnC: 'white',
                 colorBtnD: 'white',
                 hasRespondido: false,
+                hasTiradoDado: false,
                 clickAtras: false,
                 clickChat: false,
                 messages: []
             };
-        //}
+        }
         return estado;
     }
 
@@ -260,20 +236,24 @@ class MultijugadorUnirse extends React.Component{
     };
 
     componentDidMount(){ 
-
         const history = this.props.history;
         const firstJoin = this.props.location.state.firstJoin;
-        const {messages, jugadores, turno} = this.state;
+        const {messages, jugadores} = this.state;
         const {username, code} = queryString.parse(history.location.search);
-        const {maxJugadores, maxRondas, usuario}=this.props.location.state;
+        const {maxRondas, usuario}=this.props.location.state;
         const cookies = new Cookies();
 
         const avatar = cookies.get('avatar');
 
         //Inicializar socket y unión del usuario "username" al chat con codigo "code"
-        console.log(firstJoin);
-        iniciarSocket(username, code, firstJoin, history, avatar);
-
+        var estado = storage(localStorage).getData("estadoMulti");
+        if (estado !== null){  //Si hay datos guardados como estado
+            console.log("REFRESCAR PÁGINA");
+            refreshPage(username, code, history);
+        } else{
+            console.log("INICIAR SOCKET");
+            iniciarSocket(username, code, firstJoin, history, avatar);
+        }
 
         //Actualizar array de mensajes con los que te llegan
         actualizarMensajes(messages, jugadores, this.setStates, maxRondas, usuario, this.handleTurno);
@@ -285,7 +265,27 @@ class MultijugadorUnirse extends React.Component{
     }
 
     componentDidUpdate(){
+        this.onBeforeUnloadPage();
         this.onUnloadPage();
+        this.tirarDado();
+    }
+
+    onBeforeUnloadPage(){ //Antes de recargar/salir de la pagina -> Preguntar
+        function areYouSure(e) {
+            var confirmationMessage="Are you sure you want to exit this page?";
+            if(confirmationMessage){
+                //Borrar estado de la partida
+                storage(localStorage).removeData("estadoMulti");
+                //Desconectar el socket
+                disconnectSocket();
+            }else{
+                alert("Cancelado");
+            }
+            /*var confirmationMessage = "Are you sure you want to exit this page?";
+            e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+*/
+            return confirmationMessage;              // Gecko, WebKit, Chrome <34
+        }
+        window.onbeforeunload = areYouSure;
     }
 
     onUnloadPage(){ //Al recargar/salir de la página -> Guardar estado de la partida
@@ -308,7 +308,7 @@ class MultijugadorUnirse extends React.Component{
     render(){
         const history = this.props.history;
         const {usuario, code, maxJugadores} = this.props.location.state;
-        const { ronda, turno, jugadores, dado, hasTiradoDado, pregunta,
+        const { ronda, turno, jugadores, dado, pregunta,
                 colorBtnA, colorBtnB, colorBtnC, colorBtnD, hasRespondido,
                 clickAtras, clickChat, messages} = this.state;
         console.log(this.state);
@@ -341,7 +341,6 @@ class MultijugadorUnirse extends React.Component{
                                 jugadores={jugadores} 
                                 maxJugadores={maxJugadores}
                                 dado={dado}
-                                tirarDado={this.tirarDado}
                         />
                         <Pregunta   pregunta={pregunta}
                                 turno={turno}
@@ -353,7 +352,6 @@ class MultijugadorUnirse extends React.Component{
                                 colorBtnC={colorBtnC}
                                 colorBtnD={colorBtnD}
                                 hasRespondido={hasRespondido}
-                                hasTiradoDado={hasTiradoDado}
                                 handleClick={this.handleClick}
                                 handleTurno={this.handleTurno}
                         />
@@ -401,7 +399,6 @@ class MultijugadorUnirse extends React.Component{
             //Respuesta respondida por el suuario
             let respuesta = e.target.name;
             if (pregunta.answer == respuesta){  //Respuesta correcta
-
                 let actJugadores = jugadores;
                 actJugadores[turno].puntos = Number(jugadores[turno].puntos) + Number(pregunta.puntos);
                 this.setState({jugadores: actJugadores});
@@ -444,18 +441,10 @@ class MultijugadorUnirse extends React.Component{
 
     //Muestra la pantalla final del juego e introduce los datos de la partida en BBDD
     endGame(jugadoresDesc, jugador, history, usuario, code) {
-        
-        console.log("Ganador")
-        console.log(jugadoresDesc[0].username)
-        console.log(jugador.username)
         const ganador = jugadoresDesc[0].username===jugador.username;
-        
-        console.log(ganador)
-
+        //Actualizar cookies
         const cookies = new Cookies();
         const email = cookies.get('email');
-        
-        //Construcción de monedas y email
         const monedas = Math.floor(jugador.puntos*0.5);
         cookies.set('monedas', Number(cookies.get('monedas')) + monedas,  {path: '/'}); 
         cookies.set('puntos', Number(cookies.get('puntos')) + Number(jugador.puntos),  {path: '/'});
@@ -498,6 +487,9 @@ class MultijugadorUnirse extends React.Component{
             console.log("FINAL INDIVIDUAL USUARIO ERROR")
             console.log(e);         
         });
+
+        //Borrar estado de la partida
+        storage(localStorage).removeData("estadoMulti");
 
         history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: usuario});
     }
@@ -561,7 +553,7 @@ class MultijugadorUnirse extends React.Component{
                 console.log("paso al 4")
             }
 
-            this.setState({turno: nuevoTurno});
+            this.setState({turno: nuevoTurno, hasTiradoDado: false});
             
         }
 
@@ -570,12 +562,10 @@ class MultijugadorUnirse extends React.Component{
         pasarTurno(Number(nuevoTurno), Number(nuevaRonda),  Number(jugadores[usuario].puntos));
 
         this.setState({ hasRespondido: false,
-                        hasTiradoDado: false,
                         colorBtnA: 'white',
                         colorBtnB: 'white',
                         colorBtnC: 'white',
-                        colorBtnD: 'white',
-                        dado: {img:this.state.dado.img, category:"", color:'black'}
+                        colorBtnD: 'white'
         });
     }
 
@@ -586,14 +576,38 @@ class MultijugadorUnirse extends React.Component{
 
     // Petición get a la db: coge una pregunta de categoria "categoria"
     // y construcción de la pregunta.
-    async getPregunta(dado){
-        await axios.get(baseURL+'/ModoIndividual?category='+ dado.category)
-            .then(response=>{
-                const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = response.data.idpregunta;
+    getPregunta(dado){
+        return new Promise((resolve, reject) => {
+            fetch(baseURL+'/ModoIndividual?category='+ dado.category)
+            .then(response=>{   //Existe una partida con ese código
+                if (response.ok) {
+                    resolve(response.json());
+                }else{
+                    reject(response.status);
+                }
+            })
+        });
+    }
 
-                //Coloca aleatoriamente respuesta correcta
+    tirarDado(){
+        const {jugadores, hasTiradoDado} = this.state;
+        const maxJugadores = this.props.location.state.maxJugadores;
+        const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
+        const imagenes = [  marron, azul, amarillo, rosa, verde, naranja ];
+        const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
+        const puntos_categoria= [20, 30, 25, 15, 5, 10];
+        const {usuario}=this.props.location.state;
+        const {turno}=this.state;
+
+        if (!hasTiradoDado && jugadores.length==maxJugadores && usuario==turno){ //true = Es tu turno = turno==usuario
+            const valor = this.rand(0,5);
+            const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor], puntos:puntos_categoria[valor]};
+            let pregunta = "";
+            this.getPregunta(dado)
+            .then((res) =>{  
+                const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = res.idpregunta;
                 const opcionCorrecta = this.rand(1,4);
-                let pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos: dado.puntos}
+                pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
                 switch (opcionCorrecta){
                     case 1: //Opción correcta: opcionA
                         pregunta.opcionA=correcta;
@@ -626,26 +640,12 @@ class MultijugadorUnirse extends React.Component{
                     default:
                         break;
                 }
-                this.setState({dado: dado, hasTiradoDado: true, pregunta: pregunta});
+                this.setState({pregunta: pregunta, dado: dado, hasTiradoDado: true});
             })
-    }
-
-    tirarDado(){
-        const {hasTiradoDado,jugadores} = this.state;
-        const maxJugadores = this.props.location.state.maxJugadores;
-        const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
-        const imagenes = [  marron, azul, amarillo, rosa, verde, naranja ];
-        const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
-        const puntos_categoria= [20, 30, 25, 15, 5, 10];
-        const {usuario}=this.props.location.state;
-        const {turno}=this.state;
-
-
-        //Si se cumple la condición puedes tirar el dado
-        if (!hasTiradoDado && jugadores.length==maxJugadores && usuario==turno){ //true = Es tu turno = turno==usuario
-            const valor = this.rand(0,5);
-            const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor], puntos:puntos_categoria[valor]};
-            this.getPregunta(dado);
+            .catch((err) =>{
+                console.log("Error busqueda pregunta: "+err);
+                alert("Ha habido un error, vuelva a intentarlo otra vez.");
+            })
         }
     }
 
