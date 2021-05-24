@@ -265,7 +265,7 @@ class MultijugadorUnirse extends React.Component{
         const firstJoin = this.props.location.state.firstJoin;
         const {messages, jugadores, turno} = this.state;
         const {username, code} = queryString.parse(history.location.search);
-        const {maxJugadores}=this.props.location.state;
+        const {maxJugadores, maxRondas, usuario}=this.props.location.state;
         const cookies = new Cookies();
 
         const avatar = cookies.get('avatar');
@@ -276,7 +276,7 @@ class MultijugadorUnirse extends React.Component{
 
 
         //Actualizar array de mensajes con los que te llegan
-        actualizarMensajes(messages, jugadores, this.setStates);
+        actualizarMensajes(messages, jugadores, this.setStates, maxRondas, usuario, this.handleTurno);
 
 
         //Actualizar eventos de pasar turno y finalizar partida
@@ -293,8 +293,17 @@ class MultijugadorUnirse extends React.Component{
     }
 
     componentWillUnmount() {
+        const {usuario, maxJugadores, jugadores} = this.props.location.state;
+        const {turno} = this.state;
+        console.log("UNMOUNT")
+
+        if(usuario == turno && jugadores.length==maxJugadores){
+            this.handleTurno();
+        }
+
         disconnectSocket();
-	}
+    }
+
 
     render(){
         const history = this.props.history;
@@ -447,9 +456,9 @@ class MultijugadorUnirse extends React.Component{
         const email = cookies.get('email');
         
         //Construcción de monedas y email
-        const monedas = jugador.puntos*0.5;
-        cookies.set('monedas', parseInt(cookies.get('monedas'),10) + monedas,  {path: '/'}); 
-        cookies.set('puntos', parseInt(cookies.get('puntos'),10) + Number(jugador.puntos),  {path: '/'});
+        const monedas = Math.floor(jugador.puntos*0.5);
+        cookies.set('monedas', Number(cookies.get('monedas')) + monedas,  {path: '/'}); 
+        cookies.set('puntos', Number(cookies.get('puntos')) + Number(jugador.puntos),  {path: '/'});
 
         //Actualiza la tabla partida.
         if (ganador == 1){  //Si eres el ganador
