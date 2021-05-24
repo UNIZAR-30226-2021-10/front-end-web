@@ -7,6 +7,13 @@
     height: 80%;
     width: 100%;
 }
+.imgAvatarEquip {
+    display: block;
+    width: 140px;
+    height: 300px;
+    float: right;
+    margin-right: 900px;
+}
 
 .btn-success {
     color: #fff;

@@ -6,6 +6,7 @@ import Item from '../components/Item'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import {baseURL, imagesURL} from './images'
+import { ClearCacheProvider, useClearCacheCtx } from 'react-clear-cache';
   
 
 class Header extends React.Component{
@@ -16,7 +17,7 @@ class Header extends React.Component{
         return(
             <div className="Header">
                 <div className="iconAtras">
-                    <LeftOutlined onClick={() => history.push("/DecisionJuego")}/> 
+                    <LeftOutlined onClick={() => history.push("/PerfilUsuario")}/> 
                     Atrás
                 </div>
                 <h1>Perfil de {cookies.get('user')}</h1>
@@ -187,19 +188,21 @@ class InfoPerfilUsuario extends React.Component{
                 // delete browser cache and hard reload
                 window.location.reload(true);
               };
-
+              
         axios.post(baseURL+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
                 avatar = response.data;
                 console.log(response.data);
                 axios.post(imagesURL+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
                 .then(response =>{
-                    console.log(response.data.imagenAv);
                     cookies.set('avatar', response.data.imagenAv, {path: '/'});
-                    //refreshCacheAndReload();
+                    //const { emptyCacheStorage } = useClearCacheCtx();
+                    //emptyCacheStorage(); //carlos tonto que no fonfona
+                    refreshCacheAndReload();
                 })
                 .catch(err => {
                     console.log(err);
+                    
                 })
             })
             .catch(err => {
@@ -225,23 +228,10 @@ class InfoPerfilUsuario extends React.Component{
 
         return(
             <div className="InfoPerfilUsuario">
-                <div className="imgAvatar">
+                <div className="imgAvatarEquip">
                     {<img src={cookies.get('avatar')} alt="Avatar"></img>}
                     <button type="button" class="btn btn-success" onClick={() => this.actualizarBD()}>Guardar</button>
                 </div>
-                <tbody>
-                    <tr>
-                        <th>Nombre:</th>
-                        <td>{cookies.get('user')}</td>
-                    </tr>
-                    <tr>
-                        <th>Monedas Conseguidas:</th>
-                        <td>{cookies.get('monedas')}</td>
-                    </tr>
-                    <tr>
-                        <th>Items: </th>
-                    </tr>
-                </tbody>
                 
                 <div className="itemsComprados">
                     {cols}
