@@ -177,10 +177,15 @@ class Pregunta extends React.Component{
                         <button name="next" onClick={this.handleTurno} disabled={diabledNext}>Next</button>
                     </div>
                 ):( 
-                    <h1 className="esperaTurno">¡Espera tu turno!</h1>
+                    <div className="preg">
+                        <br/>
+                        <h1 className="esperaTurno">¡Espera tu turno!</h1>
+                    </div>
                 )
             ):(
-                <h1 className="esperaJugadores">¡Espera al resto de jugadores!</h1>
+                <div className="preg">
+                    <h1 className="esperaJugadores">¡Espera al resto de jugadores!</h1>
+                </div>
             )}
             </div>
         );
