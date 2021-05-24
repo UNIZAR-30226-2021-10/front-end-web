@@ -9,7 +9,7 @@ export const iniciarSocket = (username, code, firstJoin, history, avatar) => {
         upgrade: false
     });
     socket.emit('join', {username: username, code: code, avatar:avatar, firstJoin: firstJoin}, (error) =>{
-        if (error){
+        if (error!=="ok"){
             alert(error);
             history.goBack();
         }
