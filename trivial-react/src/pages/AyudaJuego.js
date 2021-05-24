@@ -31,7 +31,7 @@ class ReglasJuego extends React.Component{
                     en cuanto clique en ella. Deberás darle al botón "Siguiente" para pasar a la siguiente ronda.
                 </p>
                 <p> El dado consta de seis colores. Cada uno de ellos está asociado a una categoria diferente de 
-                    manera. Las preguntas son multirespuesta y solo una de las opciones expuestas es la correcta. 
+                    manera. Las preguntas son multirespuesta y solo una de las opciones es la correcta. 
                     Las categorías son las siguientes y te darán los siguientes puntos:
                 </p>
                 <ul>
@@ -45,15 +45,17 @@ class ReglasJuego extends React.Component{
                 <p> El juego consiste en sumar puntos, los cuales se consiguen respondiendo correctamente a las 
                     preguntas. Cada tema tiene un valor de puntos asociados. Conforme vayas obteniendo puntos 
                     en las partidas, obtendrás monedas que más tarde puedes usar para comprar objetos para tu 
-                    avatar en la tienda. Puedes abandonar la partida cuando desees, simplemente dándole al botón 
+                    avatar en la tienda. Puedes abandonar la partida individual cuando desees, simplemente dándole al botón 
                     "Atras". Si abandonas la partida, esta no se registrará y será como si nunca hubieras jugado. 
-                    Puedes también posponer la partida y volver más tarde a ella. Las partidas multijugador tienen 
-                    un máximo de cuatro jugadores y gana el jugador que más puntos obtiene. Puedes crear una 
-                    partida o unirte a una ya existentecon un código (todas las partidas lo tienen, pregúntale 
-                    a tus amigos por el código de la partida que han creado). Además, el modo multijugador 
-                    consta de un chat que te permite hablar con tus rivales. 
-
+                    En las partidas multijugador no podrás irte hasta que no estén todos los jugadores. Una vez estén todos 
+                    puedes irte dandole al msimo botón. ¡AVISO! Si te vas de la partida, se te registraran 0 puntos en esa partida.
                 </p>
+                <p>Las partidas multijugador tienen un mínimo de dos jugadores y un máximo de cuatro jugadores. Gana el jugador 
+                    que más puntos obtiene. Puedes crear una partida o unirte a una ya existente con un código (todas las partidas 
+                    lo tienen, pregúntale a tus amigos por el código de la partida que han creado). Además, el modo multijugador
+                    consta de un chat que te permite hablar con tus rivales.
+                </p>
+                <p>¡A JUGAR!</p>
             </div>
         );
     }

@@ -31,6 +31,7 @@ class Header extends React.Component{
                     //Borrar estado de la partida
                     storage(localStorage).removeData("estadoMulti");
                     //Salir de la partida
+                    disconnectSocket();
                     history.push('/DecisionJuego');
                 }
         });
@@ -304,8 +305,6 @@ class MultijugadorUnirse extends React.Component{
         if(usuario == turno && jugadores.length==maxJugadores){
             this.handleTurno();
         }
-
-        disconnectSocket();
     }
 
 
@@ -449,9 +448,15 @@ class MultijugadorUnirse extends React.Component{
         //Actualizar cookies
         const cookies = new Cookies();
         const email = cookies.get('email');
-        const monedas = Math.floor(jugador.puntos*0.5);
-        cookies.set('monedas', Number(cookies.get('monedas')) + monedas,  {path: '/'}); 
-        cookies.set('puntos', Number(cookies.get('puntos')) + Number(jugador.puntos),  {path: '/'});
+
+        //Construcción de monedas y email
+        const monedas = Number(Math.floor(jugador.puntos*0.5));
+        const monedas_antes =  Number(cookies.get('monedas'));
+        const puntos_antes = Number(cookies.get('puntos'));
+        const puntos = Number(jugador.puntos);
+
+        cookies.set('monedas', monedas_antes+monedas,  {path: '/'}); 
+        cookies.set('puntos', puntos_antes+puntos,  {path: '/'});
 
         //Actualiza la tabla partida.
         if (ganador == 1){  //Si eres el ganador

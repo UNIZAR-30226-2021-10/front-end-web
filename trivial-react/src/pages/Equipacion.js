@@ -5,8 +5,7 @@ import {LeftOutlined, SettingFilled} from '@ant-design/icons';
 import Item from '../components/Item'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import {baseURL, imagesURL} from './images'
-import { ClearCacheProvider, useClearCacheCtx } from 'react-clear-cache';
+import {baseURL, imagesURL} from './images';
   
 
 class Header extends React.Component{
