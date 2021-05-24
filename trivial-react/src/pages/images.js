@@ -32,7 +32,6 @@ const ranking = imagesURL+"/appImages/ranking/ranking.png";
 const first = "../imagenes/first.PNG";
 const second = "../imagenes/first.PNG";
 const third = "../imagenes/first.PNG";
-
 //Upload: imágenes de ventana "Upload".
 const insertarFile = imagesURL+"/appImages/upload/insertarFile.png";
 const textPlain = imagesURL+"/appImages/upload/textPlain.png";
