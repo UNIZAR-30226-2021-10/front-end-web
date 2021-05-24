@@ -1,8 +1,8 @@
 //-----------------------RUTAS DE LAS IMÁGENES FIJAS DEL FRONTEND------------------
 
 //URL del servidor de imágenes
-export const imagesURL = 'http://localhost:3060';
-//export const imagesURL = 'https://trivial-images.herokuapp.com';
+//export const imagesURL = 'http://localhost:3060';
+export const imagesURL = 'https://trivial-images.herokuapp.com';
 
 //URL BBDD
 export const baseURL = 'http://localhost:3050';

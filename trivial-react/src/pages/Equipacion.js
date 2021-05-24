@@ -65,7 +65,7 @@ class InfoPerfilUsuario extends React.Component{
                 if(item.Tipo === 'color'){
                     if (item.Nombre === thisItem.Nombre){
                         if (item.equipado === 1){
-                            item.equipado=0;
+                            item.equipado=1;
                         } else {
                             item.equipado=1;
                         }
@@ -140,29 +140,26 @@ class InfoPerfilUsuario extends React.Component{
         itemsComprados.forEach((item) => {
             equipados.push(item.equipado);
             nombre.push(item.iditem);
+            console.log(item.Tipo)
             if(item.equipado === 1){
-                if (imagenes.length>4){
-                    if (item.Tipo === 'color'){
-                        imagenes.shift();
-                        imagenes.unshift(item.Imagen);
-                    }else{
-                        imagenes.pop();
-                        imagenes.push(item.Imagen)
-                    }
-                }else {
-                    if (item.Tipo === 'color'){
-                        imagenes.unshift(item.Imagen);
-                    } else{
-                        imagenes.push(item.Imagen);
-                    }
+                
+                if (item.Tipo === 'color'){
+                        imagenes[0] = item.Imagen;
+                }else if (item.Tipo === 'cara'){
+                        imagenes[1] = item.Imagen;
+                    
+                }else if(item.Tipo === 'cuerpo') {
+                    imagenes[2] = item.Imagen;
+                    
+                }else{
+                    imagenes[3] = item.Imagen;
+
                 }
             }
         })
-        if (imagenes[0].tipo !== 'color'){
-            imagenes.unshift(itemsComprados[0].Imagen);
-            itemsComprados[0].equipado = 1;
-        }
+    
         console.log(imagenes);
+        
         axios.post(baseURL+'/UpdateItemsUsuario', {equipados, nombre, email: email})
             .then(response=>{   
                 if (response.status === 200) { 
@@ -194,12 +191,12 @@ class InfoPerfilUsuario extends React.Component{
         axios.post(baseURL+'/construirAvatar', {imagenes:imagenes})
             .then(response => {
                 avatar = response.data;
-                console.log("hola");
+                console.log(response.data);
                 axios.post(imagesURL+'/UpdateAvatarUsuario', {nombre:email, imagen:avatar})
                 .then(response =>{
                     console.log(response.data.imagenAv);
                     cookies.set('avatar', response.data.imagenAv, {path: '/'});
-                    refreshCacheAndReload();
+                    //refreshCacheAndReload();
                 })
                 .catch(err => {
                     console.log(err);
