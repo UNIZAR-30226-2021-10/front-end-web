@@ -50,7 +50,7 @@ class FormCrearMultijugador extends React.Component{
     
     generarCodigo(longitud){
         let code = '';
-        const pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
+        const pattern = '1234567890';
         const min = 0;
         const max = pattern.length-1;
         let randpattern;

@@ -51,23 +51,29 @@ class Header extends React.Component{
                     </div>
                     <tbody>
                         <tr className="ronda">
-                            <th>Ronda Nº:</th>
+                            <th>Ronda: </th>
                             <td>{ronda}</td>
                         </tr>
                     </tbody>
                 </div>
                 <div className="infoCode">
                     <tbody>
-                        <tr className="code">{code}</tr>
+                        <tr className="code">
+                            <th>Código: </th>
+                            <td>{code}</td>
+                        </tr>
                         <tr>
-                            <th>Turno:</th>
+                            <th>Turno: </th>
                             <td>{jugadores[turno].username}</td>
                         </tr>
                     </tbody>
                 </div>
                 <div>
                     <tbody>
-                        <tr>Puntos:{jugadores[usuario].puntos}</tr>
+                        <tr>
+                            <th>Puntos: </th>
+                            <td>{jugadores[usuario].puntos}</td>
+                        </tr>
                     </tbody>
                 </div>
             </div>
@@ -527,6 +533,7 @@ class MultijugadorUnirse extends React.Component{
 
             //Finalizar partida
             this.endGame(jugadoresDesc, jugadorMe, history, usuario, code);
+            return;
 
         } else {        //Se sigue jugando
 
@@ -607,7 +614,7 @@ class MultijugadorUnirse extends React.Component{
             .then((res) =>{  
                 const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = res.idpregunta;
                 const opcionCorrecta = this.rand(1,4);
-                pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
+                pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos: dado.puntos}
                 switch (opcionCorrecta){
                     case 1: //Opción correcta: opcionA
                         pregunta.opcionA=correcta;
