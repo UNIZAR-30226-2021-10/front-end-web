@@ -41,26 +41,12 @@ class FormCrearMultijugador extends React.Component{
     }
 
     handleSubmit(e) {
-        let crearPartida = false;
-        var estado = storage(localStorage).getData("estado");
-        if (estado !== null){ //Si hay datos de partida existente
-            //Avisar de que se borrarán si acepta crear la partida
-            var opcion = window.confirm("Los datos de la partida existente se borrarán "+
-            "si creas una partida nueva. ¿Sigues queriendo crear la partida?");
-            if (opcion){ //Crear partida
-                crearPartida = true; 
-            }
-        } else { //Si no hay datos de partida existente
-            crearPartida = true; //Crear partida
-        }
-        if(crearPartida){  //Crear partida
-            const history = this.props.history;
-            const selectRondas = this.state.selectRondas; //Datos introducidos por el usuario
-            //Borrar estado de la partida
-            storage(localStorage).removeData("estado");
-            //Ir a la partida
-            history.push('/IndividualPartida', {maxRondas: selectRondas});
-        }
+        const history = this.props.history;
+        const selectRondas = this.state.selectRondas; //Datos introducidos por el usuario
+        //Borrar estado de la partida
+        storage(localStorage).removeData("estado");
+        //Ir a la partida
+        history.push('/IndividualPartida', {maxRondas: selectRondas});
         e.preventDefault();
     }
 
@@ -70,7 +56,6 @@ class FormCrearMultijugador extends React.Component{
     }
 
     render(){
-        var estado = storage(localStorage).getData("estado");
         return(
             <div className="FormCrearMultijugador">
                 <div className="Crear">
@@ -88,15 +73,6 @@ class FormCrearMultijugador extends React.Component{
                         <button className="btn btn-primary" type="submit">¡Comenzar!</button>
                     </form>
                 </div>
-                {estado !== null ? ( //Si hay datos guardados como "estado"
-                    <div className="Unirse">
-                        <h1>O únete </h1>
-                        <button onClick={this.handleUnirse}>Unirse</button>
-                    </div>
-                ):(
-                    <div>
-                    </div>
-                )}
             </div>
         );
     }
