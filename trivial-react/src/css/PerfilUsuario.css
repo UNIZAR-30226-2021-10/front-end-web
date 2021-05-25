@@ -17,6 +17,11 @@
     margin-right: 300px;
 }
 
+.imagenAV{
+    width: 140px;
+    height: 140px;
+}
+
 .imgAvatar .btn-danger{
     color: #fff;
     background-color: #dc3545;

@@ -236,7 +236,7 @@ class InfoPerfilUsuario extends React.Component{
         return(
             <div className="InfoPerfilUsuario">
                 <div className="imgAvatarEquip">
-                    {<img src={cookies.get('avatar')} alt="Avatar"></img>}
+                    {<img src={cookies.get('avatar')} className="imagenAV" alt="Avatar"></img>}
                     <button type="button" class="btn btn-success" onClick={() => this.actualizarBD()}>Guardar</button>
                 </div>
                 

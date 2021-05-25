@@ -9,10 +9,16 @@
 }
 .imgAvatarEquip {
     display: block;
-    width: 140px;
-    height: 300px;
+    width: auto;
+    height: auto;
     float: right;
+    
     margin-right: 687px;
+}
+
+.imagenAV{
+    width: 140px;
+    height: 140px;
 }
 
 .btn-success {
