@@ -61,6 +61,8 @@ class FormRegistro extends React.Component{
 
     postObjetoNuevo(nombreItem, email){
         //Guarda los resultados en la tabla juega.
+        
+        /*
         axios.post(baseURL+'/ObjetoTienda', 
             { nombreObjeto: nombreItem, email: email})
         .then(response => { //Respuesta del servidor
@@ -68,6 +70,16 @@ class FormRegistro extends React.Component{
         }).catch(e => { //Error
             console.log(e);     
         });
+        */
+        
+        axios.post(baseURL+'/Registrarse_Foto', 
+            { nombreObjeto: nombreItem, email: email})
+        .then(response => { //Respuesta del servidor
+            console.log(response.data.message);  
+        }).catch(e => { //Error
+            console.log(e);     
+        });
+        
     }
 
     guardarRegistro = (username, history, urlItem) => { 
