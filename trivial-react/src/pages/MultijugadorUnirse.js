@@ -434,7 +434,7 @@ class MultijugadorUnirse extends React.Component{
     }
 
 
-    //Muestra la pantalla final del juego e introduce los datos de la partida en BBDD
+    //Muestra la pantalla final del juego e introduce los datos de la partida en BBDD 
     endGame(jugadoresDesc, jugador, history, usuario, code) {
         const ganador = jugadoresDesc[0].username===jugador.username;
         //Actualizar cookies
