@@ -11,14 +11,13 @@ import AbandonarPartida from '../components/AbandonarPartida';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import {amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
-import storage from '../lib/storage';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCommentDots} from '@fortawesome/free-solid-svg-icons';
 import swal from 'sweetalert';
 
 class Header extends React.Component{
     abrirAbandonar = () => {
-        const {maxJugadores, jugadores} = this.props;
+        const {maxJugadores, jugadores, turno, usuario} = this.props;
         if (jugadores.length == maxJugadores){
             swal({
                 title: "¿Estás seguro?",
@@ -30,8 +29,9 @@ class Header extends React.Component{
                 .then((willDelete) => {
                     if (willDelete) {
                         const history = this.props.history;
-                        //Borrar estado de la partida
-                        storage(localStorage).removeData("estadoMulti");
+                        if (turno == usuario){
+                            this.props.handleTurno();
+                        }
                         //Salir de la partida
                         disconnectSocket();
                         history.push('/DecisionJuego');
@@ -224,25 +224,22 @@ class MultijugadorUnirse extends React.Component{
     }
 
     cargarEstado() { //Carga el estado
-        var estado = storage(localStorage).getData("estadoMulti");
-        if (estado === null){  //Si no hay datos guardados como estado
-            estado = {
-                ronda: '1',
-                turno: '0',
-                jugadores: this.props.location.state.jugadores,
-                dado: {img: marron, category:"", color:'black'},
-                pregunta: '',
-                colorBtnA: 'white',
-                colorBtnB: 'white',
-                colorBtnC: 'white',
-                colorBtnD: 'white',
-                hasRespondido: false,
-                hasTiradoDado: false,
-                clickAtras: false,
-                clickChat: false,
-                messages: []
-            };
-        }
+        const estado = {
+            ronda: '1',
+            turno: '0',
+            jugadores: this.props.location.state.jugadores,
+            dado: {img: marron, category:"", color:'black'},
+            pregunta: '',
+            colorBtnA: 'white',
+            colorBtnB: 'white',
+            colorBtnC: 'white',
+            colorBtnD: 'white',
+            hasRespondido: false,
+            hasTiradoDado: false,
+            clickAtras: false,
+            clickChat: false,
+            messages: []
+        };
         return estado;
     }
 
@@ -263,14 +260,8 @@ class MultijugadorUnirse extends React.Component{
         const avatar = cookies.get('avatar');
 
         //Inicializar socket y unión del usuario "username" al chat con codigo "code"
-        var estado = storage(localStorage).getData("estadoMulti");
-        if (estado !== null){  //Si hay datos guardados como estado
-            console.log("REFRESCAR PÁGINA");
-            refreshPage(username, code, history);
-        } else{
-            console.log("INICIAR SOCKET");
-            iniciarSocket(username, code, firstJoin, history, avatar);
-        }
+        console.log("INICIAR SOCKET");
+        iniciarSocket(username, code, firstJoin, history, avatar);
 
         //Actualizar array de mensajes con los que te llegan
         actualizarMensajes(messages, jugadores, this.setStates, maxRondas, usuario, this.handleTurno);
@@ -283,16 +274,18 @@ class MultijugadorUnirse extends React.Component{
 
     componentDidUpdate(){
         this.onBeforeUnloadPage();
-        this.onUnloadPage();
         this.tirarDado();
     }
 
     onBeforeUnloadPage(){ //Antes de recargar/salir de la pagina -> Preguntar
+        const usuario = this.props.location.state.usuario;
+        const turno = this.state.turno;
         function areYouSure(e) {
             var confirmationMessage="Are you sure you want to exit this page?";
             if(confirmationMessage){
-                //Borrar estado de la partida
-                storage(localStorage).removeData("estadoMulti");
+                if (turno == usuario){
+                    this.handleTurno();
+                }
                 //Desconectar el socket
                 disconnectSocket();
             }
@@ -301,10 +294,6 @@ class MultijugadorUnirse extends React.Component{
             return confirmationMessage;              // Gecko, WebKit, Chrome <34
         }
         window.onbeforeunload = areYouSure;
-    }
-
-    onUnloadPage(){ //Al recargar/salir de la página -> Guardar estado de la partida
-        window.onunload = storage(localStorage).setData("estadoMulti", this.state);
     }
 
 
@@ -341,6 +330,7 @@ class MultijugadorUnirse extends React.Component{
                             maxJugadores={maxJugadores}
                             jugadores={jugadores}
                             setParentsState={this.setStates}
+                            handleTurno={this.handleTurno}
                         />
                         <Jugadores  history={history} 
                                 jugadores={jugadores} 
@@ -498,9 +488,6 @@ class MultijugadorUnirse extends React.Component{
             console.log("FINAL INDIVIDUAL USUARIO ERROR")
             console.log(e);         
         });
-
-        //Borrar estado de la partida
-        storage(localStorage).removeData("estadoMulti");
 
         history.push('/FinalMultijugador', {jugadores: jugadoresDesc, usuario: usuario});
     }
