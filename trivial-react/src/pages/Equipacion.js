@@ -19,7 +19,7 @@ class Header extends React.Component{
                     <LeftOutlined onClick={() => history.push("/PerfilUsuario")}/> 
                     Atrás
                 </div>
-                <h1>Perfil de {cookies.get('user')}</h1>
+                <h1 style={{marginRight:"120px"}}>Perfil de {cookies.get('user')}</h1>
                 <div className="iconSettings">
                     <SettingFilled onClick={() => history.push("/Ajustes", {usuario: usuario})}/>
                 </div>

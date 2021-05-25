@@ -18,7 +18,7 @@ class Item extends React.Component {
             <td>{item.Nombre}</td>
           </tr>
           <div>
-            <img style={{ marginLeft: "35px", marginTop: "8px",cursor: "pointer"}}className="iconItem" src={item.Imagen} alt={"Item "+item.Nombre}></img>
+            <img style={{ marginLeft: "15px", marginTop: "8px",cursor: "pointer"}}className="iconItem" src={item.Imagen} alt={"Item "+item.Nombre}></img>
           </div>
         </tbody>
       </div>
@@ -34,7 +34,8 @@ class Item extends React.Component {
               <td>{item.Nombre}</td>
             </tr>
             <div>
-              <img style={{ marginLeft: "35px", marginTop: "8px",cursor: "pointer"}}className="iconItem" src={item.Imagen} alt={"Item "+item.Nombre}></img>
+              <img style={{ marginLeft: "15px", marginTop: "-3px",cursor: "pointer"}}className="iconItem" src={item.Imagen} alt={"Item "+item.Nombre}></img>
+              <h3 style={{color: "green",marginTop: "-2px", marginLeft: "27px",fontSize: "14px", fontStyle: "italic"}}>  Equipado</h3>
             </div>
           </tbody>
           </div>
