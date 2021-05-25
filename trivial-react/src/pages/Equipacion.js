@@ -215,13 +215,21 @@ class InfoPerfilUsuario extends React.Component{
         const itemsComprados = this.props.itemsComprados;
 
         const cols=[];
+        const colsequip = [];
         itemsComprados.forEach((item) => {
-            
+            if(item.equipado === 1){
                 cols.push(  
                             <div className = "itemsTienda" onClick={()=> this.equipar(item)}>
                                 <Item item={item} equipado={item.equipado} /> 
                             </div>
                 );
+            }else{
+                colsequip.push(
+                    <div className = "itemsTienda" onClick={()=> this.equipar(item)}>
+                                <Item item={item} equipado={item.equipado} /> 
+                    </div>
+                )
+            }
             
         });
 
@@ -233,7 +241,12 @@ class InfoPerfilUsuario extends React.Component{
                 </div>
                 
                 <div className="itemsComprados">
+                    <h1>Items equipados</h1>
                     {cols}
+                </div>
+                <div className="itemsNoEquip">
+                    <h1>Items no equipados</h1>
+                    {colsequip}
                 </div>
             </div>
         );

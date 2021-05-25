@@ -26,6 +26,13 @@
     width: 80%;
     display: inline-block;
     margin: 1% auto 1% 15%;
+    float:none;
+}
+
+.itemsNoEquip{
+    width: 80%;
+    display: inline-block;
+    margin: 1% auto 1% 15%;
 }
 
 

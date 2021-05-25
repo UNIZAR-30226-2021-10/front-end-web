@@ -18,15 +18,22 @@
 .infoItem {
     font-size: calc(1px + 2vmin);
     text-transform: uppercase;
+    float:none;
 }
 
 .iconItem{
+    height: 7vw;
+    margin: 8% 10%;
+    top: 5%;
+}
+
+.iconItemE{
     height: 7vw;
     margin: 6% 15%;
     top: 6%;
 }
 
 .mostrarItem{
-    cursor: none;
+    cursor:default;
     
 }
