@@ -33,7 +33,7 @@
 }
 
 .MostrarHistorial .historial{
-    height: 90%;
+    height: 89%;
     width: 55%;
     margin: 14px;
     margin-left: 24%;
@@ -52,7 +52,7 @@
 
 .MostrarHistorial .historial .fila h1{
     font-size: calc(5px + 1vmin);
-    margin: 1% 2% 1% 2%;
+    margin: 0.5% 2% 1% 2%;
     width: fit-content;
 }
 

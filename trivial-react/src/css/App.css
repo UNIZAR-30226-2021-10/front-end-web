@@ -70,7 +70,7 @@
 
 .Registrarse h1, .CambiarContrasena h1, .PerfilUsuario h1,
 .Ajustes h1, .MultijugadorCrear h1, .Tienda h1,
-.Ranking h1, .Historial h1, .Upload h1{
+.Ranking h1, .Historial h1, .Upload h1, .CodigoVerificacion h1{
   height: 100%;
   width: 35%;
   float: left;

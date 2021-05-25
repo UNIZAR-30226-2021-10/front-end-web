@@ -12,31 +12,38 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import {amarillo, azul, marron, naranja, rosa, verde, baseURL} from './images';
 import storage from '../lib/storage';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCommentDots} from '@fortawesome/free-solid-svg-icons';
 import swal from 'sweetalert';
 
 class Header extends React.Component{
     abrirAbandonar = () => {
-        swal({
-            title: "¿Estás seguro?",
-            text: "Si abandonas la partida no podrás volver a entrar",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    const history = this.props.history;
-                    //Borrar estado de la partida
-                    storage(localStorage).removeData("estadoMulti");
-                    //Salir de la partida
-                    disconnectSocket();
-                    history.push('/DecisionJuego');
-                }
-        });
-        
-        
+        const {maxJugadores, jugadores} = this.props;
+        if (jugadores.length == maxJugadores){
+            swal({
+                title: "¿Estás seguro?",
+                text: "Si abandonas la partida no podrás volver a entrar",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        const history = this.props.history;
+                        //Borrar estado de la partida
+                        storage(localStorage).removeData("estadoMulti");
+                        //Salir de la partida
+                        disconnectSocket();
+                        history.push('/DecisionJuego');
+                    }
+            });
+        }else{
+            swal({
+                text: "Espera al resto de jugadores.",
+                icon: "warning",
+                button: "Ok"
+            });
+        }
     }
 
     render(){
@@ -288,8 +295,6 @@ class MultijugadorUnirse extends React.Component{
                 storage(localStorage).removeData("estadoMulti");
                 //Desconectar el socket
                 disconnectSocket();
-            }else{
-                alert("Cancelado");
             }
             /*var confirmationMessage = "Are you sure you want to exit this page?";
             e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+*/
@@ -300,16 +305,6 @@ class MultijugadorUnirse extends React.Component{
 
     onUnloadPage(){ //Al recargar/salir de la página -> Guardar estado de la partida
         window.onunload = storage(localStorage).setData("estadoMulti", this.state);
-    }
-
-    componentWillUnmount() {
-        const {usuario, maxJugadores, jugadores} = this.props.location.state;
-        const {turno} = this.state;
-        console.log("UNMOUNT")
-
-        if(usuario == turno && jugadores.length==maxJugadores){
-            this.handleTurno();
-        }
     }
 
 
@@ -342,6 +337,8 @@ class MultijugadorUnirse extends React.Component{
                             code={code}
                             ronda={ronda}
                             turno={turno}
+                            jugadores={jugadores}
+                            maxJugadores={maxJugadores}
                             jugadores={jugadores}
                             setParentsState={this.setStates}
                         />
@@ -616,7 +613,7 @@ class MultijugadorUnirse extends React.Component{
 
         if (!hasTiradoDado && jugadores.length==maxJugadores && usuario==turno){ //true = Es tu turno = turno==usuario
             const valor = this.rand(0,5);
-            const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor], puntos:puntos_categoria[valor]};
+            const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor], puntos: puntos_categoria[valor]};
             let pregunta = "";
             this.getPregunta(dado)
             .then((res) =>{  
