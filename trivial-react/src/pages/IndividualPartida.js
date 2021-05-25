@@ -238,7 +238,7 @@ class IndividualPartida extends React.Component{
         const fecha = d.getFullYear() + "--" + meses[d.getMonth()] + "--" + d.getDate() + 
                     "(" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ")";
         //Construcción de monedas
-        const monedas = jugador.puntos*0.5;
+        const monedas = Number(Math.floor(jugador.puntos*0.5));
 
         //Guarda los resultados en las tablas partida y juega.
         axios.post(baseURL+'/FinalIndividual', 
@@ -270,8 +270,8 @@ class IndividualPartida extends React.Component{
             storage(localStorage).removeData("estado");
             //Actualizar cookies
             const cookies = new Cookies();
-            const monedas = Number(cookies.get('monedas')) + jugador.puntos*0.5;
-            const puntos = Number(cookies.get('puntos')) + jugador.puntos;
+            const monedas = Number(cookies.get('monedas')) + Number(Math.floor(jugador.puntos*0.5));
+            const puntos = Number(cookies.get('puntos')) + Number(jugador.puntos);
             cookies.set('monedas', monedas, {path: '/'});
             cookies.set('puntos', puntos, {path: '/'});
             //Ir a la ventana final
@@ -314,14 +314,15 @@ class IndividualPartida extends React.Component{
         const colores = ["#703C02", "#0398FA", "#FFDA00", "#FC57FF", "#17B009", "#FF8D00"];
         const imagenes = [  marron, azul, amarillo, rosa, verde, naranja];
         const categorias = ["Art and Literature", "Geography", "History", "Film and TV", "Science", "Sport and Leisure"];
+        const puntos_categoria= [20, 30, 25, 15, 5, 10];
         const valor = this.rand(0,5);
-        const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor]};
+        const dado = {img: imagenes[valor], category: categorias[valor], color: colores[valor], puntos: puntos_categoria[valor]};
         let pregunta = "";
         this.getPregunta(dado)
         .then((res) =>{  
             const {incorrecta1, incorrecta2, incorrecta3, correcta, enunciado} = res.idpregunta;
             const opcionCorrecta = this.rand(1,4);
-            pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos:'10'}
+            pregunta = {ask: enunciado, opcionA:'', opcionB:'', opcionC:'', opcionD:'', answer:'', puntos: dado.puntos}
             switch (opcionCorrecta){
                 case 1: //Opción correcta: opcionA
                     pregunta.opcionA=correcta;

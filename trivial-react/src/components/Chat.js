@@ -1,6 +1,8 @@
 import React from 'react';
 import '../css/Chat.css';
 import {LeftOutlined} from '@ant-design/icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCommentDots} from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.Component{
     cerrarChat = () => { 
@@ -14,7 +16,10 @@ class Header extends React.Component{
                     <LeftOutlined onClick={this.cerrarChat}/> 
                     Atrás
                 </div>
-                <h1>Chat de juego</h1>
+                <div className="tituloChat">
+                    <FontAwesomeIcon  className="imgChat" alt="Chat Icon" icon={faCommentDots}/>
+                    <h1>Chat</h1>
+                </div>
             </div>
         )
     }
@@ -112,15 +117,21 @@ class Messages extends React.Component {
                         return (
                             <div>
                                 { message.sender !== jugadores[usuario].username ? (
-                                <li key={message.id} className="izquierda">
-                                    <div className="sender" style={{ color: color}}>{nombre}</div>
-                                    <div className="messageConFlecha">
-                                        <img className="imgAvatar" src={message.avatar} alt={"Avatar de "+ nombre}></img>
-                                        <div class="flecha-izquierda"></div>
-                                        <div className="text" style={{ background: color}}>{message.text}</div>
-                                        <div className="date">{this.comentario(message.date)}</div>
-                                    </div>
-                                </li>
+                                    message.sender === "admin" ? (
+                                        <li key={message.id} className="centro">
+                                            <div className="text" style={{background: color}}>{message.text}</div>
+                                        </li>
+                                    ):(
+                                        <li key={message.id} className="izquierda">
+                                            <div className="sender" style={{ color: color}}>{nombre}</div>
+                                            <div className="messageConFlecha">
+                                                <img className="imgAvatar" src={message.avatar} alt={"Avatar de "+ nombre}></img>
+                                                <div class="flecha-izquierda"></div>
+                                                <div className="text" style={{ background: color}}>{message.text}</div>
+                                                <div className="date">{this.comentario(message.date)}</div>
+                                            </div>
+                                        </li>
+                                    )
                                 ):(
                                 <li key={message.id} className="derecha">
                                     <div className="sender" style={{ color: color}}>{nombre}</div>

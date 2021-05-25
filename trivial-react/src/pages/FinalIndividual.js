@@ -9,7 +9,7 @@ class FinalIndividual extends React.Component {
     render() {
         const history = this.props.history;
         const jugador = this.props.location.state.jugador;
-        const monedas = jugador.puntos*0.5;
+        const monedas = Number(Math.floor(jugador.puntos*0.5));
         return (
             <div className="FinalIndividual">
                 <div className="header">

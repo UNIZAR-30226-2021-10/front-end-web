@@ -1,14 +1,27 @@
 
 .Chat .Header{
-    height: 15%;
+    height: 13%;
     background-color: rgb(138, 138, 138);
     color: white;
     text-transform: uppercase;
     text-shadow: 5px 5px 10px rgba(90, 187, 231, 0.6);
 }
 
+.Header .tituloChat {
+    height: 60%;
+    width: 20%;
+    margin: 2% 0% 2% 35%;
+    float: left;
+}
+
+.Header .tituloChat .imgChat {
+    height: 80%;
+    float: left;
+    margin: 0px;
+}
+
 .Messages{
-    height: 65%;
+    height: 67%;
     width: 100%;
     background-color: rgba(238, 238, 238, 0.541);
     overflow: auto;
@@ -28,6 +41,16 @@
 .derecha{
     float: right;
     margin-right: 5%;
+}
+
+.centro{
+    margin: 1% 30%;
+}
+
+.centro .text{
+    border: 1vh double black;
+    border-radius: 5px;
+    opacity: 0.7;
 }
 
 .Messages .izquierda .imgAvatar{
